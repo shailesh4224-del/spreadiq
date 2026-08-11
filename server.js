@@ -3,6 +3,9 @@ const express = require('express');
 
 const axios = require('axios');
 const app = express();
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 app.use(express.static('public'));
 class NSESession {
  constructor() {
@@ -118,7 +121,7 @@ app.get('/api/indices', async (req, res) => {
 app.get('/api/option-chain/:symbol', async (req, res) => {
   try {
     const { symbol } = req.params;
-    const symbolMap = { 'NIFTY': 'NIFTY', 'BANKNIFTY': 'BANKNIFTY', 'FINNIFTY': 'FINNIFTY' };
+        const symbolMap = { 'NIFTY': 'NIFTY', 'BANKNIFTY': 'BANKNIFTY', 'FINNIFTY': 'FINNIFTY', 'SENSEX': 'SENSEX' };
     const nseSymbol = symbolMap[symbol];
     if (!nseSymbol) return res.status(400).json({ error: 'Unknown symbol' });
     const cacheKey = symbol + '_' + new Date().toISOString().split('T')[0];
