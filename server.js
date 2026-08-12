@@ -68,7 +68,7 @@ app.get('/api/mcx', async (req, res) => {
           percentChange: ((meta.regularMarketPrice - meta.chartPreviousClose) / meta.chartPreviousClose) * 100
         });
       } catch (err) {
-        console.log('MCX error for', sym.name);
+        console.log('MCX error for ' + sym.name);
       }
     }
     res.json(results);
@@ -101,6 +101,7 @@ app.get('/api/market-detail/:symbol', async (req, res) => {
     const meta = response.data.chart.result[0].meta;
     const spot = meta.regularMarketPrice;
     
+    // Determine strike gap based on symbol
     let gap = 50;
     if (symbol === 'NIFTY BANK') gap = 100;
     if (symbol === 'SENSEX') gap = 100;
@@ -108,6 +109,7 @@ app.get('/api/market-detail/:symbol', async (req, res) => {
     
     const atmStrike = Math.round(spot / gap) * gap;
     
+    // Generate synthetic option chain
     const chain = [];
     const range = 10;
     
@@ -152,10 +154,4 @@ app.get('/api/market-detail/:symbol', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log('SpreadIQ running on port ' + PORT);
 });
