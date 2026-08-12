@@ -64,9 +64,9 @@
     </a>
     <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300">
       <a href="#home" class="hover:text-emerald-400 transition">Home</a>
+      <a href="#markets" class="hover:text-emerald-400 transition">Markets</a>
       <a href="#features" class="hover:text-emerald-400 transition">Features</a>
       <a href="#strategies" class="hover:text-emerald-400 transition">Strategies</a>
-      <a href="#markets" class="hover:text-emerald-400 transition">Markets</a>
     </nav>
     <div class="flex items-center gap-3">
       <a href="/dashboard.html" target="_blank" class="hidden md:inline-block px-4 py-2 text-sm hover:text-emerald-400 transition">Launch App ↗</a>
@@ -163,49 +163,21 @@
   </div>
 </section>
 
-<!-- ============== MARKETS SECTION ============== -->
+<!-- MARKETS SECTION (WITH LIVE DATA) -->
 <section id="markets" class="py-20 bg-zinc-950 border-y border-zinc-900">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-12" data-aos="fade-up">
       <span class="text-emerald-400 font-bold text-sm tracking-widest">SUPPORTED MARKETS</span>
       <h2 class="text-3xl md:text-4xl font-bold mt-3">Multi-Symbol Coverage</h2>
+      <p class="text-zinc-500 text-sm mt-2">Live prices from global markets · Auto-refresh every 30s</p>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" data-aos="fade-up" data-aos-delay="100">
-      <div class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">
-        <div class="text-3xl mb-2">📊</div>
-        <div class="font-bold">NIFTY</div>
-        <div class="text-xs text-zinc-500 mt-1">NSE 50</div>
-      </div>
-      <div class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">
-        <div class="text-3xl mb-2">🏦</div>
-        <div class="font-bold">BANKNIFTY</div>
-        <div class="text-xs text-zinc-500 mt-1">Bank Index</div>
-      </div>
-      <div class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">
-        <div class="text-3xl mb-2">📈</div>
-        <div class="font-bold">SENSEX</div>
-        <div class="text-xs text-zinc-500 mt-1">BSE 30</div>
-      </div>
-      <div class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">
-        <div class="text-3xl mb-2">🥇</div>
-        <div class="font-bold">GOLD</div>
-        <div class="text-xs text-zinc-500 mt-1">MCX</div>
-      </div>
-      <div class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">
-        <div class="text-3xl mb-2">🥈</div>
-        <div class="font-bold">SILVER</div>
-        <div class="text-xs text-zinc-500 mt-1">MCX</div>
-      </div>
-      <div class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">
-        <div class="text-3xl mb-2">🛢️</div>
-        <div class="font-bold">CRUDE OIL</div>
-        <div class="text-xs text-zinc-500 mt-1">MCX</div>
-      </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" data-aos="fade-up" data-aos-delay="100" id="marketsGrid">
+      <!-- Filled by JavaScript with live data -->
     </div>
   </div>
 </section>
 
-<!-- ============== FEATURES SECTION ============== -->
+<!-- FEATURES SECTION -->
 <section id="features" class="py-24">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
@@ -248,7 +220,7 @@
   </div>
 </section>
 
-<!-- ============== STRATEGIES SECTION ============== -->
+<!-- STRATEGIES SECTION -->
 <section id="strategies" class="py-24 bg-zinc-950">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-16" data-aos="fade-up">
@@ -287,7 +259,7 @@
       <div class="bg-black border border-zinc-800 rounded-2xl p-8 card-hover" data-aos="fade-right">
         <div class="flex items-start justify-between mb-4">
           <div>
-            <span class="text-xs text-purple-400 font-bold tracking-widest">WIDER PROFIT ZONE</span>
+            <span class="text-xs text-purple-400 font-bold tracking-wider">WIDER PROFIT ZONE</span>
             <h3 class="text-2xl font-bold mt-2">Iron Condor</h3>
           </div>
           <div class="text-4xl">💓</div>
@@ -301,7 +273,7 @@
       <div class="bg-black border border-zinc-800 rounded-2xl p-8 card-hover" data-aos="fade-left">
         <div class="flex items-start justify-between mb-4">
           <div>
-            <span class="text-xs text-yellow-400 font-bold tracking-widester">VOLATILITY PLAYS</span>
+            <span class="text-xs text-yellow-400 font-bold tracking-wider">VOLATILITY PLAYS</span>
             <h3 class="text-2xl font-bold mt-2">Long Straddle</h3>
           </div>
           <div class="text-4xl">🎯</div>
@@ -316,7 +288,7 @@
   </div>
 </section>
 
-<!-- ============== CTA ============== -->
+<!-- CTA -->
 <section id="signup" class="py-24 relative overflow-hidden">
   <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-cyan-500/10"></div>
   <div class="max-w-4xl mx-auto px-6 text-center relative" data-aos="zoom-in">
@@ -329,7 +301,7 @@
   </div>
 </section>
 
-<!-- ============== FOOTER ============== -->
+<!-- FOOTER -->
 <footer class="bg-black border-t border-zinc-900 py-12">
   <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-5 gap-8">
     <div class="md:col-span-2">
@@ -369,16 +341,57 @@
 <script>
   AOS.init({ duration: 800, once: true });
 
+  // Market configuration with icons
+  const MARKET_CONFIG = [
+    { name: 'NIFTY 50',   yahoo: '^NSEI',    icon: '📊', desc: 'NSE 50',     prefix: '₹' },
+    { name: 'NIFTY BANK', yahoo: '^NSEBANK', icon: '🏦', desc: 'Bank Index', prefix: '₹' },
+    { name: 'SENSEX',     yahoo: '^BSESN',   icon: '📈', desc: 'BSE 30',     prefix: '₹' },
+    { name: 'GOLD',       yahoo: 'GC=F',     icon: '🥇', desc: 'MCX',        prefix: '$' },
+    { name: 'SILVER',     yahoo: 'SI=F',     icon: '🥈', desc: 'MCX',        prefix: '$' },
+    { name: 'CRUDE OIL',  yahoo: 'CL=F',     icon: '🛢️', desc: 'MCX',        prefix: '$' }
+  ];
+
+  // Render market cards dynamically
+  function renderMarketCards() {
+    const grid = document.getElementById('marketsGrid');
+    if (!grid) return;
+    grid.innerHTML = MARKET_CONFIG.map(m => 
+      '<div id="mkt-' + m.yahoo + '" class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 transition cursor-pointer">' +
+        '<div class="text-3xl mb-2">' + m.icon + '</div>' +
+        '<div class="font-bold">' + m.name + '</div>' +
+        '<div class="text-xs text-zinc-500 mt-1">' + m.desc + '</div>' +
+        '<div class="text-sm text-zinc-500 mt-3 pulse-dot">Loading...</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  // Update individual market card with live data
+  function updateMarketCard(yahooSym, name, last, change, pct, icon, desc, prefix) {
+    const el = document.getElementById('mkt-' + yahooSym);
+    if (!el) return;
+    const isUp = change >= 0;
+    const color = isUp ? 'text-emerald-400' : 'text-red-400';
+    const arrow = isUp ? '▲' : '▼';
+    const sign = isUp ? '+' : '';
+    
+    el.innerHTML = 
+      '<div class="text-3xl mb-2">' + icon + '</div>' +
+      '<div class="font-bold">' + name + '</div>' +
+      '<div class="text-xs text-zinc-500 mt-1">' + desc + '</div>' +
+      '<div class="text-lg ' + color + ' font-bold mt-3">' + prefix + last.toFixed(2) + '</div>' +
+      '<div class="text-xs ' + color + ' font-semibold">' + arrow + ' ' + sign + Math.abs(pct).toFixed(2) + '%</div>';
+  }
+
   // ============= LIVE DATA LOADER =============
   async function loadLiveData() {
     try {
-      // Load indices for ticker
+      // Load NIFTY, BANKNIFTY, SENSEX from your backend
       const indicesRes = await fetch('/api/indices');
       const indices = await indicesRes.json();
       
-      // Ticker
+      // Update ticker
       const ticker = document.getElementById('tickerBar');
-      if (ticker) {
+      if (ticker && Array.isArray(indices)) {
         const tickerHtml = indices.map(i => {
           const c = i.change >= 0 ? 'text-emerald-400' : 'text-red-400';
           const a = i.change >= 0 ? '▲' : '▼';
@@ -388,8 +401,39 @@
         ticker.innerHTML = tickerHtml + tickerHtml;
       }
 
-      // Update mockup with live NIFTY data
-      const nifty = indices.find(i => i.name === 'NIFTY 50');
+      // Update each market card
+      if (Array.isArray(indices)) {
+        indices.forEach(idx => {
+          const config = MARKET_CONFIG.find(m => m.name === idx.name);
+          if (config) {
+            updateMarketCard(config.yahoo, config.name, idx.last, idx.change, idx.percentChange, config.icon, config.desc, config.prefix);
+          }
+        });
+      }
+
+      // Load MCX (Gold, Silver, Crude) directly from Yahoo Finance
+      const mcxSymbols = ['GC=F', 'SI=F', 'CL=F'];
+      for (const sym of mcxSymbols) {
+        try {
+          const url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + sym + '?interval=1d&range=1d';
+          const res = await fetch(url);
+          const data = await res.json();
+          const meta = data.chart.result[0].meta;
+          const last = meta.regularMarketPrice;
+          const prev = meta.chartPreviousClose;
+          const change = last - prev;
+          const pct = (change / prev) * 100;
+          const config = MARKET_CONFIG.find(m => m.yahoo === sym);
+          if (config) {
+            updateMarketCard(sym, config.name, last, change, pct, config.icon, config.desc, config.prefix);
+          }
+        } catch (err) {
+          console.log('MCX error:', sym);
+        }
+      }
+
+      // Update NIFTY mockup
+      const nifty = Array.isArray(indices) ? indices.find(i => i.name === 'NIFTY 50') : null;
       if (nifty) {
         const spot = nifty.last;
         const change = nifty.change;
@@ -399,35 +443,28 @@
         const arrow = isUp ? '▲' : '▼';
         const color = isUp ? 'text-emerald-400' : 'text-red-400';
 
-        // Update NIFTY Spot card
         document.getElementById('mockNiftySpot').textContent = spot.toFixed(2);
         document.getElementById('mockNiftySpot').className = 'text-2xl font-bold ' + color;
         document.getElementById('mockNiftyChange').textContent = arrow + ' ' + sign + Math.abs(change).toFixed(2) + ' (' + sign + Math.abs(pctChange).toFixed(2) + '%)';
         document.getElementById('mockNiftyChange').className = 'text-xs mt-1 ' + color;
 
-        // Calculate ATM Strike (NIFTY = 50pt gap)
         const atmStrike = Math.round(spot / 50) * 50;
         document.getElementById('mockATMStrike').textContent = atmStrike + ' CE';
 
-        // Approximate IV (14-16% for NIFTY)
         const iv = (14 + Math.random() * 2).toFixed(1);
         document.getElementById('mockATMIV').textContent = 'IV: ' + iv + '%';
 
-        // Calculate Butterfly 1:2:1 P&L (theoretical)
-        // Buy 1 ITM, Sell 2 ATM, Buy 1 OTM
         const itmStrike = atmStrike - 50;
         const otmStrike = atmStrike + 50;
-        const basePrice = spot * 0.015; // Approximate premium
-        const debit = basePrice * 0.5; // Approximate net debit
-        const maxProfit = 50 - debit; // Wing width minus debit
-        document.getElementById('mockBFPL').textContent = '+₹' + maxProfit.toFixed(0);
-        document.getElementById('mockBFPL').className = 'text-2xl font-bold text-emerald-400';
+        const basePrice = spot * 0.015;
+        const debit = basePrice * 0.5;
+        const maxProfit = 50 - debit;
+        document.getElementById('mockBFPL').textContent = (maxProfit >= 0 ? '+₹' : '-₹') + Math.abs(maxProfit).toFixed(0);
+        document.getElementById('mockBFPL').className = 'text-2xl font-bold ' + (maxProfit >= 0 ? 'text-emerald-400' : 'text-red-400');
 
-        // IV Percentile (28-35 typical)
         const ivp = (28 + Math.random() * 7).toFixed(1);
         document.getElementById('mockIVP').textContent = ivp;
 
-        // Update butterfly legs example
         const itmPrice = basePrice * 1.4;
         const atmPrice = basePrice;
         const otmPrice = basePrice * 0.6;
@@ -438,10 +475,9 @@
 
         document.getElementById('mockSummary').innerHTML = 
           '<div>Net Debit: <span class="text-white font-bold">₹' + debit.toFixed(0) + '</span></div>' +
-          '<div>Max Profit: <span class="text-emerald-400 font-bold">+₹' + maxProfit.toFixed(0) + '</span></div>' +
+          '<div>Max Profit: <span class="' + (maxProfit >= 0 ? 'text-emerald-400' : 'text-red-400') + ' font-bold">' + (maxProfit >= 0 ? '+₹' : '-₹') + Math.abs(maxProfit).toFixed(0) + '</span></div>' +
           '<div>Breakeven: <span class="text-yellow-400 font-bold">' + (itmStrike + debit).toFixed(0) + ' / ' + (otmStrike - debit).toFixed(0) + '</span></div>';
 
-        // Update LIVE time
         const now = new Date();
         document.getElementById('liveTime').textContent = 'LIVE · ' + now.toLocaleTimeString('en-IN');
       }
@@ -450,11 +486,10 @@
     }
   }
 
-  // Initial load
-  loadLiveData();
-
-  // Auto-refresh every 30 seconds
-  setInterval(loadLiveData, 30000);
+  // ============= INIT =============
+  renderMarketCards();  // Build cards immediately
+  loadLiveData();      // Fetch live data
+  setInterval(loadLiveData, 30000);  // Refresh every 30s
 </script>
 
 </body>
