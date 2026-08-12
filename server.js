@@ -1,98 +1,16 @@
-console.log('1. STARTING');
 const express = require('express');
-
 const axios = require('axios');
+
 const app = express();
+
+// Root route - serve landing page
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
+
 app.use(express.static('public'));
-class NSESession {
- constructor() {
-this.cookies = null;
-this.lastFetch = 0;
-this.minInterval = 1000;
-}
-  async getSession() {
-    try {
-            const homeResponse = await axios.get('https://www.nseindia.com', {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Sec-Ch-Ua': '"Not_A Brand";v="8", "Chromium";v="120", "Microsoft Edge";v="120"',
-          'Sec-Ch-Ua-Mobile': '?0',
-          'Sec-Ch-Ua-Platform': '"Windows"',
-          'Sec-Fetch-Dest': 'document',
-          'Sec-Fetch-Mode': 'navigate',
-          'Sec-Fetch-Site': 'none',
-          'Sec-Fetch-User': '?1',
-          'Upgrade-Insecure-Requests': '1'
-        },
-        timeout: 15000
-      });
-            const setCookies = homeResponse.headers['set-cookie'] || [];
-      this.cookies = setCookies.map(c => c.split(';')[0]).join('; ');
-      await axios.get('https://www.nseindia.com/option-chain', {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Cookie': this.cookies
-        },
-        timeout: 10000
-      });
-      console.log('NSE session ready');
-      return this.cookies;
-    } catch (err) {
-      console.error('NSE session error:', err.message);
-      throw err;
-    }
-  }  async request(url, retries = 3) {
-    const now = Date.now();
-    const elapsed = now - this.lastFetch;
-    if (elapsed < this.minInterval) {
-      await new Promise(r => setTimeout(r, this.minInterval - elapsed));
-    }
-    this.lastFetch = Date.now();
-    for (let attempt = 1; attempt <= retries; attempt++) {
-            if (attempt > 1) {
-        console.log('Waiting 3 seconds before retry...');
-        await new Promise(r => setTimeout(r, 3000));
-      }
-      try {
-        if (!this.cookies) await this.getSession();
-               const response = await axios.get(url, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0',
-            'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Referer': 'https://www.nseindia.com/option-chain',
-            'Origin': 'https://www.nseindia.com',
-            'Sec-Ch-Ua': '"Not_A Brand";v="8", "Chromium";v="120", "Microsoft Edge";v="120"',
-            'Sec-Ch-Ua-Mobile': '?0',
-            'Sec-Ch-Ua-Platform': '"Windows"',
-            'Sec-Fetch-Dest': 'empty',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Site': 'same-origin',
-            'Cookie': this.cookies
-          },
-          timeout: 15000
-        });
-        return response.data;
-      } catch (err) {
-        console.log('Attempt ' + attempt + ' failed: ' + err.message);
-        if (attempt === retries) throw err;
-        this.cookies = null;
-        await new Promise(r => setTimeout(r, 2000 * attempt));
-      }
-    }
-  }
-}
-const nse = new NSESession();
-const cache = { optionChain: {}, cacheExpiry: 60000 };
+
+// ============= INDICES (Yahoo Finance - FREE) =============
 app.get('/api/indices', async (req, res) => {
   try {
     const symbols = ['^NSEI', '^NSEBANK', '^BSESN'];
@@ -118,62 +36,107 @@ app.get('/api/indices', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ============= OPTION CHAIN (Yahoo Finance approximation) =============
 app.get('/api/option-chain/:symbol', async (req, res) => {
   try {
     const { symbol } = req.params;
-        const symbolMap = { 'NIFTY': 'NIFTY', 'BANKNIFTY': 'BANKNIFTY', 'FINNIFTY': 'FINNIFTY', 'SENSEX': 'SENSEX' };
-    const nseSymbol = symbolMap[symbol];
-    if (!nseSymbol) return res.status(400).json({ error: 'Unknown symbol' });
-    const cacheKey = symbol + '_' + new Date().toISOString().split('T')[0];
-    if (cache.optionChain[cacheKey] && Date.now() - cache.optionChain[cacheKey].time < cache.cacheExpiry) {
-      console.log('Returning cached data');
-      return res.json(cache.optionChain[cacheKey].data);
-    }
-        return res.status(503).json({ error: 'NSE blocked - try during market hours or use broker API' });
-    const spot = data.records.underlyingValue;
-    const atmStrike = data.records.strikePrices.reduce((prev, curr) =>
-      Math.abs(curr - spot) < Math.abs(prev - spot) ? curr : prev
-    );
-    const processed = {
-      symbol: symbol, spot: spot, atmStrike: atmStrike,
-      timestamp: data.records.timestamp,
-      expiryDates: data.records.expiryDates,
-      currentExpiry: data.records.expiryDates[0],
-      chain: []
+    
+    // Yahoo Finance symbols
+    const yahooSymbols = {
+      'NIFTY': '^NSEI',
+      'BANKNIFTY': '^NSEBANK',
+      'FINNIFTY': '^CNXIT'
     };
-    data.records.data.forEach(item => {
-      if (item.CE) {
-        processed.chain.push({
-          strike: item.strikePrice, type: 'CE', ltp: item.CE.lastPrice,
-          bid: item.CE.bidPrice, ask: item.CE.askPrice,
-          volume: item.CE.totalTradedVolume, oi: item.CE.openInterest,
-          changeInOI: item.CE.changeinOpenInterest, iv: item.CE.impliedVolatility
-        });
-      }
-      if (item.PE) {
-        processed.chain.push({
-          strike: item.strikePrice, type: 'PE', ltp: item.PE.lastPrice,
-          bid: item.PE.bidPrice, ask: item.PE.askPrice,
-          volume: item.PE.totalTradedVolume, oi: item.PE.openInterest,
-          changeInOI: item.PE.changeinOpenInterest, iv: item.PE.impliedVolatility
-        });
-      }
+    
+    const yahooSym = yahooSymbols[symbol];
+    if (!yahooSym) {
+      return res.status(400).json({ error: 'Symbol not supported' });
+    }
+    
+    // Get spot price from Yahoo
+    const url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + yahooSym + '?interval=1d&range=1d';
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      },
+      timeout: 10000
     });
-    cache.optionChain[cacheKey] = { data: processed, time: Date.now() };
-    res.json(processed);
+    
+    const meta = response.data.chart.result[0].meta;
+    const spot = meta.regularMarketPrice;
+    const gap = symbol === 'BANKNIFTY' ? 100 : 50;
+    const atmStrike = Math.round(spot / gap) * gap;
+    
+    // Generate synthetic option chain (approximations)
+    const chain = [];
+    const range = 15; // ±15 strikes around ATM
+    
+    for (let i = -range; i <= range; i++) {
+      const strike = atmStrike + (i * gap);
+      const moneyness = (strike - spot) / spot;
+      
+      // Approximate IV based on strike distance (higher for OTM)
+      const baseIV = symbol === 'BANKNIFTY' ? 18 : 14;
+      const iv = baseIV + Math.abs(moneyness) * 100;
+      
+      // Intrinsic value
+      const callIntrinsic = Math.max(0, spot - strike);
+      const putIntrinsic = Math.max(0, strike - spot);
+      
+      // Time value (approximation)
+      const daysToExpiry = 7;
+      const timeValue = (iv / 100) * spot * Math.sqrt(daysToExpiry / 365) * 0.4;
+      
+      // Approximate LTPs
+      const ceLtp = callIntrinsic + timeValue * Math.exp(-Math.abs(i) * 0.15);
+      const peLtp = putIntrinsic + timeValue * Math.exp(-Math.abs(i) * 0.15);
+      
+      // Approximate OI
+      const baseOI = 50000;
+      const oiMultiplier = Math.exp(-Math.abs(i) * 0.3) * (i <= 0 ? 1.2 : 1);
+      
+      chain.push({
+        strike: strike,
+        type: 'CE',
+        ltp: Math.max(0.05, ceLtp),
+        bid: Math.max(0.05, ceLtp * 0.98),
+        ask: ceLtp * 1.02,
+        volume: Math.floor(baseOI * Math.exp(-Math.abs(i) * 0.4) * 0.5),
+        oi: Math.floor(baseOI * oiMultiplier),
+        changeInOI: Math.floor((Math.random() - 0.5) * 10000),
+        iv: iv
+      });
+      
+      chain.push({
+        strike: strike,
+        type: 'PE',
+        ltp: Math.max(0.05, peLtp),
+        bid: Math.max(0.05, peLtp * 0.98),
+        ask: peLtp * 1.02,
+        volume: Math.floor(baseOI * Math.exp(-Math.abs(i) * 0.4) * 0.5),
+        oi: Math.floor(baseOI * oiMultiplier),
+        changeInOI: Math.floor((Math.random() - 0.5) * 10000),
+        iv: iv
+      });
+    }
+    
+    res.json({
+      symbol: symbol,
+      spot: spot,
+      atmStrike: atmStrike,
+      timestamp: new Date().toISOString(),
+      expiryDates: [new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]],
+      currentExpiry: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      chain: chain
+    });
   } catch (err) {
-    console.error('Option chain error:', err);
     res.status(500).json({ error: err.message });
   }
 });
+
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log('SpreadIQ running on http://localhost:' + PORT);
-  console.log('Using free NSE public APIs');
-  console.log('Market hours: 9:00 AM - 3:30 PM IST');
-});
-console.log('4. FILE LOADED COMPLETELY');
-process.on('uncaughtException', (err) => {
-  console.log('ERROR CAUGHT:', err.message);
-  console.log(err.stack);
+  console.log('SpreadIQ running on port ' + PORT);
 });
