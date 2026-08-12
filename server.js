@@ -1,3 +1,48 @@
+const express = require('express');
+const axios = require('axios');
+
+const app = express();
+
+// Root route - serve landing page
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
+app.use(express.static('public'));
+
+// ============= INDIAN INDICES (Yahoo Finance) =============
+app.get('/api/indices', async (req, res) => {
+  try {
+    const symbols = [
+      { name: 'NIFTY 50',   yahoo: '^NSEI' },
+      { name: 'NIFTY BANK', yahoo: '^NSEBANK' },
+      { name: 'SENSEX',     yahoo: '^BSESN' }
+    ];
+    const results = [];
+    for (const sym of symbols) {
+      try {
+        const url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + sym.yahoo + '?interval=1d&range=1d';
+        const response = await axios.get(url, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+          timeout: 10000
+        });
+        const meta = response.data.chart.result[0].meta;
+        results.push({
+          name: sym.name,
+          last: meta.regularMarketPrice,
+          change: meta.regularMarketPrice - meta.chartPreviousClose,
+          percentChange: ((meta.regularMarketPrice - meta.chartPreviousClose) / meta.chartPreviousClose) * 100
+        });
+      } catch (err) {
+        console.log('Index error:', sym.name);
+      }
+    }
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ============= MCX COMMODITIES (Yahoo Finance via server) =============
 app.get('/api/mcx', async (req, res) => {
   try {
@@ -23,7 +68,7 @@ app.get('/api/mcx', async (req, res) => {
           percentChange: ((meta.regularMarketPrice - meta.chartPreviousClose) / meta.chartPreviousClose) * 100
         });
       } catch (err) {
-        console.log('MCX error for ' + sym.name);
+        console.log('MCX error for', sym.name);
       }
     }
     res.json(results);
@@ -56,7 +101,6 @@ app.get('/api/market-detail/:symbol', async (req, res) => {
     const meta = response.data.chart.result[0].meta;
     const spot = meta.regularMarketPrice;
     
-    // Determine strike gap based on symbol
     let gap = 50;
     if (symbol === 'NIFTY BANK') gap = 100;
     if (symbol === 'SENSEX') gap = 100;
@@ -64,7 +108,6 @@ app.get('/api/market-detail/:symbol', async (req, res) => {
     
     const atmStrike = Math.round(spot / gap) * gap;
     
-    // Generate synthetic option chain
     const chain = [];
     const range = 10;
     
@@ -109,4 +152,10 @@ app.get('/api/market-detail/:symbol', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log('SpreadIQ running on port ' + PORT);
 });
