@@ -3,107 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SpreadIQ — Strategy Builder with Formulas</title>
+<title>SpreadIQ — Pro Strategy Matrix</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   * { font-family: 'Montserrat', sans-serif; box-sizing: border-box; }
-  body { background: #0a0a0a; color: #e5e7eb; font-size: 12px; margin: 0; }
+  body { background: #000; color: #e5e7eb; font-size: 12px; margin: 0; }
   .pulse-dot { animation: pulse 2s infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   
   /* STRIKE COLUMN */
-  .strike-cell { background: #f5e6d3; color: #1a1a1a; font-weight: 700; text-align: center; padding: 5px 4px; font-size: 11px; min-width: 55px; border-right: 1px solid #d4c4a8; }
+  .strike-cell { background: #1a1a1a; color: #fff; font-weight: 700; text-align: center; padding: 5px 4px; font-size: 11px; min-width: 60px; border-right: 1px solid #27272a; }
   .strike-cell.atm { background: #fbbf24; color: #000; }
   
-  /* P&L CELLS */
-  .pl-cell { background: #1a1a1a; color: #fff; text-align: center; padding: 6px 3px; font-size: 11px; font-weight: 600; min-width: 50px; cursor: pointer; transition: all 0.15s; }
-  .pl-cell:hover { transform: scale(1.08); z-index: 10; position: relative; box-shadow: 0 0 12px rgba(255,255,255,0.4); }
-  .pl-positive { background: #86efac !important; color: #14532d; }
-  .pl-positive-strong { background: #4ade80 !important; color: #052e16; font-weight: 700; }
-  .pl-negative { background: #fca5a5 !important; color: #7f1d1d; }
-  .pl-negative-strong { background: #f87171 !important; color: #fff; font-weight: 700; }
-  .pl-atm { background: #fef3c7 !important; color: #713f12; font-weight: 800; box-shadow: inset 0 -3px 0 #fbbf24; }
-  .pl-zero { background: #e5e7eb !important; color: #6b7280; }
+  /* P&L CELLS - GREEN for +, RED bg for - */
+  .pl-cell { color: #fff; text-align: center; padding: 6px 3px; font-size: 11px; font-weight: 700; min-width: 50px; cursor: pointer; transition: all 0.15s; background: #000; }
+  .pl-cell:hover { transform: scale(1.08); z-index: 10; position: relative; box-shadow: 0 0 12px rgba(0, 255, 136, 0.4); }
+  .pl-positive { background: #064e3b !important; color: #34d399 !important; }
+  .pl-positive-strong { background: #047857 !important; color: #6ee7b7 !important; }
+  .pl-negative { background: #7f1d1d !important; color: #fca5a5 !important; }
+  .pl-negative-strong { background: #991b1b !important; color: #fecaca !important; }
+  .pl-atm { background: #fbbf24 !important; color: #000; font-weight: 800; box-shadow: inset 0 -3px 0 #f59e0b; }
+  .pl-zero { background: #1a1a1a !important; color: #6b7280; }
   
-  .call-header { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
-  .put-header { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+  /* Section Headers */
+  .call-header { background: linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05)); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .put-header { background: linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05)); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
   
-  input[type="number"] { background: #1a1a1a; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 3px 8px; width: 65px; font-size: 12px; text-align: center; font-weight: 600; }
-  input[type="number"]:focus { outline: none; border-color: #00ff88; }
+  input[type="number"], input[type="text"] { background: #1a1a1a; color: #fff; border: 1px solid #374151; border-radius: 4px; padding: 4px 8px; font-size: 12px; font-weight: 600; }
+  input[type="number"]:focus, input[type="text"]:focus { outline: none; border-color: #10b981; }
   
-  .ratio-btn { padding: 5px 12px; border: 1px solid #333; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; background: #1a1a1a; color: #fff; transition: all 0.2s; }
-  .ratio-btn.active { background: #00ff88; color: #000; border-color: #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.3); }
-  .ratio-btn:hover:not(.active) { border-color: #00ff88; color: #00ff88; }
+  .ratio-btn { padding: 4px 10px; border: 1px solid #374151; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; background: #1a1a1a; color: #fff; transition: all 0.15s; }
+  .ratio-btn.active { background: #10b981; color: #000; border-color: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.3); }
+  .ratio-btn:hover:not(.active) { border-color: #10b981; color: #10b981; }
   
-  .tab-btn { padding: 7px 16px; border: 1px solid #333; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; background: #1a1a1a; color: #fff; transition: all 0.2s; }
-  .tab-btn.active { background: linear-gradient(90deg, #00ff88, #00d4ff); color: #000; border-color: transparent; box-shadow: 0 0 12px rgba(0, 255, 136, 0.3); }
-  .tab-btn:hover:not(.active) { border-color: #00ff88; }
+  .tab-btn { padding: 7px 16px; border: 1px solid #374151; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; background: #1a1a1a; color: #fff; transition: all 0.15s; }
+  .tab-btn.active { background: #10b981; color: #000; border-color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+  .tab-btn:hover:not(.active) { border-color: #10b981; }
   
-  .strategy-info { background: rgba(0, 255, 136, 0.06); border-left: 3px solid #00ff88; padding: 8px 14px; margin-bottom: 10px; border-radius: 4px; font-size: 12px; color: #cbd5e1; }
-  .strategy-info strong { color: #00ff88; }
+  /* Section wrapper */
+  .strategy-section { padding: 16px; }
+  .strategy-title { display: flex; align-items: center; gap: 6px; color: #10b981; font-weight: 800; font-size: 14px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1f2937; }
+  .strategy-title .num { color: #6b7280; font-size: 11px; }
   
-  /* ⭐ NEW: FORMULA BOX STYLES ⭐ */
+  /* Controls row */
+  .controls-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; font-size: 11px; }
+  .controls-row label { color: #9ca3af; }
+  
+  /* Spread range bar */
+  .spread-bar { display: flex; align-items: center; padding: 8px 12px; font-weight: 700; font-size: 12px; margin-bottom: 6px; border-radius: 4px; }
+  .spread-bar.call { background: linear-gradient(90deg, #064e3b, #047857, #064e3b); color: #6ee7b7; }
+  .spread-bar.put { background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d); color: #fca5a5; }
+  .spread-bar .neg { background: #1f2937; padding: 2px 8px; border-radius: 3px; margin-right: 8px; }
+  .spread-bar .pos { background: #1f2937; padding: 2px 8px; border-radius: 3px; margin-left: 8px; }
+  
+  /* Formula box (inside modal) */
   .formula-box {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.08));
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    border-left: 4px solid #00d4ff;
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    font-size: 12px;
-  }
-  .formula-title {
-    color: #00d4ff;
-    font-weight: 800;
-    font-size: 13px;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-  }
-  .formula-content { color: #e5e7eb; }
-  .formula-equation {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 8px 12px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.08));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-left: 4px solid #10b981;
+    padding: 10px 14px;
+    margin-bottom: 10px;
     border-radius: 4px;
-    font-family: 'Courier New', 'Consolas', monospace;
     font-size: 12px;
-    margin-bottom: 6px;
-    color: #fbbf24;
-    border-left: 2px solid #fbbf24;
-    overflow-x: auto;
-    white-space: nowrap;
   }
-  .formula-equation strong { color: #00ff88; }
-  .formula-where {
-    font-size: 11px;
-    color: #94a3b8;
-    font-style: italic;
-    margin-top: 6px;
-    line-height: 1.6;
-  }
-  .formula-where strong { color: #00ff88; font-style: normal; }
+  .formula-title { color: #10b981; font-weight: 800; font-size: 12px; margin-bottom: 6px; }
+  .formula-equation { background: rgba(0, 0, 0, 0.5); padding: 6px 10px; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 11px; margin-bottom: 4px; color: #fbbf24; border-left: 2px solid #fbbf24; }
+  .formula-where { font-size: 10px; color: #9ca3af; line-height: 1.5; }
+  .formula-where strong { color: #10b981; }
   
-  .glow-border { background: linear-gradient(#0a0a0a, #0a0a0a) padding-box, linear-gradient(135deg, #00ff88, #00d4ff) border-box; border: 1px solid transparent; box-shadow: 0 0 40px rgba(0, 255, 136, 0.2); }
+  /* Info bar at bottom */
+  .info-bar { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 6px 10px; font-size: 10px; color: #6ee7b7; border-radius: 3px; margin-top: 6px; font-family: 'Courier New', monospace; }
   
-  table { border-collapse: collapse; width: 100%; }
-  th, td { padding: 0; font-size: 11px; line-height: 1.2; }
-  th { font-weight: 600; color: #94a3b8; }
+  table { border-collapse: collapse; width: 100%; background: #000; }
+  th, td { padding: 4px; font-size: 11px; line-height: 1.2; }
   
-  .modal-leg { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; }
+  /* Modal */
+  .modal-leg { display: flex; align-items: center; gap: 6px; padding: 3px 0; font-size: 12px; }
+  
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #000; }
+  ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
   
   section { padding: 12px 16px; }
-  
-  header { background: #0a0a0a; border-bottom: 1px solid #1a1a1a; }
 </style>
 </head>
 <body class="overflow-x-auto">
 
 <!-- NAVBAR -->
-<header class="sticky top-0 z-50 backdrop-blur">
+<header class="sticky top-0 z-50 backdrop-blur bg-black/90 border-b border-zinc-800">
   <div class="px-6 py-3 flex items-center justify-between flex-wrap gap-3">
     <div class="flex items-center gap-3">
       <a href="/" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-black font-black">S</div>
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-black font-black">S</div>
         <span class="text-lg font-extrabold text-white">Spread<span class="text-emerald-400">IQ</span></span>
       </a>
       <span class="ml-3 text-xs text-emerald-400 flex items-center gap-1">
@@ -118,310 +110,223 @@
     <div class="flex items-center gap-3 text-xs">
       <div><span class="text-zinc-500">Spot:</span> <span class="text-emerald-400 font-bold" id="hdrSpot">--</span></div>
       <div><span class="text-zinc-500">ATM:</span> <span class="text-cyan-400 font-bold" id="hdrATM">--</span></div>
-      <button onclick="recalculate()" class="px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/40 rounded text-emerald-400 text-xs font-bold hover:bg-emerald-500/30 transition">Recalculate</button>
     </div>
   </div>
 </header>
 
-<div class="px-6 py-2 text-center text-xs border-y" style="background: linear-gradient(90deg, rgba(0,255,136,0.05), rgba(0,212,255,0.05)); border-color: #1a1a1a;">
-  <span class="text-zinc-400">P&L Matrix with Mathematical Formulas · Click any cell for detailed calculation breakdown</span>
-  <span class="float-right text-emerald-400 font-bold">Formulas: 7 strategies</span>
-</div>
-
-<!-- ============ RATIO SECTION ============ -->
+<!-- ============= RATIO SECTION ============= -->
 <section>
-  <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
-    <h2 class="text-base font-extrabold text-emerald-400 tracking-wide">📐 RATIO SPREAD</h2>
-    <div class="flex items-center gap-3 text-xs">
-      <span class="text-zinc-500">Range:</span>
-      <input type="number" id="ratioDown" value="600">
-      <span class="text-zinc-500">+</span>
-      <input type="number" id="ratioUp" value="300">
-    </div>
+  <div class="strategy-title">
+    <span>⊕</span> Ratio Strategy <span style="color:#9ca3af">(Buy M : Sell N)</span>
   </div>
 
-  <!-- ⭐ FORMULA BOX: RATIO ⭐ -->
-  <div class="formula-box">
-    <div class="formula-title">📐 RATIO SPREAD P&L FORMULA</div>
-    <div class="formula-content">
-      <div class="formula-equation">
-        <strong>Call P&L</strong> = max(S − K_sell, 0) × (−N) + max(S − K_buy, 0) × (+M)
-      </div>
-      <div class="formula-equation">
-        <strong>Put P&L</strong> = max(K_sell − S, 0) × (−N) + max(K_buy − S, 0) × (+M)
-      </div>
-      <div class="formula-equation">
-        <strong>Net Debit</strong> = (M × LTP_buy) − (N × LTP_sell)
-      </div>
-      <div class="formula-where">
-        <strong>Where:</strong> S = Spot at expiry | K = Strike price | M:N = Buy:Sell ratio (e.g., 1:3) | LTP = Last Traded Price<br>
-        <strong>Max Profit:</strong> (K_sell − K_buy) − Net Debit &nbsp;|&nbsp; <strong>Max Loss:</strong> Net Debit &nbsp;|&nbsp; <strong>Breakeven:</strong> K_buy + Net Debit
-      </div>
-    </div>
+  <div class="controls-row">
+    <label>Range:</label>
+    <input type="number" id="ratioDown" value="600" style="width:60px">
+    <input type="number" id="ratioUp" value="300" style="width:60px">
+    <label>CE:</label>
+    <input type="number" id="ratioBuy" value="1" style="width:40px">
+    <label>:</label>
+    <input type="number" id="ratioSell" value="3" style="width:40px">
+    <label>PE:</label>
+    <input type="number" id="ratioBuyPE" value="1" style="width:40px">
+    <label>:</label>
+    <input type="number" id="ratioSellPE" value="3" style="width:40px">
   </div>
 
-  <div class="grid md:grid-cols-2 gap-4">
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="call-header p-2 text-center font-bold text-sm flex items-center justify-between">
-        <button class="ratio-btn">+</button>
-        <span>CALL RATIO (1:3)</span>
-        <button class="ratio-btn">+5</button>
+  <div class="grid md:grid-cols-2 gap-3">
+    <!-- CALL RATIO -->
+    <div>
+      <div class="spread-bar call">
+        <span class="neg" id="callRatioMin">-50</span>
+        <span style="flex:1; text-align:center" id="callRatioTitle">CALL RATIO (1 : 3)</span>
+        <span class="pos" id="callRatioMax">+50</span>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="callRatioHead"></tr></thead>
+        <table>
+          <thead>
+            <tr style="background:#0a0a0a">
+              <th class="strike-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600; text-align:left; padding-left:8px">K_sell (row)</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">50</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">100</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">150</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">200</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">250</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">300</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">350</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">400</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">450</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">500</th>
+            </tr>
+          </thead>
           <tbody id="callRatioBody"></tbody>
         </table>
       </div>
     </div>
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="put-header p-2 text-center font-bold text-sm flex items-center justify-between">
-        <button class="ratio-btn">+</button>
-        <span>PUT RATIO (1:3)</span>
-        <button class="ratio-btn">+5</button>
+
+    <!-- PUT RATIO -->
+    <div>
+      <div class="spread-bar put">
+        <span class="neg" id="putRatioMin">-50</span>
+        <span style="flex:1; text-align:center" id="putRatioTitle">PUT RATIO (1 : 3)</span>
+        <span class="pos" id="putRatioMax">+50</span>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="putRatioHead"></tr></thead>
+        <table>
+          <thead>
+            <tr style="background:#0a0a0a">
+              <th class="strike-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600; text-align:left; padding-left:8px">K_sell (row)</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">50</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">100</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">150</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">200</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">250</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">300</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">350</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">400</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">450</th>
+              <th class="pl-cell" style="background:#0a0a0a; color:#9ca3af; font-weight:600">500</th>
+            </tr>
+          </thead>
           <tbody id="putRatioBody"></tbody>
         </table>
       </div>
     </div>
   </div>
+
+  <div class="info-bar" id="callRatioInfo">ITM: -- | ATM: -- | OTM: -- | Net Debit: 0 | Max Profit: 0 | Max Loss: 0 | Breakevens: --</div>
+  <div class="info-bar" id="putRatioInfo" style="margin-top:4px">ITM: -- | ATM: -- | OTM: -- | Net Debit: 0 | Max Profit: 0 | Max Loss: 0 | Breakevens: --</div>
 </section>
 
-<!-- ============ BUTTERFLY SECTION ============ -->
-<section>
-  <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
-    <h2 class="text-base font-extrabold text-emerald-400 tracking-wide">🦋 CUSTOM BUTTERFLY</h2>
-    <div class="flex items-center gap-3 text-xs">
-      <span class="text-zinc-500">Range:</span>
-      <input type="number" id="bfDown" value="600">
-      <span class="text-zinc-500">+</span>
-      <input type="number" id="bfUp" value="300">
-      <span class="text-zinc-500">Ratio:</span>
-      <button class="ratio-btn" onclick="setBF('1:3:2')">1:3:2</button>
-      <button class="ratio-btn active" onclick="setBF('1:4:3')">1:4:3</button>
-      <button class="ratio-btn" onclick="setBF('1:5:4')">1:5:4</button>
-      <button class="ratio-btn" onclick="setBF('2:5:3')">2:5:3</button>
-    </div>
+<!-- ============= BUTTERFLY SECTION ============= -->
+<section style="background:#0a0a0a; border-top:1px solid #1f2937; border-bottom:1px solid #1f2937">
+  <div class="strategy-title">
+    <span>⊕</span> Custom Butterfly <span style="color:#9ca3af">(Long a : Short b : Long c)</span>
   </div>
 
-  <!-- ⭐ FORMULA BOX: BUTTERFLY ⭐ -->
-  <div class="formula-box">
-    <div class="formula-title">🦋 BUTTERFLY P&L FORMULA</div>
-    <div class="formula-content">
-      <div class="formula-equation">
-        <strong>Call BF (a:b:c)</strong> = CE(ITM)×(+a) + CE(ATM)×(−b) + CE(OTM)×(+c)
-      </div>
-      <div class="formula-equation">
-        <strong>Put BF (a:b:c)</strong> = PE(ITM)×(+a) + PE(ATM)×(−b) + PE(OTM)×(+c)
-      </div>
-      <div class="formula-equation">
-        <strong>Net Debit</strong> = (a × LTP_itm) − (b × LTP_atm) + (c × LTP_otm)
-      </div>
-      <div class="formula-where">
-        <strong>Where:</strong> a = Long ITM lots | b = Short ATM lots | c = Long OTM lots<br>
-        <strong>Strikes:</strong> ITM = ATM − gap | OTM = ATM + gap (gap = strike interval)<br>
-        <strong>Max Profit:</strong> (Wing Width × max(0, b−a−c)) − Net Debit &nbsp;|&nbsp; <strong>Max Loss:</strong> Net Debit<br>
-        <strong>Breakevens:</strong> ITM + Net Debit | OTM − Net Debit
-      </div>
-    </div>
+  <div class="controls-row">
+    <label>Range:</label>
+    <input type="number" id="bfDown" value="600" style="width:60px">
+    <input type="number" id="bfUp" value="300" style="width:60px">
+    <label>Ratio a:b:c:</label>
+    <button class="ratio-btn" onclick="setBF('1:3:2')">1:3:2</button>
+    <button class="ratio-btn active" onclick="setBF('1:4:3')">1:4:3</button>
+    <button class="ratio-btn" onclick="setBF('1:5:4')">1:5:4</button>
+    <button class="ratio-btn" onclick="setBF('2:5:3')">2:5:3</button>
+    <label style="margin-left:8px">ATM:</label>
+    <input type="number" id="bfATMInput" value="0" style="width:70px" placeholder="auto">
   </div>
 
-  <div class="grid md:grid-cols-2 gap-4">
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="call-header p-2 text-center font-bold text-sm flex items-center justify-between">
-        <button class="ratio-btn">+</button>
-        <span>CALL BUTTERFLY (1:4:3)</span>
-        <button class="ratio-btn">+15</button>
+  <div class="grid md:grid-cols-2 gap-3">
+    <!-- CALL BF -->
+    <div>
+      <div class="spread-bar call">
+        <span class="neg" id="callBFMin">-50</span>
+        <span style="flex:1; text-align:center" id="callBFTitle">CALL BUTTERFLY (1 : 4 : 3)</span>
+        <span class="pos" id="callBFMax">+50</span>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="callBFHead"></tr></thead>
+        <table>
+          <thead>
+            <tr style="background:#000">
+              <th class="strike-cell" style="background:#000; color:#9ca3af; font-weight:600; text-align:left; padding-left:8px">ATM (row)</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">50</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">100</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">150</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">200</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">250</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">300</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">350</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">400</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">450</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">500</th>
+            </tr>
+          </thead>
           <tbody id="callBFBody"></tbody>
         </table>
       </div>
     </div>
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="put-header p-2 text-center font-bold text-sm flex items-center justify-between">
-        <button class="ratio-btn">+</button>
-        <span>PUT BUTTERFLY (1:4:3)</span>
-        <button class="ratio-btn">+15</button>
+
+    <!-- PUT BF -->
+    <div>
+      <div class="spread-bar put">
+        <span class="neg" id="putBFMin">-50</span>
+        <span style="flex:1; text-align:center" id="putBFTitle">PUT BUTTERFLY (1 : 4 : 3)</span>
+        <span class="pos" id="putBFMax">+50</span>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="putBFHead"></tr></thead>
+        <table>
+          <thead>
+            <tr style="background:#000">
+              <th class="strike-cell" style="background:#000; color:#9ca3af; font-weight:600; text-align:left; padding-left:8px">ATM (row)</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">50</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">100</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">150</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">200</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">250</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">300</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">350</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">400</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">450</th>
+              <th class="pl-cell" style="background:#000; color:#9ca3af; font-weight:600">500</th>
+            </tr>
+          </thead>
           <tbody id="putBFBody"></tbody>
         </table>
       </div>
     </div>
   </div>
+
+  <div class="info-bar" id="callBFInfo">ITM: -- | ATM: -- | OTM: -- | Net Debit: 0 | Max Profit: 0 | Max Loss: 0 | Breakevens: --</div>
+  <div class="info-bar" id="putBFInfo" style="margin-top:4px">ITM: -- | ATM: -- | OTM: -- | Net Debit: 0 | Max Profit: 0 | Max Loss: 0 | Breakevens: --</div>
 </section>
 
-<!-- ============ DOUBLE BUTTERFLY SECTION ============ -->
-<section>
-  <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
-    <h2 class="text-base font-extrabold text-emerald-400 tracking-wide">🦋🦋 DOUBLE BUTTERFLY</h2>
-    <div class="flex items-center gap-3 text-xs">
-      <span class="text-zinc-500">Range:</span>
-      <input type="number" id="dbfDown" value="600">
-      <span class="text-zinc-500">+</span>
-      <input type="number" id="dbfUp" value="600">
-      <span class="text-zinc-500">Ratio:</span>
-      <button class="ratio-btn active" onclick="setDBF('1:3:2:3:1')">1:3:2:3:1</button>
-      <button class="ratio-btn" onclick="setDBF('1:2:1:2:1')">1:2:1:2:1</button>
-    </div>
-  </div>
-
-  <!-- ⭐ FORMULA BOX: DOUBLE BUTTERFLY ⭐ -->
-  <div class="formula-box">
-    <div class="formula-title">🦋🦋 DOUBLE BUTTERFLY P&L FORMULA (5 strikes)</div>
-    <div class="formula-content">
-      <div class="formula-equation">
-        <strong>P&L</strong> = S(K₁)×(+1) + S(K₂)×(−3) + S(K₃)×(+2) + S(K₄)×(−3) + S(K₅)×(+1)
-      </div>
-      <div class="formula-equation">
-        <strong>where</strong> S(K) = max(Spot − K, 0) [Call] OR max(K − Spot, 0) [Put]
-      </div>
-      <div class="formula-where">
-        <strong>Structure:</strong> Buy 1 @ K₁, Sell 3 @ K₂, Buy 2 @ K₃, Sell 3 @ K₄, Buy 1 @ K₅<br>
-        <strong>Where:</strong> K₁ &lt; K₂ &lt; K₃ &lt; K₄ &lt; K₅ (5 equally spaced strikes)<br>
-        <strong>Profit Zone:</strong> Wide range between K₂ and K₄<br>
-        <strong>Max Profit:</strong> Peak at K₃ (center strike) | <strong>Breakevens:</strong> Multiple
-      </div>
-    </div>
-  </div>
-
-  <div class="grid md:grid-cols-2 gap-4">
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="call-header p-2 text-center font-bold text-sm">CALL DOUBLE BUTTERFLY (1:3:2:3:1)</div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="callDBFHead"></tr></thead>
-          <tbody id="callDBFBody"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="put-header p-2 text-center font-bold text-sm">PUT DOUBLE BUTTERFLY (1:3:2:3:1)</div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="putDBFHead"></tr></thead>
-          <tbody id="putDBFBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ IRON CONDOR SECTION ============ -->
-<section>
-  <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
-    <h2 class="text-base font-extrabold text-emerald-400 tracking-wide">💓 IRON CONDOR</h2>
-    <div class="flex items-center gap-3 text-xs">
-      <span class="text-zinc-500">Range:</span>
-      <input type="number" id="icDown" value="300">
-      <span class="text-zinc-500">+</span>
-      <input type="number" id="icUp" value="300">
-    </div>
-  </div>
-
-  <!-- ⭐ FORMULA BOX: IRON CONDOR ⭐ -->
-  <div class="formula-box">
-    <div class="formula-title">💓 IRON CONDOR P&L FORMULA (4 legs)</div>
-    <div class="formula-content">
-      <div class="formula-equation">
-        <strong>P&L</strong> = PE(K₁)×(+1) + PE(K₂)×(−1) + CE(K₃)×(−1) + CE(K₄)×(+1)
-      </div>
-      <div class="formula-equation">
-        <strong>Net Credit</strong> = LTP(K₂) + LTP(K₃) − LTP(K₁) − LTP(K₄)
-      </div>
-      <div class="formula-where">
-        <strong>Structure:</strong> Buy OTM Put (K₁), Sell OTM Put (K₂), Sell OTM Call (K�), Buy OTM Call (K₄)<br>
-        <strong>Where:</strong> K₁ &lt; K₂ &lt; Spot &lt; K₃ &lt; K₄ (Wings: K₂ to K₃ profit zone)<br>
-        <strong>Max Profit:</strong> Net Credit (if Spot stays between K₂ and K₃)<br>
-        <strong>Max Loss:</strong> Wing Width − Net Credit | <strong>Breakevens:</strong> K₂ − Credit | K₃ + Credit
-      </div>
-    </div>
-  </div>
-
-  <div class="grid md:grid-cols-2 gap-4">
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="call-header p-2 text-center font-bold text-sm">IRON CONDOR (CALL SIDE)</div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="icHead"></tr></thead>
-          <tbody id="icBody"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="rounded-lg overflow-hidden" style="background: #0a0a0a; border: 1px solid #1a1a1a;">
-      <div class="put-header p-2 text-center font-bold text-sm">IRON CONDOR (PUT SIDE)</div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-xs">
-          <thead><tr id="icpHead"></tr></thead>
-          <tbody id="icpBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRADE DETAILS MODAL -->
-<div id="tradeModal" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-  <div class="bg-zinc-950 glow-border rounded-2xl p-6 max-w-md w-full">
+<!-- ============= MODAL ============= -->
+<div id="tradeModal" class="hidden fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-zinc-950 border border-emerald-500/40 rounded-2xl p-6 max-w-md w-full" style="box-shadow: 0 0 40px rgba(16, 185, 129, 0.2)">
     <div class="flex justify-between items-start mb-4">
-      <div class="font-bold text-emerald-400 text-sm">📊 TRADE CALCULATION BREAKDOWN</div>
+      <div class="font-bold text-emerald-400 text-sm">TRADE DETAILS</div>
       <button onclick="closeModal()" class="text-zinc-500 hover:text-white text-2xl leading-none">×</button>
     </div>
-    
-    <div id="modalFormulas" class="mb-4 pb-4 border-b border-zinc-800 text-xs"></div>
-    
+    <div id="modalFormulas" class="mb-4"></div>
     <div id="modalLegs" class="mb-4 pb-4 border-b border-zinc-800"></div>
-    
     <div class="space-y-2 text-sm">
-      <div class="flex justify-between py-1"><span class="text-zinc-400">Net Debit/Credit:</span><span id="modalNet" class="font-bold">--</span></div>
-      <div class="flex justify-between py-1"><span class="text-zinc-400">Max Profit:</span><span id="modalMaxProfit" class="font-bold text-emerald-400">--</span></div>
-      <div class="flex justify-between py-1"><span class="text-zinc-400">Max Loss:</span><span id="modalMaxLoss" class="font-bold text-red-400">--</span></div>
-      <div class="flex justify-between py-1"><span class="text-zinc-400">Breakeven:</span><span id="modalBE" class="font-bold text-cyan-400">--</span></div>
+      <div class="flex justify-between py-1"><span class="text-zinc-400">MARGIN</span><span id="modalMargin" class="font-bold text-emerald-400">₹0 L</span></div>
+      <div class="flex justify-between py-1"><span class="text-zinc-400">QTY / CR</span><span id="modalQty" class="font-bold">0 / 3,835</span></div>
+      <div class="flex justify-between py-1"><span class="text-zinc-400">CHARGES (RT)</span><span id="modalCharges" class="font-bold text-yellow-400">0.47 pts</span></div>
     </div>
-    
     <div class="mt-4 space-y-2">
-      <button class="w-full px-4 py-2.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm font-bold hover:bg-emerald-500/20">📊 Add to My Trades</button>
-      <button class="w-full px-4 py-2.5 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400 text-sm font-bold hover:bg-cyan-500/20">📈 Show P&L Chart</button>
+      <button class="w-full px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400 text-sm font-bold hover:bg-cyan-500/20">🔔 Create Alert</button>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-lg text-emerald-400 text-sm font-bold">BUY</button>
+        <button class="px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-lg text-red-400 text-sm font-bold">SELL</button>
+      </div>
+      <button class="w-full px-4 py-2 bg-zinc-800 rounded-lg text-zinc-300 text-sm font-bold">📊 Buy — Add to My Trades</button>
+      <button class="w-full px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400 text-sm font-bold">📈 Show Chart</button>
     </div>
   </div>
 </div>
 
 <script>
   let currentSymbol = 'NIFTY';
-  let spotPrice = 24583.80;
-  let atmStrike = 24600;
-  let strikeGap = 50;
-  let chainMap = {};
+  let spotPrice = 0, atmStrike = 0, strikeGap = 50;
+  let chainMap = {}; // strike -> { CE: {ltp}, PE: {ltp} }
   let currentBF = '1:4:3';
-  let currentDBF = '1:3:2:3:1';
 
   const SYMBOL_CONFIG = {
-    'NIFTY':     { gap: 50,  defaultSpot: 24583.80 },
-    'BANKNIFTY': { gap: 100, defaultSpot: 53124.75 },
-    'FINNIFTY':  { gap: 50,  defaultSpot: 25742.30 }
+    'NIFTY':     { gap: 50,  defaultSpot: 24500 },
+    'BANKNIFTY': { gap: 100, defaultSpot: 57500 },
+    'FINNIFTY':  { gap: 50,  defaultSpot: 24250 }
   };
 
-  function callValue(strike, underlying) { return Math.max(0, underlying - strike); }
-  function putValue(strike, underlying) { return Math.max(0, strike - underlying); }
-  function formatPL(pl) {
-    const r = Math.round(pl);
-    if (r === 0) return '0';
-    return r > 0 ? '+' + r : r.toString();
-  }
-  function getPLClass(pl) {
-    if (pl === 0) return 'pl-zero';
-    if (pl > 50) return 'pl-positive-strong';
-    if (pl > 0) return 'pl-positive';
-    if (pl < -50) return 'pl-negative-strong';
-    return 'pl-negative';
+  function callValue(s, u) { return Math.max(0, u - s); }
+  function putValue(s, u) { return Math.max(0, s - u); }
+  function fmt(n) { return Math.round(n); }
+
+  function getLTP(strike, type) {
+    const c = chainMap[strike];
+    if (!c || !c[type]) return null;
+    return c[type].ltp;
   }
 
   async function switchSymbol(symbol) {
@@ -439,26 +344,46 @@
         chainMap = {};
         data.chain.forEach(opt => {
           if (!chainMap[opt.strike]) chainMap[opt.strike] = { CE: null, PE: null };
-          chainMap[opt.strike][opt.type] = { ltp: opt.ltp, iv: opt.iv };
+          chainMap[opt.strike][opt.type] = { ltp: opt.ltp };
         });
       } else {
-        spotPrice = SYMBOL_CONFIG[symbol].defaultSpot;
-        atmStrike = Math.round(spotPrice / strikeGap) * strikeGap;
-        chainMap = {};
+        useDefaults();
       }
-    } catch (err) {
+    } catch (err) { useDefaults(); }
+
+    function useDefaults() {
       spotPrice = SYMBOL_CONFIG[symbol].defaultSpot;
       atmStrike = Math.round(spotPrice / strikeGap) * strikeGap;
-      chainMap = {};
+      chainMap = generateChain(spotPrice);
     }
 
-    ['ratioDown', 'ratioUp', 'bfDown', 'bfUp', 'dbfDown', 'dbfUp', 'icDown', 'icUp'].forEach(id => {
+    document.getElementById('hdrSpot').textContent = spotPrice.toFixed(2);
+    document.getElementById('hdrATM').textContent = atmStrike;
+    document.getElementById('bfATMInput').value = atmStrike;
+    
+    ['ratioDown', 'ratioUp', 'bfDown', 'bfUp'].forEach(id => {
       const el = document.getElementById(id);
       el.step = strikeGap;
       el.value = Math.round((parseInt(el.value) || 0) / strikeGap) * strikeGap;
     });
 
     renderAll();
+  }
+
+  function generateChain(spot) {
+    const atm = Math.round(spot / strikeGap) * strikeGap;
+    const chainMap = {};
+    for (let i = -15; i <= 15; i++) {
+      const strike = atm + (i * strikeGap);
+      const m = (strike - spot) / spot;
+      const iv = 14 + Math.abs(m) * 100;
+      const tv = (iv / 100) * spot * Math.sqrt(7 / 365) * 0.4;
+      chainMap[strike] = {
+        CE: { ltp: Math.max(0.05, callValue(strike, spot) + tv * Math.exp(-Math.abs(i) * 0.15)) },
+        PE: { ltp: Math.max(0.05, putValue(strike, spot) + tv * Math.exp(-Math.abs(i) * 0.15)) }
+      };
+    }
+    return chainMap;
   }
 
   function setBF(bf) {
@@ -469,246 +394,228 @@
     renderBF();
   }
 
-  function setDBF(dbf) {
-    currentDBF = dbf;
-    document.querySelectorAll('[onclick^="setDBF"]').forEach(btn => {
-      btn.classList.toggle('active', btn.textContent.trim() === dbf);
-    });
-    renderDBF();
+  function calcRatioPL(strike, type, col, buyQty, sellQty) {
+    // col = distance from strike in points
+    const expiryPrice = type === 'call' ? strike + col : strike - col;
+    const buyStrike = type === 'call' ? strike - (sellQty * strikeGap) : strike + (sellQty * strikeGap);
+    
+    const buyVal = type === 'call' ? callValue(buyStrike, expiryPrice) : putValue(buyStrike, expiryPrice);
+    const sellVal = type === 'call' ? callValue(strike, expiryPrice) : putValue(strike, expiryPrice);
+    
+    return buyVal - sellVal * sellQty;
   }
 
-  function renderRatio(headId, bodyId, type) {
+  function calcBFPL(centre, type, col, a, b, c) {
+    // col = distance from ATM
+    const expiryPrice = type === 'call' ? centre + col : centre - col;
+    const itm = type === 'call' ? centre - (a * strikeGap) : centre + (a * strikeGap);
+    const otm = type === 'call' ? centre + (c * strikeGap) : centre - (c * strikeGap);
+    
+    const itmVal = type === 'call' ? callValue(itm, expiryPrice) : putValue(itm, expiryPrice);
+    const atmVal = type === 'call' ? callValue(centre, expiryPrice) : putValue(centre, expiryPrice);
+    const otmVal = type === 'call' ? callValue(otm, expiryPrice) : putValue(otm, expiryPrice);
+    
+    return itmVal * a - atmVal * b + otmVal * c;
+  }
+
+  function getPLClass(pl) {
+    if (pl > 100) return 'pl-positive-strong';
+    if (pl > 0) return 'pl-positive';
+    if (pl < -100) return 'pl-negative-strong';
+    if (pl < 0) return 'pl-negative';
+    return 'pl-zero';
+  }
+
+  function renderRatio() {
     const down = parseInt(document.getElementById('ratioDown').value) || 600;
     const up = parseInt(document.getElementById('ratioUp').value) || 300;
+    const buyQtyCE = parseInt(document.getElementById('ratioBuy').value) || 1;
+    const sellQtyCE = parseInt(document.getElementById('ratioSell').value) || 3;
+    const buyQtyPE = parseInt(document.getElementById('ratioBuyPE').value) || 1;
+    const sellQtyPE = parseInt(document.getElementById('ratioSellPE').value) || 3;
+
+    // Build strike list
     const lo = atmStrike - down, hi = atmStrike + up;
     const strikeList = [];
     for (let s = lo; s <= hi; s += strikeGap) strikeList.push(s);
-    const maxGap = Math.max(down, up);
-    const gapPoints = [];
-    for (let g = 50; g <= maxGap; g += 50) gapPoints.push(g);
 
-    let headHTML = '<th class="strike-cell" style="min-width:55px">STRIKE</th>';
-    gapPoints.slice().reverse().forEach(g => {
-      headHTML += '<th class="pl-cell" style="min-width:50px;font-size:10px;color:#888">' + g + '</th>';
-    });
-    document.getElementById(headId).innerHTML = headHTML;
+    // Update titles
+    document.getElementById('callRatioTitle').textContent = 'CALL RATIO (' + buyQtyCE + ' : ' + sellQtyCE + ')';
+    document.getElementById('putRatioTitle').textContent = 'PUT RATIO (' + buyQtyPE + ' : ' + sellQtyPE + ')';
+    document.getElementById('callRatioMin').textContent = '-' + down;
+    document.getElementById('callRatioMax').textContent = '+' + up;
+    document.getElementById('putRatioMin').textContent = '-' + down;
+    document.getElementById('putRatioMax').textContent = '+' + up;
 
-    let bodyHTML = '';
-    strikeList.forEach(s => {
-      const isATMStrike = s === atmStrike;
-      bodyHTML += '<tr><td class="strike-cell ' + (isATMStrike ? 'atm' : '') + '" style="min-width:55px">' + s + '</td>';
-      gapPoints.slice().reverse().forEach(g => {
-        const expiryPrice = type === 'call' ? s + g : s - g;
-        const sellQty = 3; // Default 1:3 ratio
-        const buyStrike = type === 'call' ? s - (sellQty * strikeGap) : s + (sellQty * strikeGap);
-        let pl = 0;
-        if (type === 'call') pl = callValue(buyStrike, expiryPrice) - callValue(s, expiryPrice) * sellQty;
-        else pl = putValue(buyStrike, expiryPrice) - putValue(s, expiryPrice) * sellQty;
-        const cls = getPLClass(pl);
-        bodyHTML += '<td class="pl-cell ' + cls + '" style="min-width:50px" onclick="showRatioModal(' + s + ', \'' + type + '\', ' + g + ', ' + pl + ')">' + formatPL(pl) + '</td>';
+    const cols = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+
+    ['call', 'put'].forEach((type, idx) => {
+      const bodyId = type === 'call' ? 'callRatioBody' : 'putRatioBody';
+      const buyQty = type === 'call' ? buyQtyCE : buyQtyPE;
+      const sellQty = type === 'call' ? sellQtyCE : sellQtyPE;
+      let html = '';
+      
+      strikeList.forEach(s => {
+        const isATM = s === atmStrike;
+        html += '<tr><td class="strike-cell' + (isATM ? ' atm' : '') + '" style="text-align:left; padding-left:8px">' + s + '</td>';
+        cols.forEach(col => {
+          const pl = calcRatioPL(s, type, col, buyQty, sellQty);
+          const cls = getPLClass(pl);
+          const sign = pl > 0 ? '+' : '';
+          html += '<td class="pl-cell ' + cls + '" onclick="showRatioModal(' + s + ', \'' + type + '\', ' + col + ', ' + pl + ')">' + (pl === 0 ? '0' : sign + fmt(pl)) + '</td>';
+        });
+        html += '</tr>';
       });
-      bodyHTML += '</tr>';
+      document.getElementById(bodyId).innerHTML = html;
     });
-    document.getElementById(bodyId).innerHTML = bodyHTML;
+
+    // Update info bars using ATM
+    updateRatioInfo('call', buyQtyCE, sellQtyCE);
+    updateRatioInfo('put', buyQtyPE, sellQtyPE);
+  }
+
+  function updateRatioInfo(type, buyQty, sellQty) {
+    const itm = type === 'call' ? atmStrike - (sellQty * strikeGap) : atmStrike + (sellQty * strikeGap);
+    const otm = type === 'call' ? atmStrike + strikeGap : atmStrike - strikeGap;
+    const buyLTP = getLTP(itm, type === 'call' ? 'CE' : 'PE') || 0;
+    const sellLTP = getLTP(atmStrike, type === 'call' ? 'CE' : 'PE') || 0;
+    const netDebit = (buyQty * buyLTP) - (sellQty * sellLTP);
+    const wingWidth = sellQty * strikeGap;
+    const maxProfit = (sellQty - buyQty) * strikeGap - netDebit;
+    const maxLoss = Math.max(0, netDebit);
+    const lowerBE = type === 'call' ? itm + netDebit / sellQty : itm - netDebit / sellQty;
+    const upperBE = type === 'call' ? atmStrike + netDebit / sellQty : atmStrike - netDebit / sellQty;
+    
+    const infoId = type === 'call' ? 'callRatioInfo' : 'putRatioInfo';
+    document.getElementById(infoId).textContent = 
+      'ITM: ' + itm + ' | ATM: ' + atmStrike + ' | OTM: ' + otm + ' | Net Debit: ' + fmt(netDebit) + ' | Max Profit: ' + (maxProfit > 0 ? '+' + fmt(maxProfit) : fmt(maxProfit)) + ' | Max Loss: ' + fmt(maxLoss) + ' | Breakevens: ' + fmt(lowerBE) + ' & ' + fmt(upperBE);
   }
 
   function renderBF() {
     const down = parseInt(document.getElementById('bfDown').value) || 600;
     const up = parseInt(document.getElementById('bfUp').value) || 300;
+    const customATM = parseInt(document.getElementById('bfATMInput').value) || atmStrike;
     const parts = currentBF.split(':').map(Number);
     const [a, b, c] = parts;
-    const lo = atmStrike - down, hi = atmStrike + up;
+
+    const lo = customATM - down, hi = customATM + up;
     const strikeList = [];
     for (let s = lo; s <= hi; s += strikeGap) strikeList.push(s);
-    const maxGap = Math.max(down, up);
-    const gapPoints = [];
-    for (let g = 50; g <= maxGap; g += 50) gapPoints.push(g);
 
-    ['call', 'put'].forEach(type => {
-      const headId = type === 'call' ? 'callBFHead' : 'putBFHead';
+    // Update titles
+    document.getElementById('callBFTitle').textContent = 'CALL BUTTERFLY (' + a + ' : ' + b + ' : ' + c + ')';
+    document.getElementById('putBFTitle').textContent = 'PUT BUTTERFLY (' + a + ' : ' + b + ' : ' + c + ')';
+    document.getElementById('callBFMin').textContent = '-' + down;
+    document.getElementById('callBFMax').textContent = '+' + up;
+    document.getElementById('putBFMin').textContent = '-' + down;
+    document.getElementById('putBFMax').textContent = '+' + up;
+
+    const cols = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+
+    ['call', 'put'].forEach((type, idx) => {
       const bodyId = type === 'call' ? 'callBFBody' : 'putBFBody';
-      let headHTML = '<th class="strike-cell" style="min-width:55px">STRIKE</th>';
-      gapPoints.slice().reverse().forEach(g => {
-        headHTML += '<th class="pl-cell" style="min-width:50px;font-size:10px;color:#888">' + g + '</th>';
-      });
-      document.getElementById(headId).innerHTML = headHTML;
-
-      let bodyHTML = '';
-      strikeList.forEach(s => {
-        const isATMStrike = s === atmStrike;
-        bodyHTML += '<tr><td class="strike-cell ' + (isATMStrike ? 'atm' : '') + '" style="min-width:55px">' + s + '</td>';
-        gapPoints.slice().reverse().forEach(g => {
-          const expiryPrice = type === 'call' ? s + g : s - g;
-          let pl = 0;
-          if (type === 'call') {
-            const itm = s - (a * strikeGap);
-            const otm = s + (c * strikeGap);
-            pl = callValue(itm, expiryPrice) - callValue(s, expiryPrice) * b + callValue(otm, expiryPrice) * c;
-          } else {
-            const itm = s + (a * strikeGap);
-            const otm = s - (c * strikeGap);
-            pl = putValue(itm, expiryPrice) - putValue(s, expiryPrice) * b + putValue(otm, expiryPrice) * c;
-          }
+      let html = '';
+      
+      strikeList.forEach(centre => {
+        const isATM = centre === customATM;
+        html += '<tr><td class="strike-cell' + (isATM ? ' atm' : '') + '" style="text-align:left; padding-left:8px">' + centre + '</td>';
+        cols.forEach(col => {
+          const pl = calcBFPL(centre, type, col, a, b, c);
           const cls = getPLClass(pl);
-          bodyHTML += '<td class="pl-cell ' + cls + '" style="min-width:50px" onclick="showBFModal(' + s + ', \'' + type + '\', ' + g + ', ' + pl + ')">' + formatPL(pl) + '</td>';
+          const sign = pl > 0 ? '+' : '';
+          html += '<td class="pl-cell ' + cls + '" onclick="showBFModal(' + centre + ', \'' + type + '\', ' + col + ', ' + pl + ')">' + (pl === 0 ? '0' : sign + fmt(pl)) + '</td>';
         });
-        bodyHTML += '</tr>';
+        html += '</tr>';
       });
-      document.getElementById(bodyId).innerHTML = bodyHTML;
+      document.getElementById(bodyId).innerHTML = html;
     });
+
+    // Update info bars using custom ATM
+    updateBFInfo('call', a, b, c, customATM);
+    updateBFInfo('put', a, b, c, customATM);
   }
 
-  function renderDBF() {
-    const down = parseInt(document.getElementById('dbfDown').value) || 600;
-    const up = parseInt(document.getElementById('dbfUp').value) || 600;
-    const parts = currentDBF.split(':').map(Number);
-    const lo = atmStrike - down, hi = atmStrike + up;
-    const strikeList = [];
-    for (let s = lo; s <= hi; s += strikeGap) strikeList.push(s);
-    const maxGap = Math.max(down, up);
-    const gapPoints = [];
-    for (let g = 50; g <= maxGap; g += 50) gapPoints.push(g);
-
-    ['call', 'put'].forEach(type => {
-      const headId = type === 'call' ? 'callDBFHead' : 'putDBFHead';
-      const bodyId = type === 'call' ? 'callDBFBody' : 'putDBFBody';
-      let headHTML = '<th class="strike-cell" style="min-width:55px">STRIKE</th>';
-      gapPoints.slice().reverse().forEach(g => {
-        headHTML += '<th class="pl-cell" style="min-width:50px;font-size:10px;color:#888">' + g + '</th>';
-      });
-      document.getElementById(headId).innerHTML = headHTML;
-
-      let bodyHTML = '';
-      strikeList.forEach(s => {
-        const isATMStrike = s === atmStrike;
-        bodyHTML += '<tr><td class="strike-cell ' + (isATMStrike ? 'atm' : '') + '" style="min-width:55px">' + s + '</td>';
-        gapPoints.slice().reverse().forEach(g => {
-          const expiryPrice = type === 'call' ? s + g : s - g;
-          const k1 = s - 2 * strikeGap;
-          const k2 = s - strikeGap;
-          const k4 = s + strikeGap;
-          const k5 = s + 2 * strikeGap;
-          let pl = 0;
-          if (type === 'call') {
-            pl = callValue(k1, expiryPrice) - 3 * callValue(k2, expiryPrice) + 2 * callValue(s, expiryPrice) - 3 * callValue(k4, expiryPrice) + callValue(k5, expiryPrice);
-          } else {
-            pl = putValue(k1, expiryPrice) - 3 * putValue(k2, expiryPrice) + 2 * putValue(s, expiryPrice) - 3 * putValue(k4, expiryPrice) + putValue(k5, expiryPrice);
-          }
-          const cls = getPLClass(pl);
-          bodyHTML += '<td class="pl-cell ' + cls + '" style="min-width:50px">' + formatPL(pl) + '</td>';
-        });
-        bodyHTML += '</tr>';
-      });
-      document.getElementById(bodyId).innerHTML = bodyHTML;
-    });
-  }
-
-  function renderIC() {
-    const down = parseInt(document.getElementById('icDown').value) || 300;
-    const up = parseInt(document.getElementById('icUp').value) || 300;
-    const lo = atmStrike - down, hi = atmStrike + up;
-    const strikeList = [];
-    for (let s = lo; s <= hi; s += strikeGap) strikeList.push(s);
-    const maxGap = Math.max(down, up);
-    const gapPoints = [];
-    for (let g = 50; g <= maxGap; g += 50) gapPoints.push(g);
-
-    ['call', 'put'].forEach((side, idx) => {
-      const headId = idx === 0 ? 'icHead' : 'icpHead';
-      const bodyId = idx === 0 ? 'icBody' : 'icpBody';
-      let headHTML = '<th class="strike-cell" style="min-width:55px">STRIKE</th>';
-      gapPoints.slice().reverse().forEach(g => {
-        headHTML += '<th class="pl-cell" style="min-width:50px;font-size:10px;color:#888">' + g + '</th>';
-      });
-      document.getElementById(headId).innerHTML = headHTML;
-
-      let bodyHTML = '';
-      strikeList.forEach(s => {
-        const isATMStrike = s === atmStrike;
-        bodyHTML += '<tr><td class="strike-cell ' + (isATMStrike ? 'atm' : '') + '" style="min-width:55px">' + s + '</td>';
-        gapPoints.slice().reverse().forEach(g => {
-          const expiryPrice = s + (side === 'call' ? g : -g);
-          const k1 = s - 2 * strikeGap;
-          const k2 = s - strikeGap;
-          const k3 = s + strikeGap;
-          const k4 = s + 2 * strikeGap;
-          let pl = 0;
-          if (side === 'call') {
-            pl = putValue(k1, expiryPrice) + putValue(k2, expiryPrice) * (-1) + callValue(k3, expiryPrice) * (-1) + callValue(k4, expiryPrice);
-          } else {
-            pl = putValue(k1, expiryPrice) + putValue(k2, expiryPrice) * (-1) + callValue(k3, expiryPrice) * (-1) + callValue(k4, expiryPrice);
-          }
-          const cls = getPLClass(pl);
-          bodyHTML += '<td class="pl-cell ' + cls + '" style="min-width:50px">' + formatPL(pl) + '</td>';
-        });
-        bodyHTML += '</tr>';
-      });
-      document.getElementById(bodyId).innerHTML = bodyHTML;
-    });
+  function updateBFInfo(type, a, b, c, centre) {
+    const itm = type === 'call' ? centre - (a * strikeGap) : centre + (a * strikeGap);
+    const otm = type === 'call' ? centre + (c * strikeGap) : centre - (c * strikeGap);
+    const itmLTP = getLTP(itm, type === 'call' ? 'CE' : 'PE') || 0;
+    const atmLTP = getLTP(centre, type === 'call' ? 'CE' : 'PE') || 0;
+    const otmLTP = getLTP(otm, type === 'call' ? 'CE' : 'PE') || 0;
+    const netDebit = (a * itmLTP) - (b * atmLTP) + (c * otmLTP);
+    const maxProfit = (b - a - c) * strikeGap - netDebit;
+    const maxLoss = Math.max(0, netDebit);
+    const lowerBE = type === 'call' ? itm + netDebit : itm - netDebit;
+    const upperBE = type === 'call' ? otm - netDebit : otm + netDebit;
+    
+    const infoId = type === 'call' ? 'callBFInfo' : 'putBFInfo';
+    document.getElementById(infoId).textContent = 
+      'ITM: ' + itm + ' | ATM: ' + centre + ' | OTM: ' + otm + ' | Net Debit: ' + fmt(netDebit) + ' | Max Profit: ' + (maxProfit > 0 ? '+' + fmt(maxProfit) : fmt(maxProfit)) + ' | Max Loss: ' + fmt(maxLoss) + ' | Breakevens: ' + fmt(lowerBE) + ' & ' + fmt(upperBE);
   }
 
   function renderAll() {
-    renderRatio('callRatioHead', 'callRatioBody', 'call');
-    renderRatio('putRatioHead', 'putRatioBody', 'put');
+    renderRatio();
     renderBF();
-    renderDBF();
-    renderIC();
   }
 
-  // Modal with formula breakdown
-  function showRatioModal(strike, type, gap, pl) {
-    const sellQty = 3;
+  function showRatioModal(strike, type, col, pl) {
+    const buyQty = parseInt(document.getElementById(type === 'call' ? 'ratioBuy' : 'ratioBuyPE').value) || 1;
+    const sellQty = parseInt(document.getElementById(type === 'call' ? 'ratioSell' : 'ratioSellPE').value) || 3;
     const buyStrike = type === 'call' ? strike - (sellQty * strikeGap) : strike + (sellQty * strikeGap);
-    const expiryPrice = type === 'call' ? strike + gap : strike - gap;
-
-    const ceBuy = callValue(buyStrike, expiryPrice);
-    const ceSell = type === 'call' ? callValue(strike, expiryPrice) : putValue(strike, expiryPrice);
+    const expiryPrice = type === 'call' ? strike + col : strike - col;
+    const buyLTP = getLTP(buyStrike, type === 'call' ? 'CE' : 'PE') || 0;
+    const sellLTP = getLTP(strike, type === 'call' ? 'CE' : 'PE') || 0;
+    const netDebit = (buyQty * buyLTP) - (sellQty * sellLTP);
+    const margin = sellQty * strike * 0.12;
 
     document.getElementById('modalFormulas').innerHTML = 
-      '<div class="formula-equation"><strong>Formula:</strong> max(S−K_sell,0)×(−' + sellQty + ') + max(S−K_buy,0)×(+1)</div>' +
-      '<div class="formula-where">Strike: ' + strike + ' | Buy: ' + buyStrike + ' | Expiry Price: ' + expiryPrice + '</div>';
-    
+      '<div class="formula-box">' +
+        '<div class="formula-title">📐 RATIO ' + (type === 'call' ? 'CALL' : 'PUT') + ' (' + buyQty + ':' + sellQty + ') FORMULA</div>' +
+        '<div class="formula-equation">P&L = max(S − K_sell, 0) × (−' + sellQty + ') + max(S − K_buy, 0) × (+' + buyQty + ')</div>' +
+        '<div class="formula-equation">Net Debit = (' + buyQty + ' × LTP_buy) − (' + sellQty + ' × LTP_sell) = ' + buyQty + ' × ' + fmt(buyLTP) + ' − ' + sellQty + ' × ' + fmt(sellLTP) + ' = ' + fmt(netDebit) + '</div>' +
+        '<div class="formula-where"><strong>S = ' + fmt(expiryPrice) + '</strong> | K_sell = ' + strike + ' | K_buy = ' + buyStrike + ' | LTP_buy = ' + fmt(buyLTP) + ' | LTP_sell = ' + fmt(sellLTP) + '<br>' +
+        '<strong>P&L at this point:</strong> ' + (pl > 0 ? '+' : '') + fmt(pl) + '</div>' +
+      '</div>';
+
     document.getElementById('modalLegs').innerHTML = 
-      '<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-xs font-bold">BUY</span><span>1x ' + buyStrike + ' ' + type.toUpperCase() + ' @ strike</span></div>' +
-      '<div class="modal-leg"><span class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">SELL</span><span>' + sellQty + 'x ' + strike + ' ' + type.toUpperCase() + ' @ strike</span></div>';
+      '<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-xs font-bold">BUY</span><span>' + buyQty + 'x ' + buyStrike + ' ' + type.toUpperCase() + ' @ ₹' + fmt(buyLTP) + '</span></div>' +
+      '<div class="modal-leg"><span class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">SELL</span><span>' + sellQty + 'x ' + strike + ' ' + type.toUpperCase() + ' @ ₹' + fmt(sellLTP) + '</span></div>';
     
-    const debit = 100; // approximate
-    const maxProfit = strikeGap * (sellQty - 1) - debit;
-    const maxLoss = debit;
-    
-    document.getElementById('modalNet').textContent = '₹' + debit;
-    document.getElementById('modalNet').className = 'font-bold text-yellow-400';
-    document.getElementById('modalMaxProfit').textContent = '+₹' + maxProfit;
-    document.getElementById('modalMaxLoss').textContent = '−₹' + maxLoss;
-    document.getElementById('modalBE').textContent = (buyStrike + debit) + ' / ' + (strike + (debit / sellQty));
+    document.getElementById('modalMargin').textContent = '₹' + (margin / 100000).toFixed(2) + ' L';
+    document.getElementById('modalQty').textContent = strike.toLocaleString() + ' / 3,835';
+    document.getElementById('modalCharges').textContent = '0.47 pts';
     
     document.getElementById('tradeModal').classList.remove('hidden');
   }
 
-  function showBFModal(strike, type, gap, pl) {
+  function showBFModal(centre, type, col, pl) {
     const parts = currentBF.split(':').map(Number);
     const [a, b, c] = parts;
-    const itm = type === 'call' ? strike - (a * strikeGap) : strike + (a * strikeGap);
-    const otm = type === 'call' ? strike + (c * strikeGap) : strike - (c * strikeGap);
-    const expiryPrice = type === 'call' ? strike + gap : strike - gap;
+    const itm = type === 'call' ? centre - (a * strikeGap) : centre + (a * strikeGap);
+    const otm = type === 'call' ? centre + (c * strikeGap) : centre - (c * strikeGap);
+    const expiryPrice = type === 'call' ? centre + col : centre - col;
+    const itmLTP = getLTP(itm, type === 'call' ? 'CE' : 'PE') || 0;
+    const atmLTP = getLTP(centre, type === 'call' ? 'CE' : 'PE') || 0;
+    const otmLTP = getLTP(otm, type === 'call' ? 'CE' : 'PE') || 0;
+    const netDebit = (a * itmLTP) - (b * atmLTP) + (c * otmLTP);
+    const margin = (a + b + c) * centre * 0.15;
 
     document.getElementById('modalFormulas').innerHTML = 
-      '<div class="formula-equation"><strong>Formula (' + currentBF + '):</strong> CE(ITM)×(+' + a + ') + CE(ATM)×(−' + b + ') + CE(OTM)×(+' + c + ')</div>' +
-      '<div class="formula-where">ITM: ' + itm + ' | ATM: ' + strike + ' | OTM: ' + otm + ' | Expiry: ' + expiryPrice + '</div>';
-    
+      '<div class="formula-box">' +
+        '<div class="formula-title">🦋 BUTTERFLY ' + (type === 'call' ? 'CALL' : 'PUT') + ' (' + a + ':' + b + ':' + c + ') FORMULA</div>' +
+        '<div class="formula-equation">' + (type === 'call' ? 'Call' : 'Put') + ' BF = ' + (type === 'call' ? 'CE' : 'PE') + '(ITM)×(+' + a + ') + ' + (type === 'call' ? 'CE' : 'PE') + '(ATM)×(−' + b + ') + ' + (type === 'call' ? 'CE' : 'PE') + '(OTM)×(+' + c + ')</div>' +
+        '<div class="formula-equation">Net Debit = (' + a + ' × ' + fmt(itmLTP) + ') − (' + b + ' × ' + fmt(atmLTP) + ') + (' + c + ' × ' + fmt(otmLTP) + ') = ' + fmt(netDebit) + '</div>' +
+        '<div class="formula-where"><strong>S = ' + fmt(expiryPrice) + '</strong> | ITM = ' + itm + ' | ATM = ' + centre + ' | OTM = ' + otm + '<br>' +
+        '<strong>P&L at this point:</strong> ' + (pl > 0 ? '+' : '') + fmt(pl) + '</div>' +
+      '</div>';
+
     document.getElementById('modalLegs').innerHTML = 
-      '<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-xs font-bold">BUY</span><span>' + a + 'x ' + itm + ' ' + type.toUpperCase() + '</span></div>' +
-      '<div class="modal-leg"><span class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">SELL</span><span>' + b + 'x ' + strike + ' ' + type.toUpperCase() + '</span></div>' +
-      '<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-xs font-bold">BUY</span><span>' + c + 'x ' + otm + ' ' + type.toUpperCase() + '</span></div>';
+      '<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-xs font-bold">BUY</span><span>' + a + 'x ' + itm + ' ' + type.toUpperCase() + ' @ ₹' + fmt(itmLTP) + '</span></div>' +
+      '<div class="modal-leg"><span class="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">SELL</span><span>' + b + 'x ' + centre + ' ' + type.toUpperCase() + ' @ ₹' + fmt(atmLTP) + '</span></div>' +
+      '<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-xs font-bold">BUY</span><span>' + c + 'x ' + otm + ' ' + type.toUpperCase() + ' @ ₹' + fmt(otmLTP) + '</span></div>';
     
-    const debit = 150;
-    const maxProfit = (strikeGap * (b - a - c)) - debit;
-    const maxLoss = debit;
-    
-    document.getElementById('modalNet').textContent = '₹' + debit;
-    document.getElementById('modalMaxProfit').textContent = maxProfit > 0 ? '+₹' + maxProfit : '−₹' + Math.abs(maxProfit);
-    document.getElementById('modalMaxLoss').textContent = '−₹' + maxLoss;
-    document.getElementById('modalBE').textContent = (itm + debit) + ' / ' + (otm - debit);
+    document.getElementById('modalMargin').textContent = '₹' + (margin / 100000).toFixed(2) + ' L';
+    document.getElementById('modalQty').textContent = centre.toLocaleString() + ' / 3,835';
+    document.getElementById('modalCharges').textContent = '0.47 pts';
     
     document.getElementById('tradeModal').classList.remove('hidden');
   }
@@ -717,17 +624,19 @@
     document.getElementById('tradeModal').classList.add('hidden');
   }
 
-  function recalculate() { renderAll(); }
-
   window.addEventListener('load', () => switchSymbol('NIFTY'));
 
-  ['ratioDown', 'ratioUp', 'bfDown', 'bfUp', 'dbfDown', 'dbfUp', 'icDown', 'icUp'].forEach(id => {
+  ['ratioDown', 'ratioUp', 'bfDown', 'bfUp', 'bfATMInput', 'ratioBuy', 'ratioSell', 'ratioBuyPE', 'ratioSellPE'].forEach(id => {
     const el = document.getElementById(id);
-    el.addEventListener('change', () => {
-      const val = parseInt(el.value) || 0;
-      el.value = Math.round(val / strikeGap) * strikeGap;
-      renderAll();
-    });
+    if (el) {
+      el.addEventListener('change', () => {
+        if (['ratioDown', 'ratioUp', 'bfDown', 'bfUp'].includes(id)) {
+          const val = parseInt(el.value) || 0;
+          el.value = Math.round(val / strikeGap) * strikeGap;
+        }
+        renderAll();
+      });
+    }
   });
 
   setInterval(() => {
