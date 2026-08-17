@@ -12,7 +12,6 @@
   .pulse-dot { animation: pulse 2s infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   
-  /* STRIKE COLUMN - LIGHT BROWN */
   .strike-cell { 
     background: #d4a574 !important;
     color: #3d2817 !important;
@@ -49,192 +48,92 @@
     border-color: #10b981;
   }
   
-  /* ✅ POSITIVE — gradient greens */
   .pl-pos-1 { background: #86efac !important; color: #14532d !important; }
   .pl-pos-2 { background: #4ade80 !important; color: #14532d !important; }
   .pl-pos-3 { background: #22c55e !important; color: #ffffff !important; }
   .pl-pos-4 { background: #16a34a !important; color: #ffffff !important; }
   .pl-pos-5 { background: #15803d !important; color: #ffffff !important; }
   
-  /* NEGATIVE — neutral gray */
   .pl-neg-1 { background: #f3f4f6 !important; color: #6b7280 !important; }
   .pl-neg-2 { background: #e5e7eb !important; color: #4b5563 !important; font-weight: 800; }
   .pl-neg-3 { background: #d1d5db !important; color: #374151 !important; font-weight: 800; }
   .pl-zero  { background: #ffffff !important; color: #9ca3af !important; }
   
   input[type="number"] { 
-    background: #ffffff; 
-    color: #1f2937; 
-    border: 1px solid #d1d5db; 
-    border-radius: 4px; 
-    padding: 4px 8px; 
-    font-size: 13px; 
-    font-weight: 700; 
-    width: 50px;
-    text-align: center;
+    background: #ffffff; color: #1f2937; 
+    border: 1px solid #d1d5db; border-radius: 4px; 
+    padding: 4px 8px; font-size: 13px; font-weight: 700; 
+    width: 50px; text-align: center;
   }
   input[type="number"]:focus { 
-    outline: none; 
-    border-color: #10b981; 
+    outline: none; border-color: #10b981; 
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
   }
   
-  .ratio-input {
-    width: 45px !important;
-    height: 30px;
-    font-size: 14px !important;
-    font-weight: 800 !important;
-  }
-  
-  /* ✅ ATM scroll input */
-  .atm-input {
-    width: 70px !important;
-    height: 26px;
-    font-size: 13px !important;
-    font-weight: 800 !important;
-    border: 2px solid #d4a574 !important;
-    background: #fef3c7 !important;
-    color: #78350f !important;
+  .ratio-input { width: 45px !important; height: 30px; font-size: 14px !important; font-weight: 800 !important; }
+  .atm-input { 
+    width: 70px !important; height: 26px; font-size: 13px !important; font-weight: 800 !important;
+    border: 2px solid #d4a574 !important; background: #fef3c7 !important; color: #78350f !important;
   }
   
   .ratio-btn { 
-    padding: 5px 11px; 
-    border: 1px solid #d1d5db; 
-    border-radius: 4px; 
-    font-size: 11px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    background: #ffffff; 
-    color: #1f2937; 
+    padding: 5px 11px; border: 1px solid #d1d5db; border-radius: 4px; 
+    font-size: 11px; font-weight: 700; cursor: pointer; background: #ffffff; color: #1f2937;
   }
-  .ratio-btn.active { 
-    background: #10b981; 
-    color: #fff; 
-    border-color: #10b981; 
-  }
-  .ratio-btn:hover:not(.active) { 
-    border-color: #10b981; 
-    color: #10b981; 
-  }
+  .ratio-btn.active { background: #10b981; color: #fff; border-color: #10b981; }
+  .ratio-btn:hover:not(.active) { border-color: #10b981; color: #10b981; }
   
   .tab-btn { 
-    padding: 7px 16px; 
-    border: 1px solid #d1d5db; 
-    border-radius: 6px; 
-    font-size: 12px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    background: #ffffff; 
-    color: #1f2937; 
+    padding: 7px 16px; border: 1px solid #d1d5db; border-radius: 6px; 
+    font-size: 12px; font-weight: 700; cursor: pointer; background: #ffffff; color: #1f2937;
   }
-  .tab-btn.active { 
-    background: #10b981; 
-    color: #fff; 
-    border-color: #10b981; 
-  }
-  .tab-btn:hover:not(.active) { 
-    border-color: #10b981; 
-    color: #10b981; 
-  }
+  .tab-btn.active { background: #10b981; color: #fff; border-color: #10b981; }
+  .tab-btn:hover:not(.active) { border-color: #10b981; color: #10b981; }
   
   .strategy-title { 
-    display: flex; 
-    align-items: center; 
-    gap: 6px; 
-    color: #047857; 
-    font-weight: 800; 
-    font-size: 14px; 
-    margin-bottom: 10px; 
-    padding-bottom: 8px; 
-    border-bottom: 2px solid #d4a574; 
+    display: flex; align-items: center; gap: 6px; color: #047857; 
+    font-weight: 800; font-size: 14px; margin-bottom: 10px; 
+    padding-bottom: 8px; border-bottom: 2px solid #d4a574;
   }
   
-  .controls-row { 
-    display: flex; 
-    align-items: center; 
-    gap: 8px; 
-    flex-wrap: wrap; 
-    margin-bottom: 12px; 
-    font-size: 11px; 
-  }
-  .controls-row label { 
-    color: #4b5563; 
-    font-weight: 600;
-  }
+  .controls-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; font-size: 11px; }
+  .controls-row label { color: #4b5563; font-weight: 600; }
   
   .strike-ctrl-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.2); color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.4);
-    width: 32px;
-    height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 13px;
-    margin-right: 4px;
+    width: 32px; height: 28px; border-radius: 4px;
+    cursor: pointer; font-weight: 800; font-size: 13px; margin-right: 4px;
   }
-  .strike-ctrl-btn:hover { 
-    background: rgba(255, 255, 255, 0.4); 
-    border-color: rgba(255, 255, 255, 0.8);
-  }
+  .strike-ctrl-btn:hover { background: rgba(255, 255, 255, 0.4); border-color: rgba(255, 255, 255, 0.8); }
   
   .col-scroll-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.2); color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.4);
-    width: 26px;
-    height: 26px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 14px;
-    margin: 0 2px;
+    width: 26px; height: 26px; border-radius: 3px;
+    cursor: pointer; font-weight: 800; font-size: 14px; margin: 0 2px;
   }
   .col-scroll-btn:hover { background: rgba(255, 255, 255, 0.4); }
   
-  /* ✅ ATM SCROLL CONTROLS - in spread bar */
   .atm-scroll-btn {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.2); color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.4);
-    width: 22px;
-    height: 22px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 11px;
-    margin: 0 1px;
+    width: 22px; height: 22px; border-radius: 3px;
+    cursor: pointer; font-weight: 800; font-size: 11px; margin: 0 1px;
   }
   .atm-scroll-btn:hover { background: rgba(255, 255, 255, 0.4); }
   
   .spread-bar { 
-    display: flex; 
-    align-items: center; 
-    padding: 6px 10px; 
-    font-weight: 800; 
-    font-size: 12px; 
-    margin-bottom: 6px; 
-    border-radius: 4px; 
-    gap: 6px;
+    display: flex; align-items: center; padding: 6px 10px; 
+    font-weight: 800; font-size: 12px; margin-bottom: 6px; border-radius: 4px; gap: 6px;
   }
-  .spread-bar.call { 
-    background: linear-gradient(90deg, #047857, #10b981, #047857); 
-    color: #fff; 
-  }
-  .spread-bar.put { 
-    background: linear-gradient(90deg, #b91c1c, #ef4444, #b91c1c); 
-    color: #fff; 
-  }
+  .spread-bar.call { background: linear-gradient(90deg, #047857, #10b981, #047857); color: #fff; }
+  .spread-bar.put { background: linear-gradient(90deg, #b91c1c, #ef4444, #b91c1c); color: #fff; }
   
   .formula-box { 
     background: linear-gradient(135deg, #ecfdf5, #eff6ff); 
-    border: 1px solid #10b981; 
-    border-left: 4px solid #10b981; 
-    padding: 10px 14px; 
-    margin-bottom: 10px; 
-    border-radius: 4px; 
-    font-size: 12px; 
+    border: 1px solid #10b981; border-left: 4px solid #10b981; 
+    padding: 10px 14px; margin-bottom: 10px; border-radius: 4px; font-size: 12px;
   }
   .formula-title { color: #047857; font-weight: 800; font-size: 12px; margin-bottom: 6px; }
   .formula-equation { 
@@ -254,10 +153,7 @@
   table { border-collapse: collapse; width: 100%; background: #ffffff; }
   th, td { padding: 4px; font-size: 11px; line-height: 1.2; }
   
-  .col-meta { 
-    background: #b8854f !important; color: #fff !important;
-    font-weight: 800; border: 1px solid #8b5a2b;
-  }
+  .col-meta { background: #b8854f !important; color: #fff !important; font-weight: 800; border: 1px solid #8b5a2b; }
   
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: #f3f4f6; }
@@ -266,8 +162,7 @@
   .modal-leg { display: flex; align-items: center; gap: 6px; padding: 3px 0; font-size: 12px; }
   
   header { 
-    background: #ffffff !important; 
-    border-bottom: 2px solid #d4a574 !important;
+    background: #ffffff !important; border-bottom: 2px solid #d4a574 !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
   header span, header div { color: #1f2937; }
@@ -303,44 +198,45 @@
   </div>
 </header>
 
-<!-- RATIO SECTION -->
+<!-- RATIO SECTION (3-leg portfolio) -->
 <section>
   <div class="strategy-title">
-    <span>⚖</span> Ratio Strategy <span style="color:#6b7280">(Buy M : Sell N)</span>
+    <span>⚖</span> Ratio Portfolio <span style="color:#6b7280">(BUY 1 ATM : SELL X OTM : SELL Y Far OTM)</span>
   </div>
 
   <div class="controls-row">
-    <label>CE Ratio:</label>
-    <input type="number" id="ratioBuy" class="ratio-input" value="1" min="1">
-    <span style="font-weight:800; color:#1f2937">:</span>
-    <input type="number" id="ratioSell" class="ratio-input" value="3" min="1">
+    <label>BUY 1× ATM:</label>
+    <input type="number" id="ratioBuy" class="ratio-input" value="1" min="1" disabled style="opacity:0.6">
     
-    <label style="margin-left:8px">PE Ratio:</label>
-    <input type="number" id="ratioBuyPE" class="ratio-input" value="1" min="1">
-    <span style="font-weight:800; color:#1f2937">:</span>
-    <input type="number" id="ratioSellPE" class="ratio-input" value="3" min="1">
+    <label style="margin-left:8px">SELL 1st leg (qty):</label>
+    <input type="number" id="ratioSell1" class="ratio-input" value="4" min="1">
     
-    <!-- ✅ ATM INPUT WITH SCROLL BUTTONS -->
+    <label style="margin-left:8px">SELL 2nd leg (qty):</label>
+    <input type="number" id="ratioSell2" class="ratio-input" value="3" min="1">
+    
+    <label style="margin-left:8px">Spread per leg (pts):</label>
+    <input type="number" id="ratioSpread" class="ratio-input" value="200" min="50" step="50">
+    
     <label style="margin-left:12px">ATM:</label>
-    <button class="atm-scroll-btn" onclick="scrollATM(-1, 'call')" title="Shift ATM down 1 strike">◀</button>
+    <button class="atm-scroll-btn" onclick="scrollATM(-1, 'ratio')">◀</button>
     <input type="number" id="ratioATM" class="atm-input" value="0">
-    <button class="atm-scroll-btn" onclick="scrollATM(1, 'call')" title="Shift ATM up 1 strike">▶</button>
+    <button class="atm-scroll-btn" onclick="scrollATM(1, 'ratio')">▶</button>
     <span id="gapInfo" style="color:#6b7280; font-size:10px; margin-left:4px"></span>
   </div>
 
   <div class="grid md:grid-cols-2 gap-3">
-    <!-- CALL RATIO -->
+    <!-- CALL PORTFOLIO -->
     <div>
       <div class="spread-bar call">
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5)">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5)">+5</button>
-        <span style="flex:1; text-align:center" id="callRatioTitle">CALL RATIO (1:3) — 13 strikes</span>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'ratio')">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'ratio')">+5</button>
+        <span style="flex:1; text-align:center" id="callRatioTitle">CALL PORTFOLIO (1 BUY ATM : 4 SELL +200 : 3 SELL +400)</span>
       </div>
       <div class="overflow-x-auto">
         <table>
           <thead>
             <tr style="background:#b8854f">
-              <th class="strike-cell" style="text-align:left; padding-left:8px">K_sell ↓ / Δ →</th>
+              <th class="strike-cell" style="text-align:left; padding-left:8px">ATM (row)</th>
               <th class="pl-cell col-meta" id="callRatioCol0">0</th>
               <th class="pl-cell col-meta" id="callRatioCol1">+50</th>
               <th class="pl-cell col-meta" id="callRatioCol2">+100</th>
@@ -352,27 +248,26 @@
           </thead>
           <tbody id="callRatioBody"></tbody>
         </table>
-        <!-- ✅ COLUMN SCROLL - shifts by strikeGap (50 for NIFTY, 100 for BANKNIFTY) -->
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
-          <button class="col-scroll-btn" onclick="shiftColumns(-1, 'call')" id="callShiftLeft">◀</button>
-          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS BY <span id="callShiftStep">50</span>pts</span>
-          <button class="col-scroll-btn" onclick="shiftColumns(1, 'call')" id="callShiftRight">▶</button>
+          <button class="col-scroll-btn" onclick="shiftColumns(-1, 'ratio')">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT BY <span id="callShiftStep">50</span>pts</span>
+          <button class="col-scroll-btn" onclick="shiftColumns(1, 'ratio')">▶</button>
         </div>
       </div>
     </div>
 
-    <!-- PUT RATIO -->
+    <!-- PUT PORTFOLIO -->
     <div>
       <div class="spread-bar put">
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5)">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5)">+5</button>
-        <span style="flex:1; text-align:center" id="putRatioTitle">PUT RATIO (1:3) — 13 strikes</span>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'ratio')">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'ratio')">+5</button>
+        <span style="flex:1; text-align:center" id="putRatioTitle">PUT PORTFOLIO (1 BUY ATM : 4 SELL +200 : 3 SELL +400)</span>
       </div>
       <div class="overflow-x-auto">
         <table>
           <thead>
             <tr style="background:#b8854f">
-              <th class="strike-cell" style="text-align:left; padding-left:8px">K_sell ↓ / Δ →</th>
+              <th class="strike-cell" style="text-align:left; padding-left:8px">ATM (row)</th>
               <th class="pl-cell col-meta" id="putRatioCol0">0</th>
               <th class="pl-cell col-meta" id="putRatioCol1">+50</th>
               <th class="pl-cell col-meta" id="putRatioCol2">+100</th>
@@ -385,9 +280,9 @@
           <tbody id="putRatioBody"></tbody>
         </table>
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
-          <button class="col-scroll-btn" onclick="shiftColumns(-1, 'put')">◀</button>
-          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
-          <button class="col-scroll-btn" onclick="shiftColumns(1, 'put')">▶</button>
+          <button class="col-scroll-btn" onclick="shiftColumns(-1, 'ratio')">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT BY <span id="putShiftStep">50</span>pts</span>
+          <button class="col-scroll-btn" onclick="shiftColumns(1, 'ratio')">▶</button>
         </div>
       </div>
     </div>
@@ -397,7 +292,7 @@
   <div class="info-bar" id="putRatioInfo" style="margin-top:4px">--</div>
 </section>
 
-<!-- BUTTERFLY SECTION -->
+<!-- BUTTERFLY SECTION (kept same) -->
 <section style="background:#f9fafb; border-top:2px solid #d4a574; border-bottom:2px solid #d4a574; padding:10px 0;">
   <div class="strategy-title">
     <span>⊕</span> Custom Butterfly <span style="color:#6b7280">(Long a : Short b : Long c)</span>
@@ -411,18 +306,17 @@
     <button class="ratio-btn" onclick="setBF('2:5:3')">2:5:3</button>
     
     <label style="margin-left:12px">ATM:</label>
-    <button class="atm-scroll-btn" onclick="scrollBFATM(-1)">◀</button>
+    <button class="atm-scroll-btn" onclick="scrollATM(-1, 'bf')">◀</button>
     <input type="number" id="bfATMInput" class="atm-input" value="0">
-    <button class="atm-scroll-btn" onclick="scrollBFATM(1)">▶</button>
+    <button class="atm-scroll-btn" onclick="scrollATM(1, 'bf')">▶</button>
   </div>
 
   <div class="grid md:grid-cols-2 gap-3">
-    <!-- CALL BF -->
     <div>
       <div class="spread-bar call">
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5)">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5)">+5</button>
-        <span style="flex:1; text-align:center" id="callBFTitle">CALL BUTTERFLY (1 : 4 : 3) — 13 strikes</span>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'bf')">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'bf')">+5</button>
+        <span style="flex:1; text-align:center" id="callBFTitle">CALL BUTTERFLY (1:4:3)</span>
       </div>
       <div class="overflow-x-auto">
         <table>
@@ -442,18 +336,17 @@
         </table>
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
           <button class="col-scroll-btn" onclick="shiftBFColumns(-1)">◀</button>
-          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT BY <span id="callBFShiftStep">50</span>pts</span>
           <button class="col-scroll-btn" onclick="shiftBFColumns(1)">▶</button>
         </div>
       </div>
     </div>
 
-    <!-- PUT BF -->
     <div>
       <div class="spread-bar put">
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5)">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5)">+5</button>
-        <span style="flex:1; text-align:center" id="putBFTitle">PUT BUTTERFLY (1 : 4 : 3) — 13 strikes</span>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'bf')">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'bf')">+5</button>
+        <span style="flex:1; text-align:center" id="putBFTitle">PUT BUTTERFLY (1:4:3)</span>
       </div>
       <div class="overflow-x-auto">
         <table>
@@ -473,7 +366,7 @@
         </table>
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
           <button class="col-scroll-btn" onclick="shiftBFColumns(-1)">◀</button>
-          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT BY <span id="putBFShiftStep">50</span>pts</span>
           <button class="col-scroll-btn" onclick="shiftBFColumns(1)">▶</button>
         </div>
       </div>
@@ -494,7 +387,7 @@
     <div id="modalFormulas" class="mb-4"></div>
     <div id="modalLegs" class="mb-4 pb-4 border-b border-gray-200"></div>
     <div class="space-y-2 text-sm">
-      <div class="flex justify-between py-1"><span class="text-gray-500">MARGIN</span><span id="modalMargin" class="font-bold text-emerald-600">�0 L</span></div>
+      <div class="flex justify-between py-1"><span class="text-gray-500">MARGIN</span><span id="modalMargin" class="font-bold text-emerald-600">₹0 L</span></div>
       <div class="flex justify-between py-1"><span class="text-gray-500">QTY / CR</span><span id="modalQty" class="font-bold">0 / 3,835</span></div>
       <div class="flex justify-between py-1"><span class="text-gray-500">CHARGES (RT)</span><span id="modalCharges" class="font-bold text-yellow-600">0.47 pts</span></div>
     </div>
@@ -518,14 +411,11 @@
   let currentBF = '1:4:3';
   let numCols = 7;
 
-  // ✅ Columns start at 0, step by strikeGap (auto-set per symbol)
   let colSpreads = [0, 50, 100, 150, 200, 250, 300];
   let bfColSpreads = [0, 50, 100, 150, 200, 250, 300];
 
-  // ✅ User-controlled ATM (independent for ratio vs butterfly)
-  let customATM = 24300;
+  let customRatioATM = 24300;
   let customBFATM = 24300;
-
   let ratioRows = 13;
   let bfRows = 13;
 
@@ -638,7 +528,7 @@
     currentSymbol = symbol;
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById('tab-' + symbol).classList.add('active');
-    strikeGap = SYMBOL_CONFIG[symbol].gap;  // ✅ 50 for NIFTY, 100 for BANKNIFTY
+    strikeGap = SYMBOL_CONFIG[symbol].gap;
     
     setLiveStatus('fallback', 'LOADING ' + symbol + '...');
 
@@ -666,18 +556,14 @@
       ? new Date(result.expiry).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })
       : 'Weekly';
 
-    // ✅ Update gap display
     document.getElementById('gapInfo').textContent = `(${strikeGap}pt gap)`;
-    const shiftStepEl = document.getElementById('callShiftStep');
-    if (shiftStepEl) shiftStepEl.textContent = strikeGap;
+    document.querySelectorAll('[id$="ShiftStep"]').forEach(el => el.textContent = strikeGap);
 
-    // ✅ Set user ATM to auto ATM
-    customATM = atmStrike;
+    customRatioATM = atmStrike;
     customBFATM = atmStrike;
     document.getElementById('ratioATM').value = atmStrike;
     document.getElementById('bfATMInput').value = atmStrike;
 
-    // ✅ Reset spreads based on strike gap (50 for NIFTY, 100 for BANKNIFTY)
     colSpreads = [];
     bfColSpreads = [];
     for (let i = 0; i < numCols; i++) {
@@ -705,36 +591,33 @@
   }
 
   // ===== ATM SCROLL =====
-  // ✅ Scrolls ATM by 1 strike gap (50 for NIFTY, 100 for BANKNIFTY)
-  function scrollATM(direction, type) {
-    customATM += (direction * strikeGap);  // ✅ uses strikeGap
-    document.getElementById('ratioATM').value = customATM;
-    renderRatio();
+  function scrollATM(direction, target) {
+    if (target === 'ratio') {
+      customRatioATM += (direction * strikeGap);
+      document.getElementById('ratioATM').value = customRatioATM;
+      renderRatio();
+    } else if (target === 'bf') {
+      customBFATM += (direction * strikeGap);
+      document.getElementById('bfATMInput').value = customBFATM;
+      renderBF();
+    }
   }
 
-  function scrollBFATM(direction) {
-    customBFATM += (direction * strikeGap);  // ✅ uses strikeGap
-    document.getElementById('bfATMInput').value = customBFATM;
-    renderBF();
+  function changeStrikeRows(delta, target) {
+    if (target === 'ratio') {
+      ratioRows = Math.max(3, Math.min(31, ratioRows + delta));
+      renderRatio();
+    } else if (target === 'bf') {
+      bfRows = Math.max(3, Math.min(31, bfRows + delta));
+      renderBF();
+    }
   }
 
-  // ===== STRIKE ROW CONTROLS =====
-  function changeStrikeRows(delta) {
-    ratioRows = Math.max(3, Math.min(31, ratioRows + delta));
-    renderRatio();
-  }
-
-  function changeBFStrikeRows(delta) {
-    bfRows = Math.max(3, Math.min(31, bfRows + delta));
-    renderBF();
-  }
-
-  // ===== COLUMN SCROLL =====
-  // ✅ FIX: Shifts by strikeGap (50 for NIFTY, 100 for BANKNIFTY)
-  function shiftColumns(direction, type) {
+  function shiftColumns(direction, target) {
     colSpreads = colSpreads.map(s => Math.max(0, s + (direction * strikeGap)));
-    updateColHeaders(type + 'RatioCol', colSpreads);
-    renderAll();
+    updateColHeaders('callRatioCol', colSpreads);
+    updateColHeaders('putRatioCol', colSpreads);
+    renderRatio();
   }
 
   function shiftBFColumns(direction) {
@@ -759,22 +642,38 @@
     renderBF();
   }
 
-  // ===== CORE P&L =====
-  function calcRatioPL(sellStrike, type, colIndex, buyQty, sellQty) {
-    const X = colSpreads[colIndex];
-    const expiryPrice = (type === 'call') ? sellStrike + X : sellStrike - X;
-    const buyStrike   = (type === 'call') ? sellStrike - X : sellStrike + X;
+  // ✅✅✅ NEW 3-LEG PORTFOLIO FORMULA ✅✅✅
+  // Structure: BUY 1× ATM, SELL X× (ATM + spread), SELL Y× (ATM + 2*spread)
+  // Example: BUY 1× 24300 CE, SELL 4× 24500 CE, SELL 3× 24700 CE (spread=200)
+  function calcRatioPL(atmRow, type, colIndex, buyQty, sellQty1, sellQty2, spread) {
+    const X = colSpreads[colIndex];  // Stock move from ATM at expiry
     
-    const buyPremium  = getLTP(buyStrike,  type === 'call' ? 'CE' : 'PE');
-    const sellPremium = getLTP(sellStrike, type === 'call' ? 'CE' : 'PE');
-    const netDebit = (buyQty * buyPremium) - (sellQty * sellPremium);
+    // Expiry price based on column direction
+    const expiryPrice = (type === 'call') ? atmRow + X : atmRow - X;
     
-    const longPayoff  = (type === 'call') ? callValue(buyStrike,  expiryPrice) : putValue(buyStrike,  expiryPrice);
-    const shortPayoff = (type === 'call') ? callValue(sellStrike, expiryPrice) : putValue(sellStrike, expiryPrice);
+    // Three strikes: ATM, +spread, +2*spread
+    const strikeATM   = atmRow;
+    const strikeOTM1  = (type === 'call') ? atmRow + spread : atmRow - spread;
+    const strikeOTM2  = (type === 'call') ? atmRow + (2 * spread) : atmRow - (2 * spread);
     
-    return (longPayoff * buyQty) - (shortPayoff * sellQty) - netDebit;
+    // Payoffs at expiry
+    const atmPayoff  = (type === 'call') ? callValue(strikeATM, expiryPrice) : putValue(strikeATM, expiryPrice);
+    const otm1Payoff = (type === 'call') ? callValue(strikeOTM1, expiryPrice) : putValue(strikeOTM1, expiryPrice);
+    const otm2Payoff = (type === 'call') ? callValue(strikeOTM2, expiryPrice) : putValue(strikeOTM2, expiryPrice);
+    
+    // Premiums paid/received at entry
+    const atmPremium  = getLTP(strikeATM,  type === 'call' ? 'CE' : 'PE');
+    const otm1Premium = getLTP(strikeOTM1, type === 'call' ? 'CE' : 'PE');
+    const otm2Premium = getLTP(strikeOTM2, type === 'call' ? 'CE' : 'PE');
+    
+    // Net Debit: +ve means we paid, -ve means we received credit
+    const netDebit = (buyQty * atmPremium) - (sellQty1 * otm1Premium) - (sellQty2 * otm2Premium);
+    
+    // P&L = (Long payoff × qty) - (Short payoffs × qtys) - Net Debit
+    return (atmPayoff * buyQty) - (otm1Payoff * sellQty1) - (otm2Payoff * sellQty2) - netDebit;
   }
 
+  // BUTTERFLY P&L (unchanged)
   function calcBFPL(centre, type, colIndex, a, b, c) {
     const X = bfColSpreads[colIndex];
     const expiryPrice = (type === 'call') ? centre + X : centre - X;
@@ -807,50 +706,47 @@
 
   // ===== RENDERING =====
   function renderRatio() {
-    const buyQtyCE   = parseInt(document.getElementById('ratioBuy').value)  || 1;
-    const sellQtyCE  = parseInt(document.getElementById('ratioSell').value) || 3;
-    const buyQtyPE   = parseInt(document.getElementById('ratioBuyPE').value)  || 1;
-    const sellQtyPE  = parseInt(document.getElementById('ratioSellPE').value) || 3;
+    const buyQty   = 1;  // Always 1 ATM buy (fixed)
+    const sellQty1 = parseInt(document.getElementById('ratioSell1').value) || 4;
+    const sellQty2 = parseInt(document.getElementById('ratioSell2').value) || 3;
+    const spread   = parseInt(document.getElementById('ratioSpread').value) || 200;
 
-    // ✅ Use customATM (user-controlled) instead of atmStrike
-    const centerATM = customATM;
+    const centerATM = customRatioATM;
     const half = Math.floor(ratioRows / 2);
     const strikeList = [];
     for (let i = -half; i <= half; i++) {
-      strikeList.push(centerATM + (i * strikeGap));  // ✅ uses strikeGap
+      strikeList.push(centerATM + (i * strikeGap));
     }
 
-    document.getElementById('callRatioTitle').textContent = `CALL RATIO (${buyQtyCE}:${sellQtyCE}) — ${ratioRows} strikes`;
-    document.getElementById('putRatioTitle').textContent  = `PUT RATIO (${buyQtyPE}:${sellQtyPE}) — ${ratioRows} strikes`;
+    document.getElementById('callRatioTitle').textContent = `CALL PORTFOLIO (1 BUY ATM : ${sellQty1} SELL +${spread} : ${sellQty2} SELL +${spread*2})`;
+    document.getElementById('putRatioTitle').textContent  = `PUT PORTFOLIO (1 BUY ATM : ${sellQty1} SELL +${spread} : ${sellQty2} SELL +${spread*2})`;
 
     ['call', 'put'].forEach((type) => {
       const bodyId = type === 'call' ? 'callRatioBody' : 'putRatioBody';
-      const buyQty  = type === 'call' ? buyQtyCE  : buyQtyPE;
-      const sellQty = type === 'call' ? sellQtyCE : sellQtyPE;
       let html = '';
       
-      strikeList.forEach(sellStrike => {
-        const isATM = sellStrike === centerATM;
-        html += `<tr><td class="strike-cell${isATM ? ' atm' : ''}" style="text-align:left; padding-left:8px">${sellStrike}</td>`;
+      strikeList.forEach(atmRow => {
+        const isATM = atmRow === centerATM;
+        html += `<tr><td class="strike-cell${isATM ? ' atm' : ''}" style="text-align:left; padding-left:8px">${atmRow}</td>`;
         for (let i = 0; i < numCols; i++) {
-          const pl = calcRatioPL(sellStrike, type, i, buyQty, sellQty);
+          const pl = calcRatioPL(atmRow, type, i, buyQty, sellQty1, sellQty2, spread);
           const cls = getPLClass(pl);
-          html += `<td class="pl-cell ${cls}" onclick="showRatioModal(${sellStrike}, '${type}', ${i}, ${pl})">${fmtSigned(pl)}</td>`;
+          html += `<td class="pl-cell ${cls}" onclick="showRatioModal(${atmRow}, '${type}', ${i}, ${pl})">${fmtSigned(pl)}</td>`;
         }
         html += '</tr>';
       });
       document.getElementById(bodyId).innerHTML = html;
     });
 
-    updateRatioInfo('call', buyQtyCE, sellQtyCE);
-    updateRatioInfo('put',  buyQtyPE, sellQtyPE);
+    updateRatioInfo('call', buyQty, sellQty1, sellQty2, spread);
+    updateRatioInfo('put',  buyQty, sellQty1, sellQty2, spread);
   }
 
-  function updateRatioInfo(type, buyQty, sellQty) {
+  function updateRatioInfo(type, buyQty, sellQty1, sellQty2, spread) {
     const spreadsStr = colSpreads.map(s => s + 'pt').join(' | ');
     const infoId = type === 'call' ? 'callRatioInfo' : 'putRatioInfo';
     document.getElementById(infoId).textContent = 
-      `Spreads: ${spreadsStr} | K_sell=ATM ${customATM} | Buy:${buyQty} Sell:${sellQty} ${type.toUpperCase()}`;
+      `Spreads (col): ${spreadsStr} | ATM ${customRatioATM} | BUY ${buyQty}× ATM | SELL ${sellQty1}× +${spread} | SELL ${sellQty2}× +${spread*2} ${type.toUpperCase()}`;
   }
 
   function renderBF() {
@@ -860,11 +756,11 @@
     const half = Math.floor(bfRows / 2);
     const strikeList = [];
     for (let i = -half; i <= half; i++) {
-      strikeList.push(centerATM + (i * strikeGap));  // ✅ uses strikeGap
+      strikeList.push(centerATM + (i * strikeGap));
     }
 
-    document.getElementById('callBFTitle').textContent = `CALL BUTTERFLY (${a}:${b}:${c}) — ${bfRows} strikes`;
-    document.getElementById('putBFTitle').textContent  = `PUT BUTTERFLY (${a}:${b}:${c}) — ${bfRows} strikes`;
+    document.getElementById('callBFTitle').textContent = `CALL BUTTERFLY (${a}:${b}:${c})`;
+    document.getElementById('putBFTitle').textContent  = `PUT BUTTERFLY (${a}:${b}:${c})`;
 
     ['call', 'put'].forEach((type) => {
       const bodyId = type === 'call' ? 'callBFBody' : 'putBFBody';
@@ -891,7 +787,7 @@
     const spreadsStr = bfColSpreads.map(s => s + 'pt').join(' | ');
     const infoId = type === 'call' ? 'callBFInfo' : 'putBFInfo';
     document.getElementById(infoId).textContent = 
-      `Spreads: ${spreadsStr} | ATM ${centre} | Ratio ${a}:${b}:${c} ${type.toUpperCase()}`;
+      `Spreads: ${spreadsStr} | ATM ${centre} | ${a}:${b}:${c} ${type.toUpperCase()}`;
   }
 
   function renderAll() {
@@ -904,40 +800,50 @@
   }
 
   // ===== MODAL =====
-  function showRatioModal(sellStrike, type, colIndex, pl) {
-    const buyQty  = parseInt(document.getElementById(type === 'call' ? 'ratioBuy'  : 'ratioBuyPE').value)  || 1;
-    const sellQty = parseInt(document.getElementById(type === 'call' ? 'ratioSell' : 'ratioSellPE').value) || 3;
-    const X = colSpreads[colIndex];
+  function showRatioModal(atmRow, type, colIndex, pl) {
+    const buyQty   = 1;
+    const sellQty1 = parseInt(document.getElementById(type === 'call' ? 'ratioSell1' : 'ratioSell1').value) || 4;
+    const sellQty2 = parseInt(document.getElementById('ratioSell2').value) || 3;
+    const spread   = parseInt(document.getElementById('ratioSpread').value) || 200;
+    const X        = colSpreads[colIndex];
     
-    const buyStrike   = (type === 'call') ? sellStrike - X : sellStrike + X;
-    const expiryPrice = (type === 'call') ? sellStrike + X : sellStrike - X;
-    const buyLTP      = getLTP(buyStrike,  type === 'call' ? 'CE' : 'PE');
-    const sellLTP     = getLTP(sellStrike, type === 'call' ? 'CE' : 'PE');
-    const netDebit    = (buyQty * buyLTP) - (sellQty * sellLTP);
-    const margin      = sellQty * sellStrike * 0.12;
-    const isCredit    = netDebit < 0;
+    // ✅ Three strikes calculated from ATM
+    const strikeATM  = atmRow;
+    const strikeOTM1 = (type === 'call') ? atmRow + spread : atmRow - spread;
+    const strikeOTM2 = (type === 'call') ? atmRow + (2 * spread) : atmRow - (2 * spread);
+    const expiryPrice = (type === 'call') ? atmRow + X : atmRow - X;
+    
+    const atmLTP  = getLTP(strikeATM,  type === 'call' ? 'CE' : 'PE');
+    const otm1LTP = getLTP(strikeOTM1, type === 'call' ? 'CE' : 'PE');
+    const otm2LTP = getLTP(strikeOTM2, type === 'call' ? 'CE' : 'PE');
+    const netDebit = (buyQty * atmLTP) - (sellQty1 * otm1LTP) - (sellQty2 * otm2LTP);
+    const margin = (sellQty1 + sellQty2) * atmRow * 0.12;
+    const isCredit = netDebit < 0;
 
-    const longPayoff  = (type === 'call') ? callValue(buyStrike,  expiryPrice) : putValue(buyStrike,  expiryPrice);
-    const shortPayoff = (type === 'call') ? callValue(sellStrike, expiryPrice) : putValue(sellStrike, expiryPrice);
-    const longTotal   = longPayoff * buyQty;
-    const shortTotal  = shortPayoff * sellQty;
+    const atmPayoff  = (type === 'call') ? callValue(strikeATM, expiryPrice) : putValue(strikeATM, expiryPrice);
+    const otm1Payoff = (type === 'call') ? callValue(strikeOTM1, expiryPrice) : putValue(strikeOTM1, expiryPrice);
+    const otm2Payoff = (type === 'call') ? callValue(strikeOTM2, expiryPrice) : putValue(strikeOTM2, expiryPrice);
+    
+    const longTotal = atmPayoff * buyQty;
+    const short1Total = otm1Payoff * sellQty1;
+    const short2Total = otm2Payoff * sellQty2;
 
     document.getElementById('modalFormulas').innerHTML = 
       `<div class="formula-box">
-        <div class="formula-title">📐 ${type.toUpperCase()} RATIO (${buyQty}:${sellQty}) — Spread: ${X}pts</div>
-        <div class="formula-equation">S (expiry) = ${fmt(expiryPrice)} | K₁(buy) = ${buyStrike} | K₂(sell) = ${sellStrike}</div>
-        <div class="formula-equation">Long Payoff = ${type === 'call' ? 'max(S−K₁, 0)' : 'max(K₁−S, 0)'} = ${fmt(longPayoff)}</div>
-        <div class="formula-equation">Short Payoff = ${type === 'call' ? 'max(S−K₂, 0)' : 'max(K₂−S, 0)'} = ${fmt(shortPayoff)}</div>
-        <div class="formula-equation">Net ${isCredit ? 'Credit' : 'Debit'} = (${buyQty} × ₹${fmt(buyLTP)}) − (${sellQty} × ₹${fmt(sellLTP)}) = ${fmtSigned(netDebit)}</div>
-        <div class="formula-equation" style="color:#047857">P&L = (${longTotal}) − (${shortTotal}) ${isCredit ? '+' : '−'} (${fmt(Math.abs(netDebit))}) = <strong>${fmtSigned(pl)}</strong></div>
+        <div class="formula-title">📐 ${type.toUpperCase()} PORTFOLIO (1 BUY ATM : ${sellQty1} SELL +${spread} : ${sellQty2} SELL +${spread*2})</div>
+        <div class="formula-equation">S (expiry) = ${fmt(expiryPrice)} | ATM = ${strikeATM} | OTM1 = ${strikeOTM1} (+${spread}) | OTM2 = ${strikeOTM2} (+${spread*2})</div>
+        <div class="formula-equation">ATM Payoff = ${fmt(atmPayoff)} × ${buyQty} = ${fmt(longTotal)} | OTM1 Payoff = ${fmt(otm1Payoff)} × ${sellQty1} = ${fmt(short1Total)} | OTM2 Payoff = ${fmt(otm2Payoff)} × ${sellQty2} = ${fmt(short2Total)}</div>
+        <div class="formula-equation">Net ${isCredit ? 'Credit' : 'Debit'} = (1×₹${fmt(atmLTP)}) − (${sellQty1}×₹${fmt(otm1LTP)}) − (${sellQty2}×₹${fmt(otm2LTP)}) = ${fmtSigned(netDebit)}</div>
+        <div class="formula-equation" style="color:#047857">P&L = ${fmt(longTotal)} − ${fmt(short1Total)} − ${fmt(short2Total)} ${isCredit ? '+' : '−'} ${fmt(Math.abs(netDebit))} = <strong>${fmtSigned(pl)}</strong></div>
       </div>`;
 
     document.getElementById('modalLegs').innerHTML = 
-      `<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-bold">BUY</span><span>${buyQty}× ${buyStrike} ${type.toUpperCase()} @ ₹${fmt(buyLTP)}</span></div>
-       <div class="modal-leg"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-bold">SELL</span><span>${sellQty}× ${sellStrike} ${type.toUpperCase()} @ ₹${fmt(sellLTP)}</span></div>`;
+      `<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-bold">BUY</span><span>${buyQty}× ${strikeATM} ${type.toUpperCase()} (ATM) @ ₹${fmt(atmLTP)}</span></div>
+       <div class="modal-leg"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-bold">SELL</span><span>${sellQty1}× ${strikeOTM1} ${type.toUpperCase()} (+${spread}) @ ₹${fmt(otm1LTP)}</span></div>
+       <div class="modal-leg"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-bold">SELL</span><span>${sellQty2}× ${strikeOTM2} ${type.toUpperCase()} (+${spread*2}) @ ₹${fmt(otm2LTP)}</span></div>`;
     
     document.getElementById('modalMargin').textContent = '₹' + (margin / 100000).toFixed(2) + ' L';
-    document.getElementById('modalQty').textContent = sellQty + ' × ' + sellStrike.toLocaleString() + ' / Lot';
+    document.getElementById('modalQty').textContent = (sellQty1 + sellQty2) + ' × ' + atmRow.toLocaleString() + ' / Lot';
     document.getElementById('modalCharges').textContent = '0.47 pts';
     
     document.getElementById('tradeModal').classList.remove('hidden');
@@ -956,12 +862,21 @@
     const margin = (a + b + c) * centre * 0.15;
     const isCredit = netDebit < 0;
 
+    const itmVal = (type === 'call') ? callValue(itm, expiryPrice) : putValue(itm, expiryPrice);
+    const atmVal = (type === 'call') ? callValue(centre, expiryPrice) : putValue(centre, expiryPrice);
+    const otmVal = (type === 'call') ? callValue(otm, expiryPrice) : putValue(otm, expiryPrice);
+    
+    const itmTotal = itmVal * a;
+    const atmTotal = atmVal * b;
+    const otmTotal = otmVal * c;
+
     document.getElementById('modalFormulas').innerHTML = 
       `<div class="formula-box">
-        <div class="formula-title">🦋 ${type.toUpperCase()} BUTTERFLY (${a}:${b}:${c})</div>
-        <div class="formula-equation">S (expiry) = ${fmt(expiryPrice)} | ITM = ${itm} | ATM = ${centre} | OTM = ${otm}</div>
-        <div class="formula-equation">Net ${isCredit ? 'Credit' : 'Debit'} = (${a}×�${fmt(itmLTP)}) − (${b}×₹${fmt(atmLTP)}) + (${c}×₹${fmt(otmLTP)}) = ${fmtSigned(netDebit)}</div>
-        <div class="formula-equation" style="color:#047857">P&L at S=${fmt(expiryPrice)}: <strong>${fmtSigned(pl)}</strong></div>
+        <div class="formula-title">🦋 ${type.toUpperCase()} BUTTERFLY (${a}:${b}:${c}) — All strikes from ATM ${centre}</div>
+        <div class="formula-equation">S (expiry) = ${fmt(expiryPrice)} | ITM = ${itm} (${a*strikeGap}pts from ATM) | ATM = ${centre} | OTM = ${otm} (${c*strikeGap}pts from ATM)</div>
+        <div class="formula-equation">ITM Payoff = ${fmt(itmVal)} × ${a} = ${fmt(itmTotal)} | ATM Payoff = ${fmt(atmVal)} × ${b} = ${fmt(atmTotal)} | OTM Payoff = ${fmt(otmVal)} × ${c} = ${fmt(otmTotal)}</div>
+        <div class="formula-equation">Net ${isCredit ? 'Credit' : 'Debit'} = (${a}×₹${fmt(itmLTP)}) − (${b}×₹${fmt(atmLTP)}) + (${c}×₹${fmt(otmLTP)}) = ${fmtSigned(netDebit)}</div>
+        <div class="formula-equation" style="color:#047857">P&L = ${fmt(itmTotal)} − ${fmt(atmTotal)} + ${fmt(otmTotal)} ${isCredit ? '+' : '−'} ${fmt(Math.abs(netDebit))} = <strong>${fmtSigned(pl)}</strong></div>
       </div>`;
 
     document.getElementById('modalLegs').innerHTML = 
@@ -983,19 +898,18 @@
   // ===== INIT =====
   window.addEventListener('load', () => switchSymbol('NIFTY'));
 
-  // ✅ ATM input change handlers — round to nearest strike gap
-  ['ratioATM', 'bfATMInput', 'ratioBuy', 'ratioSell', 'ratioBuyPE', 'ratioSellPE'].forEach(id => {
+  ['ratioATM', 'bfATMInput', 'ratioSell1', 'ratioSell2', 'ratioSpread'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('change', () => {
         if (id === 'ratioATM') {
           const v = parseInt(el.value) || atmStrike;
-          customATM = Math.round(v / strikeGap) * strikeGap;  // ✅ Snap to grid
-          el.value = customATM;
+          customRatioATM = Math.round(v / strikeGap) * strikeGap;
+          el.value = customRatioATM;
         }
         if (id === 'bfATMInput') {
           const v = parseInt(el.value) || atmStrike;
-          customBFATM = Math.round(v / strikeGap) * strikeGap;  // ✅ Snap to grid
+          customBFATM = Math.round(v / strikeGap) * strikeGap;
           el.value = customBFATM;
         }
         renderAll();
