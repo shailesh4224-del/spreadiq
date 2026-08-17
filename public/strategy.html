@@ -36,7 +36,7 @@
     text-align: center; 
     padding: 6px 3px; 
     font-size: 11px; 
-    font-weight: 700; 
+    font-weight: 800; 
     min-width: 50px; 
     cursor: pointer; 
     transition: all 0.15s; 
@@ -50,16 +50,20 @@
     border-color: #10b981;
   }
   
-  /* ✅ POSITIVE — MEDIUM GREEN backgrounds */
-  .pl-positive      { background: #10b981 !important; color: #022c22 !important; font-weight: 800; }
-  .pl-positive-mid  { background: #059669 !important; color: #ffffff !important; font-weight: 800; }
-  .pl-positive-high { background: #047857 !important; color: #ecfdf5 !important; font-weight: 900; }
+  /* ✅ POSITIVE — Gradient of medium-to-dark green (matches your image) */
+  /* Small positive: light/medium green | Big positive: darker green */
+  .pl-pos-1 { background: #86efac !important; color: #14532d !important; }   /* very light green */
+  .pl-pos-2 { background: #4ade80 !important; color: #14532d !important; }   /* light green */
+  .pl-pos-3 { background: #22c55e !important; color: #ffffff !important; }   /* medium green */
+  .pl-pos-4 { background: #16a34a !important; color: #ffffff !important; }   /* darker green */
+  .pl-pos-5 { background: #15803d !important; color: #ffffff !important; }   /* dark green */
   
   /* NEGATIVE — neutral gray (no red!) */
-  .pl-negative      { color: #6b7280 !important; background: #f9fafb !important; }
-  .pl-negative-mid  { color: #4b5563 !important; background: #f3f4f6 !important; font-weight: 800; }
-  .pl-negative-high { color: #374151 !important; background: #e5e7eb !important; font-weight: 800; }
-  .pl-zero          { color: #9ca3af !important; background: #ffffff !important; }
+  .pl-neg-1 { background: #f3f4f6 !important; color: #6b7280 !important; }
+  .pl-neg-2 { background: #e5e7eb !important; color: #4b5563 !important; font-weight: 800; }
+  .pl-neg-3 { background: #d1d5db !important; color: #374151 !important; font-weight: 800; }
+  
+  .pl-zero  { background: #ffffff !important; color: #9ca3af !important; }
   
   input[type="number"] { 
     background: #ffffff; 
@@ -150,28 +154,50 @@
     font-weight: 600;
   }
   
-  /* ✅ +5 / -5 Strike Buttons */
+  /* ✅ +5 / -5 BUTTONS - positioned in title bar (left side) */
   .strike-ctrl-btn {
-    background: #1f2937;
+    background: rgba(255, 255, 255, 0.2);
     color: #fff;
-    border: none;
-    width: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    width: 32px;
     height: 28px;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 13px;
+    margin-right: 4px;
   }
-  .strike-ctrl-btn:hover { background: #10b981; color: #fff; }
+  .strike-ctrl-btn:hover { 
+    background: rgba(255, 255, 255, 0.4); 
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  /* ✅ COLUMN SCROLL BUTTONS - shift columns left/right */
+  .col-scroll-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 14px;
+    margin: 0 2px;
+  }
+  .col-scroll-btn:hover { 
+    background: rgba(255, 255, 255, 0.4); 
+  }
   
   .spread-bar { 
     display: flex; 
     align-items: center; 
-    padding: 8px 12px; 
+    padding: 6px 10px; 
     font-weight: 800; 
     font-size: 12px; 
     margin-bottom: 6px; 
     border-radius: 4px; 
+    gap: 6px;
   }
   .spread-bar.call { 
     background: linear-gradient(90deg, #047857, #10b981, #047857); 
@@ -181,28 +207,6 @@
     background: linear-gradient(90deg, #b91c1c, #ef4444, #b91c1c); 
     color: #fff; 
   }
-  .spread-bar .neg { 
-    background: rgba(0,0,0,0.3); 
-    color: #fff;
-    padding: 4px 10px; 
-    border-radius: 3px; 
-    margin-right: 8px; 
-    cursor: pointer; 
-    user-select: none; 
-    font-weight: 800;
-  }
-  .spread-bar .neg:hover { background: rgba(0,0,0,0.5); }
-  .spread-bar .pos { 
-    background: rgba(0,0,0,0.3); 
-    color: #fff;
-    padding: 4px 10px; 
-    border-radius: 3px; 
-    margin-left: 8px; 
-    cursor: pointer; 
-    user-select: none; 
-    font-weight: 800;
-  }
-  .spread-bar .pos:hover { background: rgba(0,0,0,0.5); }
   
   .formula-box { 
     background: linear-gradient(135deg, #ecfdf5, #eff6ff); 
@@ -263,6 +267,22 @@
     color: #fff !important;
     font-weight: 800;
     border: 1px solid #8b5a2b;
+    position: relative;
+  }
+  .col-meta .col-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    line-height: 1;
+  }
+  .col-meta-scroll-left {
+    left: 2px;
+  }
+  .col-meta-scroll-right {
+    right: 2px;
   }
   
   ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -321,7 +341,6 @@
     <span>⚖</span> Ratio Strategy <span style="color:#6b7280">(Buy M : Sell N)</span>
   </div>
 
-  <!-- ✅ RANGE INPUTS REMOVED — Now +5/-5 buttons control strike count -->
   <div class="controls-row">
     <label>CE Ratio:</label>
     <input type="number" id="ratioBuy" class="ratio-input" value="1" min="1">
@@ -337,11 +356,11 @@
   <div class="grid md:grid-cols-2 gap-3">
     <!-- CALL RATIO -->
     <div>
-      <!-- ✅ +5 / -5 buttons next to title -->
+      <!-- ✅ −5/+5 buttons on LEFT of title -->
       <div class="spread-bar call">
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'call')">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'call')">+5</button>
-        <span style="flex:1; text-align:center" id="callRatioTitle">CALL RATIO (1:3)</span>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'call')" title="Remove 5 strikes below">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'call')" title="Add 5 strikes above">+5</button>
+        <span style="flex:1; text-align:center" id="callRatioTitle">CALL RATIO (1:3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
         <table>
@@ -359,15 +378,21 @@
           </thead>
           <tbody id="callRatioBody"></tbody>
         </table>
+        <!-- ✅ Column scroll buttons BELOW the table -->
+        <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
+          <button class="col-scroll-btn" onclick="shiftColumns(-50, 'call')" title="Shift columns left (−50pts)">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
+          <button class="col-scroll-btn" onclick="shiftColumns(50, 'call')" title="Shift columns right (+50pts)">▶</button>
+        </div>
       </div>
     </div>
 
     <!-- PUT RATIO -->
     <div>
       <div class="spread-bar put">
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'put')">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'put')">+5</button>
-        <span style="flex:1; text-align:center" id="putRatioTitle">PUT RATIO (1:3)</span>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'put')" title="Remove 5 strikes above">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'put')" title="Add 5 strikes above">+5</button>
+        <span style="flex:1; text-align:center" id="putRatioTitle">PUT RATIO (1:3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
         <table>
@@ -385,6 +410,11 @@
           </thead>
           <tbody id="putRatioBody"></tbody>
         </table>
+        <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
+          <button class="col-scroll-btn" onclick="shiftColumns(-50, 'put')" title="Shift columns left">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
+          <button class="col-scroll-btn" onclick="shiftColumns(50, 'put')" title="Shift columns right">▶</button>
+        </div>
       </div>
     </div>
   </div>
@@ -415,7 +445,7 @@
       <div class="spread-bar call">
         <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5, 'call')">−5</button>
         <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5, 'call')">+5</button>
-        <span style="flex:1; text-align:center" id="callBFTitle">CALL BUTTERFLY (1 : 4 : 3)</span>
+        <span style="flex:1; text-align:center" id="callBFTitle">CALL BUTTERFLY (1 : 4 : 3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
         <table>
@@ -433,6 +463,11 @@
           </thead>
           <tbody id="callBFBody"></tbody>
         </table>
+        <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
+          <button class="col-scroll-btn" onclick="shiftBFColumns(-50, 'call')">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
+          <button class="col-scroll-btn" onclick="shiftBFColumns(50, 'call')">▶</button>
+        </div>
       </div>
     </div>
 
@@ -441,7 +476,7 @@
       <div class="spread-bar put">
         <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5, 'put')">−5</button>
         <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5, 'put')">+5</button>
-        <span style="flex:1; text-align:center" id="putBFTitle">PUT BUTTERFLY (1 : 4 : 3)</span>
+        <span style="flex:1; text-align:center" id="putBFTitle">PUT BUTTERFLY (1 : 4 : 3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
         <table>
@@ -459,6 +494,11 @@
           </thead>
           <tbody id="putBFBody"></tbody>
         </table>
+        <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
+          <button class="col-scroll-btn" onclick="shiftBFColumns(-50, 'put')">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
+          <button class="col-scroll-btn" onclick="shiftBFColumns(50, 'put')">▶</button>
+        </div>
       </div>
     </div>
   </div>
@@ -499,17 +539,15 @@
   let spotPrice = 0, atmStrike = 0, strikeGap = 50;
   let chainMap = {};
   let currentBF = '1:4:3';
-  let numCols = 7;  // ✅ FIXED: 7 columns (0 to 300), no duplicates
+  let numCols = 7;
 
-  // ✅ FIXED: 7 columns, starting at 0, no duplicates
-  // For NIFTY (gap=50): 0, 50, 100, 150, 200, 250, 300
-  // For BANKNIFTY (gap=100): 0, 100, 200, 300, 400, 500, 600
+  // Column spreads — starts at 0, steps by strikeGap
   let colSpreads = [0, 50, 100, 150, 200, 250, 300];
   let bfColSpreads = [0, 50, 100, 150, 200, 250, 300];
 
-  // ✅ Number of strike rows (default 11: 5 above ATM + ATM + 5 below)
-  let ratioRows = 11;
-  let bfRows = 11;
+  // Strike rows (default 13: 6 above ATM + ATM + 6 below)
+  let ratioRows = 13;
+  let bfRows = 13;
 
   const SYMBOL_CONFIG = {
     'NIFTY':     { gap: 50,  defaultSpot: 24500, nseName: 'NIFTY' },
@@ -653,7 +691,7 @@
       : 'Weekly';
     document.getElementById('bfATMInput').value = atmStrike;
 
-    // ✅ Set spread columns based on strike gap (BANKNIFTY = 100pt steps)
+    // Reset spreads based on strike gap
     colSpreads = [];
     bfColSpreads = [];
     for (let i = 0; i < numCols; i++) {
@@ -667,7 +705,7 @@
   function generateChain(spot) {
     const atm = Math.round(spot / strikeGap) * strikeGap;
     const chainMap = {};
-    for (let i = -20; i <= 20; i++) {
+    for (let i = -25; i <= 25; i++) {
       const strike = atm + (i * strikeGap);
       const m = (strike - spot) / spot;
       const iv = 14 + Math.abs(m) * 100;
@@ -681,9 +719,9 @@
   }
 
   // ===== STRIKE ROW CONTROLS =====
-  // ✅ +5 / -5 buttons add/remove 5 strike rows
+  // ✅ −5 removes 5 strikes, +5 adds 5 strikes
   function changeStrikeRows(delta, type) {
-    ratioRows = Math.max(3, Math.min(31, ratioRows + delta));  // 3 to 31 rows
+    ratioRows = Math.max(3, Math.min(31, ratioRows + delta));
     renderRatio();
   }
 
@@ -692,7 +730,20 @@
     renderBF();
   }
 
-  // ===== COLUMN CONTROLS =====
+  // ===== COLUMN SCROLL CONTROLS =====
+  // ✅ ◀ shifts columns LEFT by 50pts, ▶ shifts RIGHT by 50pts
+  function shiftColumns(delta, type) {
+    colSpreads = colSpreads.map(s => Math.max(0, s + delta));
+    updateColHeaders(type + 'RatioCol', colSpreads);
+    renderAll();
+  }
+
+  function shiftBFColumns(delta, type) {
+    bfColSpreads = bfColSpreads.map(s => Math.max(0, s + delta));
+    updateColHeaders(type + 'BFCol', bfColSpreads);
+    renderAll();
+  }
+
   function updateColHeaders(prefix, spreads) {
     for (let i = 0; i < numCols; i++) {
       const el = document.getElementById(prefix + i);
@@ -743,16 +794,18 @@
   }
 
   /**
-   * ✅ POSITIVE — MEDIUM GREEN backgrounds
-   * ✅ NEGATIVE — neutral gray (no red)
+   * ✅ POSITIVE — gradient from light green (low) to dark green (high)
+   * ✅ NEGATIVE — neutral gray
    */
   function getPLClass(pl) {
-    if (pl > 200)  return 'pl-positive-high';  // darkest green
-    if (pl > 50)   return 'pl-positive-mid';   // medium dark green
-    if (pl > 0)    return 'pl-positive';       // medium green (default positive)
-    if (pl < -200) return 'pl-negative-high';
-    if (pl < -50)  return 'pl-negative-mid';
-    if (pl < 0)    return 'pl-negative';
+    if (pl > 300) return 'pl-pos-5';   // Darkest green
+    if (pl > 200) return 'pl-pos-4';   // Dark green
+    if (pl > 100) return 'pl-pos-3';   // Medium green
+    if (pl > 30)  return 'pl-pos-2';   // Light green
+    if (pl > 0)   return 'pl-pos-1';   // Very light green
+    if (pl < -200) return 'pl-neg-3';
+    if (pl < -50)  return 'pl-neg-2';
+    if (pl < 0)    return 'pl-neg-1';
     return 'pl-zero';
   }
 
@@ -763,7 +816,6 @@
     const buyQtyPE   = parseInt(document.getElementById('ratioBuyPE').value)  || 1;
     const sellQtyPE  = parseInt(document.getElementById('ratioSellPE').value) || 3;
 
-    // ✅ Strike list centered around ATM
     const half = Math.floor(ratioRows / 2);
     const strikeList = [];
     for (let i = -half; i <= half; i++) {
@@ -917,7 +969,7 @@
     document.getElementById('modalLegs').innerHTML = 
       `<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-bold">BUY</span><span>${a}× ${itm} ${type.toUpperCase()} @ ₹${fmt(itmLTP)}</span></div>
        <div class="modal-leg"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-bold">SELL</span><span>${b}× ${centre} ${type.toUpperCase()} @ ₹${fmt(atmLTP)}</span></div>
-       <div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-bold">BUY</span><span>${c}× ${otm} ${type.toUpperCase()} @ ₹${fmt(otmLTP)}</span></div>`;
+       <div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-red-700 rounded text-xs font-bold">BUY</span><span>${c}× ${otm} ${type.toUpperCase()} @ ₹${fmt(otmLTP)}</span></div>`;
     
     document.getElementById('modalMargin').textContent = '₹' + (margin / 100000).toFixed(2) + ' L';
     document.getElementById('modalQty').textContent = b + ' × ' + centre.toLocaleString() + ' / Lot';
