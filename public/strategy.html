@@ -29,7 +29,6 @@
     border-color: #d97706;
   }
   
-  /* P&L CELLS - WHITE BG */
   .pl-cell { 
     background: #ffffff !important;
     color: #1f2937;
@@ -50,19 +49,17 @@
     border-color: #10b981;
   }
   
-  /* ✅ POSITIVE — Gradient of medium-to-dark green (matches your image) */
-  /* Small positive: light/medium green | Big positive: darker green */
-  .pl-pos-1 { background: #86efac !important; color: #14532d !important; }   /* very light green */
-  .pl-pos-2 { background: #4ade80 !important; color: #14532d !important; }   /* light green */
-  .pl-pos-3 { background: #22c55e !important; color: #ffffff !important; }   /* medium green */
-  .pl-pos-4 { background: #16a34a !important; color: #ffffff !important; }   /* darker green */
-  .pl-pos-5 { background: #15803d !important; color: #ffffff !important; }   /* dark green */
+  /* ✅ POSITIVE — gradient greens */
+  .pl-pos-1 { background: #86efac !important; color: #14532d !important; }
+  .pl-pos-2 { background: #4ade80 !important; color: #14532d !important; }
+  .pl-pos-3 { background: #22c55e !important; color: #ffffff !important; }
+  .pl-pos-4 { background: #16a34a !important; color: #ffffff !important; }
+  .pl-pos-5 { background: #15803d !important; color: #ffffff !important; }
   
-  /* NEGATIVE — neutral gray (no red!) */
+  /* NEGATIVE — neutral gray */
   .pl-neg-1 { background: #f3f4f6 !important; color: #6b7280 !important; }
   .pl-neg-2 { background: #e5e7eb !important; color: #4b5563 !important; font-weight: 800; }
   .pl-neg-3 { background: #d1d5db !important; color: #374151 !important; font-weight: 800; }
-  
   .pl-zero  { background: #ffffff !important; color: #9ca3af !important; }
   
   input[type="number"] { 
@@ -87,6 +84,17 @@
     height: 30px;
     font-size: 14px !important;
     font-weight: 800 !important;
+  }
+  
+  /* ✅ ATM scroll input */
+  .atm-input {
+    width: 70px !important;
+    height: 26px;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    border: 2px solid #d4a574 !important;
+    background: #fef3c7 !important;
+    color: #78350f !important;
   }
   
   .ratio-btn { 
@@ -154,7 +162,6 @@
     font-weight: 600;
   }
   
-  /* ✅ +5 / -5 BUTTONS - positioned in title bar (left side) */
   .strike-ctrl-btn {
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
@@ -172,7 +179,6 @@
     border-color: rgba(255, 255, 255, 0.8);
   }
   
-  /* ✅ COLUMN SCROLL BUTTONS - shift columns left/right */
   .col-scroll-btn {
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
@@ -185,9 +191,22 @@
     font-size: 14px;
     margin: 0 2px;
   }
-  .col-scroll-btn:hover { 
-    background: rgba(255, 255, 255, 0.4); 
+  .col-scroll-btn:hover { background: rgba(255, 255, 255, 0.4); }
+  
+  /* ✅ ATM SCROLL CONTROLS - in spread bar */
+  .atm-scroll-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 11px;
+    margin: 0 1px;
   }
+  .atm-scroll-btn:hover { background: rgba(255, 255, 255, 0.4); }
   
   .spread-bar { 
     display: flex; 
@@ -217,85 +236,34 @@
     border-radius: 4px; 
     font-size: 12px; 
   }
-  .formula-title { 
-    color: #047857; 
-    font-weight: 800; 
-    font-size: 12px; 
-    margin-bottom: 6px; 
-  }
+  .formula-title { color: #047857; font-weight: 800; font-size: 12px; margin-bottom: 6px; }
   .formula-equation { 
-    background: #ffffff; 
-    padding: 6px 10px; 
-    border-radius: 3px; 
-    font-family: 'Courier New', monospace; 
-    font-size: 11px; 
-    margin-bottom: 4px; 
-    color: #b45309; 
-    border: 1px solid #e5e7eb;
+    background: #ffffff; padding: 6px 10px; border-radius: 3px;
+    font-family: 'Courier New', monospace; font-size: 11px;
+    margin-bottom: 4px; color: #b45309; border: 1px solid #e5e7eb;
   }
-  .formula-where { 
-    font-size: 10px; 
-    color: #4b5563; 
-    line-height: 1.5; 
-  }
+  .formula-where { font-size: 10px; color: #4b5563; line-height: 1.5; }
   .formula-where strong { color: #047857; }
   
   .info-bar { 
-    background: #fef3c7; 
-    border: 1px solid #d4a574; 
-    padding: 6px 10px; 
-    font-size: 10px; 
-    color: #78350f; 
-    border-radius: 3px; 
-    margin-top: 6px; 
-    font-family: 'Courier New', monospace; 
+    background: #fef3c7; border: 1px solid #d4a574;
+    padding: 6px 10px; font-size: 10px; color: #78350f;
+    border-radius: 3px; margin-top: 6px; font-family: 'Courier New', monospace;
   }
   
-  table { 
-    border-collapse: collapse; 
-    width: 100%; 
-    background: #ffffff; 
-  }
-  th, td { 
-    padding: 4px; 
-    font-size: 11px; 
-    line-height: 1.2; 
-  }
+  table { border-collapse: collapse; width: 100%; background: #ffffff; }
+  th, td { padding: 4px; font-size: 11px; line-height: 1.2; }
   
   .col-meta { 
-    background: #b8854f !important;
-    color: #fff !important;
-    font-weight: 800;
-    border: 1px solid #8b5a2b;
-    position: relative;
-  }
-  .col-meta .col-scroll-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    font-size: 11px;
-    line-height: 1;
-  }
-  .col-meta-scroll-left {
-    left: 2px;
-  }
-  .col-meta-scroll-right {
-    right: 2px;
+    background: #b8854f !important; color: #fff !important;
+    font-weight: 800; border: 1px solid #8b5a2b;
   }
   
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: #f3f4f6; }
   ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
   
-  .modal-leg { 
-    display: flex; 
-    align-items: center; 
-    gap: 6px; 
-    padding: 3px 0; 
-    font-size: 12px; 
-  }
+  .modal-leg { display: flex; align-items: center; gap: 6px; padding: 3px 0; font-size: 12px; }
   
   header { 
     background: #ffffff !important; 
@@ -351,15 +319,21 @@
     <input type="number" id="ratioBuyPE" class="ratio-input" value="1" min="1">
     <span style="font-weight:800; color:#1f2937">:</span>
     <input type="number" id="ratioSellPE" class="ratio-input" value="3" min="1">
+    
+    <!-- ✅ ATM INPUT WITH SCROLL BUTTONS -->
+    <label style="margin-left:12px">ATM:</label>
+    <button class="atm-scroll-btn" onclick="scrollATM(-1, 'call')" title="Shift ATM down 1 strike">◀</button>
+    <input type="number" id="ratioATM" class="atm-input" value="0">
+    <button class="atm-scroll-btn" onclick="scrollATM(1, 'call')" title="Shift ATM up 1 strike">▶</button>
+    <span id="gapInfo" style="color:#6b7280; font-size:10px; margin-left:4px"></span>
   </div>
 
   <div class="grid md:grid-cols-2 gap-3">
     <!-- CALL RATIO -->
     <div>
-      <!-- ✅ −5/+5 buttons on LEFT of title -->
       <div class="spread-bar call">
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'call')" title="Remove 5 strikes below">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'call')" title="Add 5 strikes above">+5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5)">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5)">+5</button>
         <span style="flex:1; text-align:center" id="callRatioTitle">CALL RATIO (1:3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
@@ -378,11 +352,11 @@
           </thead>
           <tbody id="callRatioBody"></tbody>
         </table>
-        <!-- ✅ Column scroll buttons BELOW the table -->
+        <!-- ✅ COLUMN SCROLL - shifts by strikeGap (50 for NIFTY, 100 for BANKNIFTY) -->
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
-          <button class="col-scroll-btn" onclick="shiftColumns(-50, 'call')" title="Shift columns left (−50pts)">◀</button>
-          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
-          <button class="col-scroll-btn" onclick="shiftColumns(50, 'call')" title="Shift columns right (+50pts)">▶</button>
+          <button class="col-scroll-btn" onclick="shiftColumns(-1, 'call')" id="callShiftLeft">◀</button>
+          <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS BY <span id="callShiftStep">50</span>pts</span>
+          <button class="col-scroll-btn" onclick="shiftColumns(1, 'call')" id="callShiftRight">▶</button>
         </div>
       </div>
     </div>
@@ -390,8 +364,8 @@
     <!-- PUT RATIO -->
     <div>
       <div class="spread-bar put">
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5, 'put')" title="Remove 5 strikes above">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5, 'put')" title="Add 5 strikes above">+5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(-5)">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeStrikeRows(5)">+5</button>
         <span style="flex:1; text-align:center" id="putRatioTitle">PUT RATIO (1:3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
@@ -411,9 +385,9 @@
           <tbody id="putRatioBody"></tbody>
         </table>
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
-          <button class="col-scroll-btn" onclick="shiftColumns(-50, 'put')" title="Shift columns left">◀</button>
+          <button class="col-scroll-btn" onclick="shiftColumns(-1, 'put')">◀</button>
           <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
-          <button class="col-scroll-btn" onclick="shiftColumns(50, 'put')" title="Shift columns right">▶</button>
+          <button class="col-scroll-btn" onclick="shiftColumns(1, 'put')">▶</button>
         </div>
       </div>
     </div>
@@ -435,16 +409,19 @@
     <button class="ratio-btn active" onclick="setBF('1:4:3')">1:4:3</button>
     <button class="ratio-btn" onclick="setBF('1:5:4')">1:5:4</button>
     <button class="ratio-btn" onclick="setBF('2:5:3')">2:5:3</button>
-    <label style="margin-left:8px">ATM:</label>
-    <input type="number" id="bfATMInput" value="0" style="width:70px" placeholder="auto">
+    
+    <label style="margin-left:12px">ATM:</label>
+    <button class="atm-scroll-btn" onclick="scrollBFATM(-1)">◀</button>
+    <input type="number" id="bfATMInput" class="atm-input" value="0">
+    <button class="atm-scroll-btn" onclick="scrollBFATM(1)">▶</button>
   </div>
 
   <div class="grid md:grid-cols-2 gap-3">
     <!-- CALL BF -->
     <div>
       <div class="spread-bar call">
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5, 'call')">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5, 'call')">+5</button>
+        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5)">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5)">+5</button>
         <span style="flex:1; text-align:center" id="callBFTitle">CALL BUTTERFLY (1 : 4 : 3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
@@ -464,9 +441,9 @@
           <tbody id="callBFBody"></tbody>
         </table>
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
-          <button class="col-scroll-btn" onclick="shiftBFColumns(-50, 'call')">◀</button>
+          <button class="col-scroll-btn" onclick="shiftBFColumns(-1)">◀</button>
           <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
-          <button class="col-scroll-btn" onclick="shiftBFColumns(50, 'call')">▶</button>
+          <button class="col-scroll-btn" onclick="shiftBFColumns(1)">▶</button>
         </div>
       </div>
     </div>
@@ -474,8 +451,8 @@
     <!-- PUT BF -->
     <div>
       <div class="spread-bar put">
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5, 'put')">−5</button>
-        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5, 'put')">+5</button>
+        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(-5)">−5</button>
+        <button class="strike-ctrl-btn" onclick="changeBFStrikeRows(5)">+5</button>
         <span style="flex:1; text-align:center" id="putBFTitle">PUT BUTTERFLY (1 : 4 : 3) — 13 strikes</span>
       </div>
       <div class="overflow-x-auto">
@@ -495,9 +472,9 @@
           <tbody id="putBFBody"></tbody>
         </table>
         <div style="display:flex; justify-content:center; gap:8px; padding:6px; background:#b8854f; border-radius:0 0 4px 4px;">
-          <button class="col-scroll-btn" onclick="shiftBFColumns(-50, 'put')">◀</button>
+          <button class="col-scroll-btn" onclick="shiftBFColumns(-1)">◀</button>
           <span style="color:#fff; font-size:10px; font-weight:700;">SHIFT COLUMNS</span>
-          <button class="col-scroll-btn" onclick="shiftBFColumns(50, 'put')">▶</button>
+          <button class="col-scroll-btn" onclick="shiftBFColumns(1)">▶</button>
         </div>
       </div>
     </div>
@@ -517,7 +494,7 @@
     <div id="modalFormulas" class="mb-4"></div>
     <div id="modalLegs" class="mb-4 pb-4 border-b border-gray-200"></div>
     <div class="space-y-2 text-sm">
-      <div class="flex justify-between py-1"><span class="text-gray-500">MARGIN</span><span id="modalMargin" class="font-bold text-emerald-600">₹0 L</span></div>
+      <div class="flex justify-between py-1"><span class="text-gray-500">MARGIN</span><span id="modalMargin" class="font-bold text-emerald-600">�0 L</span></div>
       <div class="flex justify-between py-1"><span class="text-gray-500">QTY / CR</span><span id="modalQty" class="font-bold">0 / 3,835</span></div>
       <div class="flex justify-between py-1"><span class="text-gray-500">CHARGES (RT)</span><span id="modalCharges" class="font-bold text-yellow-600">0.47 pts</span></div>
     </div>
@@ -541,11 +518,14 @@
   let currentBF = '1:4:3';
   let numCols = 7;
 
-  // Column spreads — starts at 0, steps by strikeGap
+  // ✅ Columns start at 0, step by strikeGap (auto-set per symbol)
   let colSpreads = [0, 50, 100, 150, 200, 250, 300];
   let bfColSpreads = [0, 50, 100, 150, 200, 250, 300];
 
-  // Strike rows (default 13: 6 above ATM + ATM + 6 below)
+  // ✅ User-controlled ATM (independent for ratio vs butterfly)
+  let customATM = 24300;
+  let customBFATM = 24300;
+
   let ratioRows = 13;
   let bfRows = 13;
 
@@ -589,7 +569,6 @@
   // ===== LIVE DATA FETCHING =====
   async function fetchLiveChain(symbol) {
     const config = SYMBOL_CONFIG[symbol];
-    
     try {
       const res = await fetch('/api/option-chain/' + symbol);
       if (res.ok) {
@@ -597,7 +576,6 @@
         if (data.spot && data.chain) return { ...normalizeChain(data), source: 'live' };
       }
     } catch (e) {}
-
     try {
       const proxyUrl = 'https://api.allorigins.win/raw?url=' + 
         encodeURIComponent('https://www.nseindia.com/api/option-chain-indices?symbol=' + config.nseName);
@@ -607,7 +585,6 @@
         if (data.records) return { ...extractNSE(data), source: 'live' };
       }
     } catch (e) {}
-
     try {
       const yahooSymbol = config.nseName + '.NS';
       const res = await fetch(`https://query1.finance.yahoo.com/v7/finance/options/${yahooSymbol}`);
@@ -616,7 +593,6 @@
         if (data.optionChain && data.optionChain.result) return { ...extractYahoo(data), source: 'live' };
       }
     } catch (e) {}
-
     return { source: 'fallback' };
   }
 
@@ -662,7 +638,7 @@
     currentSymbol = symbol;
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById('tab-' + symbol).classList.add('active');
-    strikeGap = SYMBOL_CONFIG[symbol].gap;
+    strikeGap = SYMBOL_CONFIG[symbol].gap;  // ✅ 50 for NIFTY, 100 for BANKNIFTY
     
     setLiveStatus('fallback', 'LOADING ' + symbol + '...');
 
@@ -689,9 +665,19 @@
     document.getElementById('hdrExpiry').textContent = result.expiry 
       ? new Date(result.expiry).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })
       : 'Weekly';
+
+    // ✅ Update gap display
+    document.getElementById('gapInfo').textContent = `(${strikeGap}pt gap)`;
+    const shiftStepEl = document.getElementById('callShiftStep');
+    if (shiftStepEl) shiftStepEl.textContent = strikeGap;
+
+    // ✅ Set user ATM to auto ATM
+    customATM = atmStrike;
+    customBFATM = atmStrike;
+    document.getElementById('ratioATM').value = atmStrike;
     document.getElementById('bfATMInput').value = atmStrike;
 
-    // Reset spreads based on strike gap
+    // ✅ Reset spreads based on strike gap (50 for NIFTY, 100 for BANKNIFTY)
     colSpreads = [];
     bfColSpreads = [];
     for (let i = 0; i < numCols; i++) {
@@ -718,30 +704,44 @@
     return chainMap;
   }
 
+  // ===== ATM SCROLL =====
+  // ✅ Scrolls ATM by 1 strike gap (50 for NIFTY, 100 for BANKNIFTY)
+  function scrollATM(direction, type) {
+    customATM += (direction * strikeGap);  // ✅ uses strikeGap
+    document.getElementById('ratioATM').value = customATM;
+    renderRatio();
+  }
+
+  function scrollBFATM(direction) {
+    customBFATM += (direction * strikeGap);  // ✅ uses strikeGap
+    document.getElementById('bfATMInput').value = customBFATM;
+    renderBF();
+  }
+
   // ===== STRIKE ROW CONTROLS =====
-  // ✅ −5 removes 5 strikes, +5 adds 5 strikes
-  function changeStrikeRows(delta, type) {
+  function changeStrikeRows(delta) {
     ratioRows = Math.max(3, Math.min(31, ratioRows + delta));
     renderRatio();
   }
 
-  function changeBFStrikeRows(delta, type) {
+  function changeBFStrikeRows(delta) {
     bfRows = Math.max(3, Math.min(31, bfRows + delta));
     renderBF();
   }
 
-  // ===== COLUMN SCROLL CONTROLS =====
-  // ✅ ◀ shifts columns LEFT by 50pts, ▶ shifts RIGHT by 50pts
-  function shiftColumns(delta, type) {
-    colSpreads = colSpreads.map(s => Math.max(0, s + delta));
+  // ===== COLUMN SCROLL =====
+  // ✅ FIX: Shifts by strikeGap (50 for NIFTY, 100 for BANKNIFTY)
+  function shiftColumns(direction, type) {
+    colSpreads = colSpreads.map(s => Math.max(0, s + (direction * strikeGap)));
     updateColHeaders(type + 'RatioCol', colSpreads);
     renderAll();
   }
 
-  function shiftBFColumns(delta, type) {
-    bfColSpreads = bfColSpreads.map(s => Math.max(0, s + delta));
-    updateColHeaders(type + 'BFCol', bfColSpreads);
-    renderAll();
+  function shiftBFColumns(direction) {
+    bfColSpreads = bfColSpreads.map(s => Math.max(0, s + (direction * strikeGap)));
+    updateColHeaders('callBFCol', bfColSpreads);
+    updateColHeaders('putBFCol', bfColSpreads);
+    renderBF();
   }
 
   function updateColHeaders(prefix, spreads) {
@@ -793,16 +793,12 @@
     return (itmVal * a) - (atmVal * b) + (otmVal * c) - netDebit;
   }
 
-  /**
-   * ✅ POSITIVE — gradient from light green (low) to dark green (high)
-   * ✅ NEGATIVE — neutral gray
-   */
   function getPLClass(pl) {
-    if (pl > 300) return 'pl-pos-5';   // Darkest green
-    if (pl > 200) return 'pl-pos-4';   // Dark green
-    if (pl > 100) return 'pl-pos-3';   // Medium green
-    if (pl > 30)  return 'pl-pos-2';   // Light green
-    if (pl > 0)   return 'pl-pos-1';   // Very light green
+    if (pl > 300) return 'pl-pos-5';
+    if (pl > 200) return 'pl-pos-4';
+    if (pl > 100) return 'pl-pos-3';
+    if (pl > 30)  return 'pl-pos-2';
+    if (pl > 0)   return 'pl-pos-1';
     if (pl < -200) return 'pl-neg-3';
     if (pl < -50)  return 'pl-neg-2';
     if (pl < 0)    return 'pl-neg-1';
@@ -816,10 +812,12 @@
     const buyQtyPE   = parseInt(document.getElementById('ratioBuyPE').value)  || 1;
     const sellQtyPE  = parseInt(document.getElementById('ratioSellPE').value) || 3;
 
+    // ✅ Use customATM (user-controlled) instead of atmStrike
+    const centerATM = customATM;
     const half = Math.floor(ratioRows / 2);
     const strikeList = [];
     for (let i = -half; i <= half; i++) {
-      strikeList.push(atmStrike + (i * strikeGap));
+      strikeList.push(centerATM + (i * strikeGap));  // ✅ uses strikeGap
     }
 
     document.getElementById('callRatioTitle').textContent = `CALL RATIO (${buyQtyCE}:${sellQtyCE}) — ${ratioRows} strikes`;
@@ -832,7 +830,7 @@
       let html = '';
       
       strikeList.forEach(sellStrike => {
-        const isATM = sellStrike === atmStrike;
+        const isATM = sellStrike === centerATM;
         html += `<tr><td class="strike-cell${isATM ? ' atm' : ''}" style="text-align:left; padding-left:8px">${sellStrike}</td>`;
         for (let i = 0; i < numCols; i++) {
           const pl = calcRatioPL(sellStrike, type, i, buyQty, sellQty);
@@ -852,17 +850,17 @@
     const spreadsStr = colSpreads.map(s => s + 'pt').join(' | ');
     const infoId = type === 'call' ? 'callRatioInfo' : 'putRatioInfo';
     document.getElementById(infoId).textContent = 
-      `Spreads: ${spreadsStr} | K_sell=ATM ${atmStrike} | Buy:${buyQty} Sell:${sellQty} ${type.toUpperCase()}`;
+      `Spreads: ${spreadsStr} | K_sell=ATM ${customATM} | Buy:${buyQty} Sell:${sellQty} ${type.toUpperCase()}`;
   }
 
   function renderBF() {
-    const customATM = parseInt(document.getElementById('bfATMInput').value) || atmStrike;
     const [a, b, c] = currentBF.split(':').map(Number);
-
+    const centerATM = customBFATM;
+    
     const half = Math.floor(bfRows / 2);
     const strikeList = [];
     for (let i = -half; i <= half; i++) {
-      strikeList.push(customATM + (i * strikeGap));
+      strikeList.push(centerATM + (i * strikeGap));  // ✅ uses strikeGap
     }
 
     document.getElementById('callBFTitle').textContent = `CALL BUTTERFLY (${a}:${b}:${c}) — ${bfRows} strikes`;
@@ -873,7 +871,7 @@
       let html = '';
       
       strikeList.forEach(centre => {
-        const isATM = centre === customATM;
+        const isATM = centre === centerATM;
         html += `<tr><td class="strike-cell${isATM ? ' atm' : ''}" style="text-align:left; padding-left:8px">${centre}</td>`;
         for (let i = 0; i < numCols; i++) {
           const pl = calcBFPL(centre, type, i, a, b, c);
@@ -885,8 +883,8 @@
       document.getElementById(bodyId).innerHTML = html;
     });
 
-    updateBFInfo('call', a, b, c, customATM);
-    updateBFInfo('put',  a, b, c, customATM);
+    updateBFInfo('call', a, b, c, centerATM);
+    updateBFInfo('put',  a, b, c, centerATM);
   }
 
   function updateBFInfo(type, a, b, c, centre) {
@@ -962,14 +960,14 @@
       `<div class="formula-box">
         <div class="formula-title">🦋 ${type.toUpperCase()} BUTTERFLY (${a}:${b}:${c})</div>
         <div class="formula-equation">S (expiry) = ${fmt(expiryPrice)} | ITM = ${itm} | ATM = ${centre} | OTM = ${otm}</div>
-        <div class="formula-equation">Net ${isCredit ? 'Credit' : 'Debit'} = (${a}×₹${fmt(itmLTP)}) − (${b}×₹${fmt(atmLTP)}) + (${c}×₹${fmt(otmLTP)}) = ${fmtSigned(netDebit)}</div>
+        <div class="formula-equation">Net ${isCredit ? 'Credit' : 'Debit'} = (${a}×�${fmt(itmLTP)}) − (${b}×₹${fmt(atmLTP)}) + (${c}×₹${fmt(otmLTP)}) = ${fmtSigned(netDebit)}</div>
         <div class="formula-equation" style="color:#047857">P&L at S=${fmt(expiryPrice)}: <strong>${fmtSigned(pl)}</strong></div>
       </div>`;
 
     document.getElementById('modalLegs').innerHTML = 
       `<div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-bold">BUY</span><span>${a}× ${itm} ${type.toUpperCase()} @ ₹${fmt(itmLTP)}</span></div>
        <div class="modal-leg"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-bold">SELL</span><span>${b}× ${centre} ${type.toUpperCase()} @ ₹${fmt(atmLTP)}</span></div>
-       <div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-red-700 rounded text-xs font-bold">BUY</span><span>${c}× ${otm} ${type.toUpperCase()} @ ₹${fmt(otmLTP)}</span></div>`;
+       <div class="modal-leg"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-bold">BUY</span><span>${c}× ${otm} ${type.toUpperCase()} @ ₹${fmt(otmLTP)}</span></div>`;
     
     document.getElementById('modalMargin').textContent = '₹' + (margin / 100000).toFixed(2) + ' L';
     document.getElementById('modalQty').textContent = b + ' × ' + centre.toLocaleString() + ' / Lot';
@@ -985,10 +983,23 @@
   // ===== INIT =====
   window.addEventListener('load', () => switchSymbol('NIFTY'));
 
-  ['bfATMInput', 'ratioBuy', 'ratioSell', 'ratioBuyPE', 'ratioSellPE'].forEach(id => {
+  // ✅ ATM input change handlers — round to nearest strike gap
+  ['ratioATM', 'bfATMInput', 'ratioBuy', 'ratioSell', 'ratioBuyPE', 'ratioSellPE'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.addEventListener('change', renderAll);
+      el.addEventListener('change', () => {
+        if (id === 'ratioATM') {
+          const v = parseInt(el.value) || atmStrike;
+          customATM = Math.round(v / strikeGap) * strikeGap;  // ✅ Snap to grid
+          el.value = customATM;
+        }
+        if (id === 'bfATMInput') {
+          const v = parseInt(el.value) || atmStrike;
+          customBFATM = Math.round(v / strikeGap) * strikeGap;  // ✅ Snap to grid
+          el.value = customBFATM;
+        }
+        renderAll();
+      });
     }
   });
 
