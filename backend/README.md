@@ -1,162 +1,150 @@
-# SpreadIQ Backend
+# SpreadIQ Backend API
 
-Node.js/Express backend server for SpreadIQ live options analytics dashboard.
+Serverless backend functions for SpreadIQ running on Vercel.
 
-## Features
+## No API Keys Needed! 🎉
 
-- ✅ **Live NSE Option Chain Data** - Real-time calls, puts, OI, volume
-- ✅ **Market Indices** - NIFTY, BANKNIFTY, FINNIFTY prices
-- ✅ **Smart Caching** - 1-minute cache to avoid API rate limits
-- ✅ **CORS Enabled** - Frontend integration ready
-- ✅ **Error Handling** - Graceful fallbacks for API failures
+This backend uses **100% free public APIs**:
+- ✅ NSE API (National Stock Exchange)
+- ✅ No authentication required
+- ✅ Real-time market data
+- ✅ No rate limits for personal use
 
-## Installation
+## Quick Start
+
+### Local Development
 
 ```bash
 cd backend
 npm install
-```
-
-## Configuration
-
-1. Get a **free Finnhub API key** from https://finnhub.io/
-2. Create `.env` file (copy from `.env.example`):
-
-```bash
-cp .env.example .env
-```
-
-3. Add your Finnhub API key:
-
-```env
-FINNHUB_API_KEY=your_api_key_here
-PORT=5000
-```
-
-## Running the Server
-
-**Development (with auto-reload):**
-```bash
 npm run dev
 ```
 
-**Production:**
+Server runs on `http://localhost:3000`
+
+### Deploy to Vercel
+
 ```bash
-npm start
+git add .
+git commit -m "Deploy backend"
+git push
 ```
 
-Server runs on `http://localhost:5000`
+Vercel auto-deploys from GitHub.
 
 ## API Endpoints
 
-### 1. Get Live Indices
+### 1. Live Indices
+
 ```
 GET /api/indices
 ```
 
-**Response:**
-```json
-[
-  {
-    "name": "NIFTY 50",
-    "symbol": "NIFTY50",
-    "last": 18500.25,
-    "change": 150.50,
-    "percentChange": 0.82,
-    "timestamp": "2026-08-23T10:30:00Z"
-  }
-]
+Returns live NIFTY, BANKNIFTY, FINNIFTY prices and changes.
+
+**Cache:** 5 seconds  
+**Updates:** Every 5 seconds  
+**Source:** NSE API (Free)
+
+### 2. Option Chain
+
+```
+GET /api/option-chain?symbol=NIFTY
 ```
 
-### 2. Get Option Chain
-```
-GET /api/option-chain/:symbol
-```
+Returns live option chain data for NSE indices.
 
-**Params:** `NIFTY`, `BANKNIFTY`, `FINNIFTY`
+**Symbols:** `NIFTY`, `BANKNIFTY`, `FINNIFTY`  
+**Cache:** 5 seconds  
+**Updates:** Every 5 seconds  
+**Source:** NSE API (Free)
 
-**Response:**
-```json
-{
-  "symbol": "NIFTY",
-  "spot": 18500.25,
-  "atmStrike": 18500,
-  "currentExpiry": "26-AUG-2026",
-  "chain": [
-    {
-      "strike": 18400,
-      "type": "CE",
-      "ltp": 125.50,
-      "volume": 5000,
-      "oi": 250000,
-      "iv": 15.5
-    }
-  ],
-  "timestamp": "2026-08-23T10:30:00Z"
-}
+## Architecture
+
+```
+Vercel Serverless Functions
+├── api/
+│   ├── indices.js          (Live market indices)
+│   └── option-chain/
+│       └── [symbol].js     (Option chain by symbol)
+└── public/
+    └── dashboard.html      (Frontend)
 ```
 
-### 3. Health Check
-```
-GET /health
-```
+## Environment Variables
 
-## Deployment
+**None needed!** This app uses free public APIs with no authentication.
 
-### Heroku
-```bash
-heroku create your-app-name
-git push heroku main
-```
+## Performance
 
-### Vercel/Netlify
-Use serverless functions or proxy to external backend.
+- Response time: ~1-2 seconds
+- Cache: 5 seconds
+- Total freshness: ~3-5 seconds
+- Updates: 12 per minute
+- Zero dependencies on paid APIs
 
-### Local/VPS
-```bash
-npm start
-```
+## Data Sources
 
-## Frontend Integration
-
-Update your frontend API calls:
-
-```javascript
-const API_BASE = 'http://localhost:5000';
-
-// Indices
-fetch(`${API_BASE}/api/indices`).then(r => r.json())
-
-// Option Chain
-fetch(`${API_BASE}/api/option-chain/NIFTY`).then(r => r.json())
-```
-
-## Security Notes
-
-⚠️ **Important:**
-- Never commit `.env` file to Git
-- Keep Finnhub API key private
-- Use environment variables in production
-- Implement rate limiting for production use
+### NSE API
+- **Endpoint:** `https://www.nseindia.com/api/`
+- **Data:** Real-time option chains and indices
+- **Free:** Yes, completely free
+- **Rate Limit:** None for personal use
+- **Auth:** None needed
 
 ## Troubleshooting
 
-**"Failed to fetch indices"**
-- Check Finnhub API key is valid
+### "Failed to fetch indices"
+
+**Cause:** NSE API is down or slow
+
+**Fix:**
+- Wait 30 seconds and refresh
+- Check if it's 9 AM - 4 PM IST (market hours)
 - Verify internet connection
-- Check API rate limits (free tier: 60 calls/min)
 
-**"Failed to fetch option chain"**
-- NSE API may be down during market hours
-- Check if symbol is valid (NIFTY, BANKNIFTY, FINNIFTY)
-- Review NSE website for data availability
+### "Failed to fetch option chain"
 
-## Dependencies
+**Cause:** NSE option chain API is temporarily down
 
-- **express** - Web framework
-- **axios** - HTTP client
-- **cors** - Enable cross-origin requests
-- **dotenv** - Environment variables
+**Fix:**
+- Try after a few minutes
+- Check market hours (9 AM - 4 PM IST)
+- Verify symbol is correct (NIFTY, BANKNIFTY, FINNIFTY)
+
+## CORS Configuration
+
+All endpoints have CORS enabled for frontend access:
+
+```
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, OPTIONS
+Access-Control-Allow-Headers: *
+```
+
+## Caching Strategy
+
+- **TTL:** 5 seconds (very aggressive for live data)
+- **Headers:** `Cache-Control: no-cache, no-store, must-revalidate`
+- **Browser Cache:** Disabled
+- **Server Cache:** 5-second memory cache per symbol
+
+## Rate Limiting
+
+**No rate limits needed!**
+
+- NSE APIs are free for personal use
+- At 5-second refresh, you make:
+  - 12 calls/min per endpoint
+  - This is well within free tier usage
+
+## Future Improvements
+
+- [ ] Add WebSocket for true streaming
+- [ ] Add historical data endpoints
+- [ ] Add more indices (SENSEX, etc.)
+- [ ] Add stock-specific data
+- [ ] Add news/events integration
 
 ## License
 

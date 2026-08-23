@@ -1,12 +1,19 @@
 const axios = require('axios');
 
-const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
+// NSE API - Free, real-time, no API key needed!
+const NSE_API_BASE = 'https://www.nseindia.com/api';
 
-// Minimal cache - 5 seconds only
+// Cache only 5 seconds for live data
 const cache = {
   data: null,
   timestamp: 0,
-  TTL: 5000 // 5 seconds only
+  TTL: 5000 // 5 seconds
+};
+
+const headers = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+  'Accept': 'application/json',
+  'Referer': 'https://www.nseindia.com/option-chain'
 };
 
 export default async (req, res) => {
@@ -22,59 +29,62 @@ export default async (req, res) => {
   }
 
   try {
-    // Check 5-second cache only
+    // Check 5-second cache
     if (cache.data && Date.now() - cache.timestamp < cache.TTL) {
       return res.status(200).json(cache.data);
     }
 
-    const symbols = [
-      { name: 'NIFTY 50', symbol: 'NIFTY50' },
-      { name: 'BANKNIFTY', symbol: 'BANKNIFTY' },
-      { name: 'FINNIFTY', symbol: 'FINNIFTY' }
-    ];
-
-    const indicesData = await Promise.all(
-      symbols.map(async (sym) => {
-        try {
-          const response = await axios.get(
-            `https://finnhub.io/api/v1/quote`,
-            {
-              params: {
-                symbol: `${sym.symbol}:IN`,
-                token: FINNHUB_API_KEY
-              },
-              timeout: 5000
-            }
-          );
-
-          return {
-            name: sym.name,
-            symbol: sym.symbol,
-            last: response.data.c || 0,
-            change: response.data.d || 0,
-            percentChange: response.data.dp || 0,
-            timestamp: new Date().toISOString()
-          };
-        } catch (error) {
-          console.error(`Error fetching ${sym.symbol}:`, error.message);
-          return {
-            name: sym.name,
-            symbol: sym.symbol,
-            last: 0,
-            change: 0,
-            percentChange: 0,
-            error: 'API Error'
-          };
-        }
-      })
+    // Fetch indices from NSE - Real-time, FREE!
+    const response = await axios.get(
+      `${NSE_API_BASE}/allIndices`,
+      { headers, timeout: 10000 }
     );
 
+    const data = response.data.data;
+
+    // Extract NIFTY, BANKNIFTY, FINNIFTY
+    const indicesMap = {};
+    data.forEach(item => {
+      indicesMap[item.index] = item;
+    });
+
+    const indicesData = [
+      {
+        name: 'NIFTY 50',
+        symbol: 'NIFTY50',
+        last: parseFloat(indicesMap['NIFTY 50']?.lastPrice) || 0,
+        change: parseFloat(indicesMap['NIFTY 50']?.change) || 0,
+        percentChange: parseFloat(indicesMap['NIFTY 50']?.percentChange) || 0,
+        timestamp: new Date().toISOString()
+      },
+      {
+        name: 'BANKNIFTY',
+        symbol: 'BANKNIFTY',
+        last: parseFloat(indicesMap['NIFTY BANK']?.lastPrice) || 0,
+        change: parseFloat(indicesMap['NIFTY BANK']?.change) || 0,
+        percentChange: parseFloat(indicesMap['NIFTY BANK']?.percentChange) || 0,
+        timestamp: new Date().toISOString()
+      },
+      {
+        name: 'FINNIFTY',
+        symbol: 'FINNIFTY',
+        last: parseFloat(indicesMap['NIFTY FIN SERVICE']?.lastPrice) || 0,
+        change: parseFloat(indicesMap['NIFTY FIN SERVICE']?.change) || 0,
+        percentChange: parseFloat(indicesMap['NIFTY FIN SERVICE']?.percentChange) || 0,
+        timestamp: new Date().toISOString()
+      }
+    ];
+
+    // Update cache
     cache.data = indicesData;
     cache.timestamp = Date.now();
 
     res.status(200).json(indicesData);
   } catch (error) {
-    console.error('Error in /api/indices:', error.message);
-    res.status(500).json({ error: 'Failed to fetch indices data' });
+    console.error('Error fetching indices from NSE:', error.message);
+    res.status(500).json({ 
+      error: 'Failed to fetch indices data',
+      message: error.message 
+    });
   }
 };
