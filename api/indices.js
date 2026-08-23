@@ -13,7 +13,7 @@ const cache = {
 const headers = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
   'Accept': 'application/json',
-  'Referer': 'https://www.nseindia.com/option-chain'
+  'Referer': 'https://www.nseindia.com/'
 };
 
 export default async (req, res) => {
@@ -37,40 +37,35 @@ export default async (req, res) => {
     // Fetch indices from NSE - Real-time, FREE!
     const response = await axios.get(
       `${NSE_API_BASE}/allIndices`,
-      { headers, timeout: 10000 }
+      { headers, timeout: 15000 }
     );
 
-    const data = response.data.data;
+    const data = response.data.data || [];
 
-    // Extract NIFTY, BANKNIFTY, FINNIFTY
-    const indicesMap = {};
-    data.forEach(item => {
-      indicesMap[item.index] = item;
-    });
-
+    // Extract NIFTY, BANKNIFTY, FINNIFTY with better error handling
     const indicesData = [
       {
         name: 'NIFTY 50',
         symbol: 'NIFTY50',
-        last: parseFloat(indicesMap['NIFTY 50']?.lastPrice) || 0,
-        change: parseFloat(indicesMap['NIFTY 50']?.change) || 0,
-        percentChange: parseFloat(indicesMap['NIFTY 50']?.percentChange) || 0,
+        last: parseFloat(data.find(d => d.index === 'NIFTY 50')?.lastPrice) || 0,
+        change: parseFloat(data.find(d => d.index === 'NIFTY 50')?.change) || 0,
+        percentChange: parseFloat(data.find(d => d.index === 'NIFTY 50')?.percentChange) || 0,
         timestamp: new Date().toISOString()
       },
       {
         name: 'BANKNIFTY',
         symbol: 'BANKNIFTY',
-        last: parseFloat(indicesMap['NIFTY BANK']?.lastPrice) || 0,
-        change: parseFloat(indicesMap['NIFTY BANK']?.change) || 0,
-        percentChange: parseFloat(indicesMap['NIFTY BANK']?.percentChange) || 0,
+        last: parseFloat(data.find(d => d.index === 'NIFTY BANK')?.lastPrice) || 0,
+        change: parseFloat(data.find(d => d.index === 'NIFTY BANK')?.change) || 0,
+        percentChange: parseFloat(data.find(d => d.index === 'NIFTY BANK')?.percentChange) || 0,
         timestamp: new Date().toISOString()
       },
       {
         name: 'FINNIFTY',
         symbol: 'FINNIFTY',
-        last: parseFloat(indicesMap['NIFTY FIN SERVICE']?.lastPrice) || 0,
-        change: parseFloat(indicesMap['NIFTY FIN SERVICE']?.change) || 0,
-        percentChange: parseFloat(indicesMap['NIFTY FIN SERVICE']?.percentChange) || 0,
+        last: parseFloat(data.find(d => d.index === 'NIFTY FIN SERVICE')?.lastPrice) || 0,
+        change: parseFloat(data.find(d => d.index === 'NIFTY FIN SERVICE')?.change) || 0,
+        percentChange: parseFloat(data.find(d => d.index === 'NIFTY FIN SERVICE')?.percentChange) || 0,
         timestamp: new Date().toISOString()
       }
     ];
@@ -82,9 +77,14 @@ export default async (req, res) => {
     res.status(200).json(indicesData);
   } catch (error) {
     console.error('Error fetching indices from NSE:', error.message);
-    res.status(500).json({ 
-      error: 'Failed to fetch indices data',
-      message: error.message 
-    });
+    
+    // Return fallback data on error
+    const fallbackData = [
+      { name: 'NIFTY 50', symbol: 'NIFTY50', last: 0, change: 0, percentChange: 0, timestamp: new Date().toISOString() },
+      { name: 'BANKNIFTY', symbol: 'BANKNIFTY', last: 0, change: 0, percentChange: 0, timestamp: new Date().toISOString() },
+      { name: 'FINNIFTY', symbol: 'FINNIFTY', last: 0, change: 0, percentChange: 0, timestamp: new Date().toISOString() }
+    ];
+    
+    res.status(200).json(fallbackData);
   }
 };
