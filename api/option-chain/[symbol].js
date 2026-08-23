@@ -16,21 +16,27 @@ const fetchNSEOptionChain = async (symbol) => {
     const headers = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       'Accept': 'application/json',
-      'Referer': 'https://www.nseindia.com/option-chain'
+      'Referer': 'https://www.nseindia.com/'
     };
+
+    console.log(`Fetching option chain for ${symbol}...`);
 
     const response = await axios.get(
       `${NSE_API_BASE}/option-chain-indices?index=${symbol}`,
-      { headers, timeout: 10000 }
+      { headers, timeout: 15000 }
     );
 
     const data = response.data;
 
     if (!data.records || !data.records.data) {
-      throw new Error('Invalid response from NSE');
+      throw new Error('Invalid response structure from NSE');
     }
 
     const currentExpiry = data.records.expiryDates && data.records.expiryDates[0];
+    if (!currentExpiry) {
+      throw new Error('No expiry dates found');
+    }
+
     const records = data.records.data.filter(r => r.expiryDate === currentExpiry);
     const spot = data.records.underlyingValue || 0;
     const atmStrike = Math.round(spot / 100) * 100;
@@ -94,6 +100,12 @@ export default async (req, res) => {
     res.status(200).json(optionData);
   } catch (error) {
     console.error('Error in /api/option-chain:', error.message);
-    res.status(500).json({ error: error.message || 'Failed to fetch option chain data' });
+    
+    // Return detailed error message
+    res.status(500).json({ 
+      error: 'NSE API temporarily unavailable',
+      message: error.message,
+      suggestion: 'Market might be closed. Try during 9 AM - 4 PM IST'
+    });
   }
 };
