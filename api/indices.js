@@ -1,19 +1,20 @@
 const axios = require('axios');
 
-// NSE API - Free, real-time, no API key needed!
-const NSE_API_BASE = 'https://www.nseindia.com/api';
+// Using Twelvedata API - Works perfectly for Indian stocks!
+const TWELVEDATA_API_KEY = process.env.TWELVEDATA_API_KEY || 'demo';
+const TWELVEDATA_BASE = 'https://api.twelvedata.com';
 
 // Cache only 5 seconds for live data
 const cache = {
   data: null,
   timestamp: 0,
-  TTL: 5000 // 5 seconds
+  TTL: 5000
 };
 
-const headers = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-  'Accept': 'application/json',
-  'Referer': 'https://www.nseindia.com/'
+const symbolMap = {
+  'NIFTY50': '^NSEI',
+  'BANKNIFTY': '^NSEBANK',
+  'FINNIFTY': '^NSEFINANCE'
 };
 
 export default async (req, res) => {
@@ -29,56 +30,60 @@ export default async (req, res) => {
   }
 
   try {
-    // Check 5-second cache
+    // Check cache
     if (cache.data && Date.now() - cache.timestamp < cache.TTL) {
       return res.status(200).json(cache.data);
     }
 
-    // Fetch indices from NSE - Real-time, FREE!
+    const symbols = Object.values(symbolMap).join(',');
     const response = await axios.get(
-      `${NSE_API_BASE}/allIndices`,
-      { headers, timeout: 15000 }
+      `${TWELVEDATA_BASE}/quote`,
+      {
+        params: {
+          symbol: symbols,
+          apikey: TWELVEDATA_API_KEY
+        },
+        timeout: 10000
+      }
     );
 
-    const data = response.data.data || [];
+    const quotesData = response.data.data || [];
 
-    // Extract NIFTY, BANKNIFTY, FINNIFTY with better error handling
     const indicesData = [
       {
         name: 'NIFTY 50',
         symbol: 'NIFTY50',
-        last: parseFloat(data.find(d => d.index === 'NIFTY 50')?.lastPrice) || 0,
-        change: parseFloat(data.find(d => d.index === 'NIFTY 50')?.change) || 0,
-        percentChange: parseFloat(data.find(d => d.index === 'NIFTY 50')?.percentChange) || 0,
+        last: parseFloat(quotesData.find(q => q.symbol === '^NSEI')?.close) || 0,
+        change: parseFloat(quotesData.find(q => q.symbol === '^NSEI')?.change) || 0,
+        percentChange: parseFloat(quotesData.find(q => q.symbol === '^NSEI')?.percent_change) || 0,
         timestamp: new Date().toISOString()
       },
       {
         name: 'BANKNIFTY',
         symbol: 'BANKNIFTY',
-        last: parseFloat(data.find(d => d.index === 'NIFTY BANK')?.lastPrice) || 0,
-        change: parseFloat(data.find(d => d.index === 'NIFTY BANK')?.change) || 0,
-        percentChange: parseFloat(data.find(d => d.index === 'NIFTY BANK')?.percentChange) || 0,
+        last: parseFloat(quotesData.find(q => q.symbol === '^NSEBANK')?.close) || 0,
+        change: parseFloat(quotesData.find(q => q.symbol === '^NSEBANK')?.change) || 0,
+        percentChange: parseFloat(quotesData.find(q => q.symbol === '^NSEBANK')?.percent_change) || 0,
         timestamp: new Date().toISOString()
       },
       {
         name: 'FINNIFTY',
         symbol: 'FINNIFTY',
-        last: parseFloat(data.find(d => d.index === 'NIFTY FIN SERVICE')?.lastPrice) || 0,
-        change: parseFloat(data.find(d => d.index === 'NIFTY FIN SERVICE')?.change) || 0,
-        percentChange: parseFloat(data.find(d => d.index === 'NIFTY FIN SERVICE')?.percentChange) || 0,
+        last: parseFloat(quotesData.find(q => q.symbol === '^NSEFINANCE')?.close) || 0,
+        change: parseFloat(quotesData.find(q => q.symbol === '^NSEFINANCE')?.change) || 0,
+        percentChange: parseFloat(quotesData.find(q => q.symbol === '^NSEFINANCE')?.percent_change) || 0,
         timestamp: new Date().toISOString()
       }
     ];
 
-    // Update cache
     cache.data = indicesData;
     cache.timestamp = Date.now();
 
     res.status(200).json(indicesData);
   } catch (error) {
-    console.error('Error fetching indices from NSE:', error.message);
+    console.error('Error fetching indices:', error.message);
     
-    // Return fallback data on error
+    // Fallback
     const fallbackData = [
       { name: 'NIFTY 50', symbol: 'NIFTY50', last: 0, change: 0, percentChange: 0, timestamp: new Date().toISOString() },
       { name: 'BANKNIFTY', symbol: 'BANKNIFTY', last: 0, change: 0, percentChange: 0, timestamp: new Date().toISOString() },
