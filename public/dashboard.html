@@ -391,10 +391,17 @@
   }
   
   async function fetchStockData(symbol) {
-    const yahooSymbol = SYMBOL_MAP[symbol] || symbol + '.NS';
-    try {
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?interval=1d&range=1d`;
-      const res = await fetch(url);
+  try {
+    // Use our server proxy to avoid CORS
+    const res = await fetch('/api/stock/' + symbol);
+    const data = await res.json();
+    if (data.error) return null;
+    return { symbol, last: data.last, change: data.change, pct: data.percentChange, volume: data.volume };
+  } catch (e) {
+    return null;
+  }
+}
+
       const data = await res.json();
       const meta = data.chart?.result?.[0]?.meta;
       if (!meta) return null;
