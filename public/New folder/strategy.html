@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Strategy Builder</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background:#fff; color:#222; margin:20px; }
+    h1 { margin-bottom:20px; }
+    h2 { color:#0077cc; margin-bottom:10px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    table { border-collapse: collapse; width:100%; margin-top:10px; }
+    th, td { border:1px solid #ccc; padding:6px; text-align:center; font-size:12px; }
+    th { background:#f0f0f0; color:#555; }
+    .strike-cell { background:#deb887; color:#000; font-weight:bold; } /* light brown */
+    .positive { background:#006400; color:#000; font-weight:bold; }   /* dark green bg, black bold text */
+    .negative { background:#f0f0f0; color:#555; }                     /* neutral gray */
+    .atm { font-weight:bold; background:#e0f7ff; }
+    .controls { margin-bottom:15px; }
+    .control-group { display:inline-flex; align-items:center; margin-right:20px; }
+    .control-group button { background:#eee; border:1px solid #ccc; padding:2px 8px; cursor:pointer; font-weight:bold; }
+    .control-group span { display:inline-block; min-width:50px; text-align:center; font-weight:bold; }
+    .modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+             background:#fff; padding:20px; border-radius:8px; display:none; width:400px;
+             box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+    .modal h3 { margin-top:0; color:#0077cc; }
+    .modal button { margin-top:10px; padding:8px 12px; border:none; border-radius:4px; cursor:pointer; }
+    .buy-btn { background:#d9f9d9; color:#006600; }
+  </style>
+</head>
+<body>
+
+<h1>Strategy Builder</h1>
+
+<div class="grid">
+  <!-- Ratio Section -->
+  <section>
+    <h2>RATIO</h2>
+    <div class="controls">
+      <div class="control-group">
+        <label>Range:</label>
+        <button onclick="adjustValue('ratioRange',-50)">–</button>
+        <span id="ratioRange">300</span>
+        <button onclick="adjustValue('ratioRange',50)">+</button>
+      </div>
+      <div class="control-group">
+        <label>CE:</label>
+        <button onclick="adjustRatio('ratioCE',-1)">–</button>
+        <span id="ratioCE">1:3</span>
+        <button onclick="adjustRatio('ratioCE',1)">+</button>
+      </div>
+      <div class="control-group">
+        <label>PE:</label>
+        <button onclick="adjustRatio('ratioPE',-1)">–</button>
+        <span id="ratioPE">1:3</span>
+        <button onclick="adjustRatio('ratioPE',1)">+</button>
+      </div>
+    </div>
+    <div id="callRatio"></div>
+    <div id="putRatio"></div>
+  </section>
+
+  <!-- Butterfly Section -->
+  <section>
+    <h2>CUSTOM BUTTERFLY</h2>
+    <div class="controls">
+      <div class="control-group">
+        <label>Range:</label>
+        <button onclick="adjustValue('bfRange',-50)">–</button>
+        <span id="bfRange">300</span>
+        <button onclick="adjustValue('bfRange',50)">+</button>
+      </div>
+      <div class="control-group">
+        <label>Ratio:</label>
+        <select id="bfRatio">
+          <option>1:3.2</option>
+          <option selected>1:4.3</option>
+          <option>1:5.4</option>
+          <option>2:5.3</option>
+        </select>
+      </div>
+    </div>
+    <div id="callButterfly"></div>
+    <div id="putButterfly"></div>
+  </section>
+</div>
+
+<!-- Trade Setup Modal -->
+<div id="tradeModal" class="modal">
+  <h3>Trade Setup</h3>
+  <div id="modalLegs"></div>
+  <p><strong>Margin:</strong> <span id="modalNet">--</span></p>
+  <p><strong>Max Profit:</strong> <span id="modalMaxProfit">--</span></p>
+  <p><strong>Max Loss:</strong> <span id="modalMaxLoss">--</span></p>
+  <p><strong>Breakeven:</strong> <span id="modalBE">--</span></p>
+  <canvas id="payoffChart" width="350" height="200"></canvas>
+  <button class="buy-btn" onclick="closeModal()">Close</button>
+</div>
+
+<script>
+const strikes = [24100,24200,24300,24350,24400,24500,24600,24700,24800];
+const payoffValues = strikes.map(s => [Math.round(Math.random()*200-100),
+                                       Math.round(Math.random()*200-100),
+                                       Math.round(Math.random()*200-100),
+                                       Math.round(Math.random()*200-100),
+                                       Math.round(Math.random()*200-100),
+                                       Math.round(Math.random()*200-100)]);
+
+function renderTable(containerId, strikes, payoffValues, type) {
+  let html = '<table><thead><tr><th>Strike</th>';
+  [300,250,200,150,100,50].forEach(g => html += `<th>${g}</th>`);
+  html += '</tr></thead><tbody>';
+
+  strikes.forEach((strike, i) => {
+    html += `<tr><td class="strike-cell ${strike===24350?'atm':''}">${strike}</td>`;
+    payoffValues[i].forEach((val, idx) => {
+      const cls = val>=0 ? 'positive':'negative';
+      html += `<td class="${cls}" onclick="showTradeSetup(${strike},'${type}',${[300,250,200,150,100,50][idx]},${val})">${val}</td>`;
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function showTradeSetup(strike,type,gap,pl) {
+  const ceRatio = document.getElementById("ratioCE").textContent.split(":")[1];
+  const peRatio = document.getElementById("ratioPE").textContent.split(":")[1];
+
+  document.getElementById("modalLegs").innerHTML =
+    `<div>BUY 1x ${strike} ${type.toUpperCase()}</div>
+     <div>SELL ${type==='call'?ceRatio:peRatio}x ${strike+300} ${type.toUpperCase()}</div>`;
+  document.getElementById("modalNet").textContent = "₹3.36 L";
+  document.getElementById("modalMaxProfit").textContent = "₹12,000";
+  document.getElementById("modalMaxLoss").textContent = "₹3,360";
+  document.getElementById("modalBE").textContent = strike+gap;
+
+  const ctx = document.getElementById("payoffChart").getContext("2d");
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels:[-300,-200,-100,0,100,200,300],
+      datasets:[{label:'Payoff',data:[-100,-50,0,pl,50,100,150],borderColor:'#0077cc'}]
+    },
+    options:{responsive:false}
+  });
+
+  document.getElementById("tradeModal").style.display="block";
+}
+
+function closeModal(){ document.getElementById("tradeModal").style.display="none"; }
+
+function adjustValue(id,delta){
+  const el = document.getElementById(id);
+  let val = parseInt(el.textContent) || 0;
+  val += delta;
+  if(val<0) val=0;
+  el.textContent = val;
+}
+
+function adjustRatio(id,delta){
+  const el = document.getElementById(id);
+  let parts = el.textContent.split(":");
+  let base = parseInt(parts[0]);
+  let ratio = parseInt(parts[1]);
+  ratio += delta;
+  if(ratio<1) ratio=1;
+  el.textContent = base+":"+ratio;
+}
+
+// Render tables
+renderTable("callRatio",strikes,payoffValues,"call");
+renderTable("putRatio",strikes,payoffValues,"put
