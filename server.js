@@ -6,20 +6,24 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Route: Homepage → Landing page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
+// Route: Dashboard → Live Dashboard
 app.get('/dashboard.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/dashboard.html'));
 });
 
+// Route: Strategy → Strategy Matrix
 app.get('/strategy.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/strategy.html'));
 });
 
+// Short URL: /strategy → same as strategy.html
 app.get('/strategy', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/dashboard.html'));
+  res.sendFile(path.join(__dirname, 'public/strategy.html'));
 });
 
 async function fetchYahoo(symbol) {
@@ -35,6 +39,7 @@ async function fetchYahoo(symbol) {
   }
 }
 
+// API: Get market indices for landing page
 app.get('/api/indices', async (req, res) => {
   const symbols = [
     { name: 'NIFTY 50',   yahoo: '^NSEI' },
@@ -61,6 +66,7 @@ app.get('/api/indices', async (req, res) => {
   }
 });
 
+// API: Get option chain for strategy page
 app.get('/api/option-chain/:symbol', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
   
@@ -143,6 +149,7 @@ app.get('/api/option-chain/:symbol', async (req, res) => {
   }
 });
 
+// API: MCX data
 app.get('/api/mcx', async (req, res) => {
   try {
     const symbols = [
@@ -169,6 +176,7 @@ app.get('/api/mcx', async (req, res) => {
   }
 });
 
+// API: Market detail (for index.html modal)
 app.get('/api/market-detail/:symbol', async (req, res) => {
   const symbol = decodeURIComponent(req.params.symbol);
   
