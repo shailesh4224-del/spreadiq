@@ -35,7 +35,7 @@
   .sidebar-link.active { background: rgba(16, 185, 129, 0.1); color: #10b981; border-left-color: #10b981; }
   .sidebar-link .icon { font-size: 16px; width: 20px; }
   
-  .main-content { margin-left: 200px; padding: 16px; min-height: 100vh; }
+  .main-content { margin-left: 200px; padding: 70px 16px 16px 16px; min-height: 100vh; }
   .top-bar {
     position: fixed; top: 0; left: 200px; right: 0;
     display: flex; justify-content: space-between; align-items: center;
@@ -49,7 +49,7 @@
   
   .page-header {
     display: flex; align-items: center; justify-content: space-between;
-    margin: 50px 0 16px 0;
+    margin-bottom: 16px;
   }
   .page-title { font-size: 24px; font-weight: 800; color: #fff; }
   
@@ -111,16 +111,18 @@
     color: #fff; font-weight: 800; font-size: 12px;
   }
   
-  .stock-modal-bg {
+  /* ✅ FIXED MODAL — no .hidden class issue */
+  #stockModal {
+    display: none;
     position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-    display: flex; align-items: center; justify-content: center; z-index: 100;
+    align-items: center; justify-content: center; z-index: 100;
+    padding: 16px;
   }
-  .hidden { display: none !important; }
+  #stockModal.show { display: flex !important; }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="top-bar">
   <div style="display:flex; align-items:center; gap:16px;">
     <a href="/" style="color:#10b981; text-decoration:none; font-weight:800; font-size:14px;">← Home</a>
@@ -140,7 +142,6 @@
   </div>
 </div>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <div style="width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,#10b981,#06b6d4); display:flex; align-items:center; justify-content:center; color:#000; font-weight:900; font-size:16px;">TF</div>
@@ -155,10 +156,8 @@
   <div class="sidebar-link"><span class="icon">⏰</span> Option Clock</div>
   <div class="sidebar-link"><span class="icon">🎯</span> Option Apex</div>
   <div class="sidebar-link"><span class="icon">🚀</span> Index Mover</div>
-  <div class="sidebar-link"><span class="icon">📊</span> FII / DII</div>
   <div class="sidebar-section">Crypto</div>
   <div class="sidebar-link"><span class="icon">📈</span> Crypto Chart</div>
-  <div class="sidebar-link"><span class="icon">🔔</span> Crypto Signal</div>
   <div style="margin-top:20px; padding:0 16px;">
     <a href="/strategy.html" style="display:block; padding:10px 16px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#000; text-decoration:none; border-radius:6px; font-weight:800; text-align:center; font-size:12px;">
       📐 Strategy Builder →
@@ -166,7 +165,6 @@
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="main-content">
   <div class="page-header">
     <h1 class="page-title">Sector Scope 💡 
@@ -197,7 +195,8 @@
   </div>
 </div>
 
-<div id="stockModal" class="hidden stock-modal-bg" style="padding:16px;">
+<!-- ✅ FIXED MODAL — display:none by default, no inline style conflict -->
+<div id="stockModal">
   <div style="background:#0a0a0a; border:1px solid #1f2937; border-radius:12px; padding:24px; max-width:500px; width:100%;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
       <h2 id="modalStockName" style="color:#fff; font-size:20px; font-weight:800;">STOCK</h2>
@@ -297,7 +296,7 @@
         
         const cells = stocks.map(s => {
           const cls = getColorClass(s.pct);
-          return '<div class="stock-cell ' + cls + '" onclick="openStockModal(\'' + s.symbol + '\', ' + s.last + ', ' + s.change + ', ' + s.pct + ', \'' + sector.name + '\')" title="' + s.symbol + ': ₹' + s.last.toFixed(2) + ' (' + (s.pct >= 0 ? '+' : '') + s.pct.toFixed(2) + '%)">' +
+          return '<div class="stock-cell ' + cls + '" onclick="openStockModal(\'' + s.symbol + '\', ' + s.last + ', ' + s.change + ', ' + s.pct + ', \'' + sector.name + '\')" title="' + s.symbol + ': ₹' + s.last.toFixed(2) + '">' +
             '<div class="stock-symbol">' + s.symbol + '</div></div>';
         }).join('');
         
@@ -332,11 +331,12 @@
         '<div style="display:flex; justify-content:space-between; margin:4px 0;"><span style="color:#9ca3af;">52W Low</span><span style="color:#ef4444; font-weight:700;">₹' + (last * 0.85).toFixed(2) + '</span></div>' +
       '</div>' +
       '<a href="/strategy.html" style="display:block; padding:10px; background:#10b981; color:#000; text-align:center; border-radius:6px; font-weight:700; text-decoration:none; font-size:12px;">📐 Analyze in Strategy Builder →</a>';
-    document.getElementById('stockModal').classList.remove('hidden');
+    // ✅ Use classList to show modal
+    document.getElementById('stockModal').classList.add('show');
   }
 
   function closeStockModal() {
-    document.getElementById('stockModal').classList.add('hidden');
+    document.getElementById('stockModal').classList.remove('show');
   }
 
   document.getElementById('stockModal').addEventListener('click', (e) => {
