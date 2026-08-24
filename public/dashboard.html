@@ -5,93 +5,37 @@
 <title>SpreadIQ — Sector Scope</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  * { font-family: 'Montserrat', sans-serif; box-sizing: border-box; }
-  body { background: #0a0a0a; color: #e5e7eb; margin: 0; font-size: 12px; }
-  
-  .sidebar { position: fixed; left: 0; top: 0; width: 200px; height: 100vh; background: #000; border-right: 1px solid #1f2937; padding: 16px 0; overflow-y: auto; }
-  .sidebar-section { color: #6b7280; font-size: 10px; font-weight: 800; padding: 12px 16px 4px; letter-spacing: 1.5px; }
-  .sidebar-link { display: flex; align-items: center; gap: 8px; padding: 8px 16px; color: #9ca3af; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; text-decoration: none; }
-  .sidebar-link:hover { background: #111; color: #10b981; }
-  .sidebar-link.active { background: rgba(16, 185, 129, 0.1); color: #10b981; border-left-color: #10b981; }
-  
-  .top-bar { position: fixed; top: 0; left: 200px; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; background: #000; border-bottom: 1px solid #1f2937; z-index: 30; }
-  .search-box { background: #1f2937; border: 1px solid #374151; border-radius: 6px; padding: 6px 12px; color: #fff; font-size: 13px; width: 280px; }
-  
-  .main-content { margin-left: 200px; padding: 70px 16px 16px; }
-  .page-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 16px; }
-  
-  .heatmap-container { background: #000; border: 1px solid #1f2937; border-radius: 8px; padding: 12px; }
-  
-  .treemap-container { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; }
-  .treemap-sector { background: #111; border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 2px; min-height: 200px; }
-  .sector-header { background: #1f2937; color: #fff; font-size: 10px; font-weight: 800; padding: 6px 8px; border-radius: 3px; }
-  
-  .stock-cell { border-radius: 3px; padding: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; transition: all 0.15s; min-height: 36px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-  .stock-cell:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 5; }
-  
-  .bg-strong-green { background: #16a34a; }
-  .bg-green { background: #22c55e; }
-  .bg-light-green { background: #4ade80; }
-  .bg-neutral { background: #6b7280; }
-  .bg-light-red { background: #f87171; }
-  .bg-red { background: #ef4444; }
-  .bg-strong-red { background: #dc2626; }
-  
-  .user-pill { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; background: #1f2937; border-radius: 20px; }
-  .user-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #3b82f6); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px; }
-  
-  /* MODAL — hidden by default with display:none */
+  body { background: #0a0a0a; color: #e5e7eb; font-family: 'Montserrat', sans-serif; margin: 0; padding: 16px; font-size: 14px; }
+  h1 { color: #10b981; font-size: 28px; }
+  .nav { margin-bottom: 16px; }
+  .nav a { color: #10b981; text-decoration: none; margin-right: 12px; font-size: 13px; }
+  .sector { background: #1f2937; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+  .sector-title { color: #10b981; font-weight: 800; font-size: 16px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #374151; }
+  .stocks { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+  .stock { padding: 10px 4px; border-radius: 4px; text-align: center; font-weight: 800; color: #fff; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+  .stock:hover { transform: scale(1.08); z-index: 5; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  .sg { background: #16a34a; } .gn { background: #22c55e; } .lg { background: #4ade80; }
+  .nf { background: #6b7280; } .lr { background: #f87171; } .rd { background: #ef4444; } .sr { background: #dc2626; }
   #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; z-index: 100; padding: 16px; }
-  #modal.show { display: flex !important; }
+  #modal.open { display: flex !important; }
+  .modal-box { background: #0a0a0a; border: 2px solid #10b981; border-radius: 12px; padding: 24px; max-width: 450px; width: 100%; }
 </style>
 </head>
 <body>
-
-<div class="top-bar">
-  <div style="display:flex; align-items:center; gap:16px;">
-    <a href="/" style="color:#10b981; text-decoration:none; font-weight:800; font-size:14px;">← Home</a>
-    <input type="text" class="search-box" placeholder="🔍 Search stocks..." id="searchBox" oninput="renderHeatmap()">
-  </div>
-  <div style="display:flex; align-items:center; gap:12px;">
-    <span style="color:#10b981; font-size:11px;" id="liveStatus">● LIVE</span>
-    <div class="user-pill"><div class="user-avatar">S</div><span style="color:#fff; font-size:12px; font-weight:600;">Shailesh4224</span></div>
-  </div>
+<div class="nav">
+  <a href="/">← Home</a>
+  <a href="/dashboard.html">Dashboard</a>
+  <a href="/strategy.html">Strategy Builder</a>
+  <span id="status" style="float:right; color:#10b981; font-size:11px;">● LIVE</span>
 </div>
+<h1>📊 Sector Scope</h1>
+<div id="content">Loading live data...</div>
 
-<div class="sidebar">
-  <div style="display:flex; align-items:center; gap:8px; padding:0 16px 20px; border-bottom:1px solid #1f2937; margin-bottom:12px;">
-    <div style="width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,#10b981,#06b6d4); display:flex; align-items:center; justify-content:center; color:#000; font-weight:900; font-size:16px;">TF</div>
-    <span style="color:#fff; font-size:14px; font-weight:800;">Trade<span style="color:#10b981;">Finder</span></span>
-  </div>
-  <div class="sidebar-section">Stocks</div>
-  <div class="sidebar-link"><span>📊</span> Market Pulse</div>
-  <div class="sidebar-link"><span>🏛️</span> Insider Strategy</div>
-  <div class="sidebar-link active"><span>🔭</span> Sector Scope</div>
-  <div class="sidebar-link"><span>📈</span> Swing Spectrum</div>
-  <div class="sidebar-section">Index</div>
-  <div class="sidebar-link"><span>⏰</span> Option Clock</div>
-  <div class="sidebar-link"><span>🎯</span> Option Apex</div>
-  <div class="sidebar-link"><span>🚀</span> Index Mover</div>
-  <div style="margin-top:20px; padding:0 16px;">
-    <a href="/strategy.html" style="display:block; padding:10px 16px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#000; text-decoration:none; border-radius:6px; font-weight:800; text-align:center; font-size:12px;">📐 Strategy Builder →</a>
-  </div>
-</div>
-
-<div class="main-content">
-  <h1 class="page-title">Sector Scope 💡</h1>
-  <div class="heatmap-container">
-    <div id="heatmapBody" style="min-height:600px;">
-      <div style="text-align:center; padding:60px; color:#6b7280;">Loading sector data...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal — starts hidden -->
 <div id="modal">
-  <div style="background:#0a0a0a; border:1px solid #1f2937; border-radius:12px; padding:24px; max-width:500px; width:100%;">
+  <div class="modal-box">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-      <h2 id="modalName" style="color:#fff; font-size:20px; font-weight:800;">STOCK</h2>
-      <button onclick="closeModal()" style="background:none; border:none; color:#6b7280; font-size:24px; cursor:pointer;">×</button>
+      <h2 id="modalName" style="margin:0; color:#fff;">STOCK</h2>
+      <button onclick="closeModal()" style="background:none; border:none; color:#6b7280; font-size:28px; cursor:pointer;">×</button>
     </div>
     <div id="modalContent"></div>
   </div>
@@ -99,132 +43,99 @@
 
 <script>
 const SECTORS = [
-  { name: 'ENERGY', stocks: ['RELIANCE','ONGC','BPCL','POWERGRID','NTPC','TATAPOWER','ADANIGREEN','GAIL','OIL','JSWENERGY','COALINDIA','ADANITRANS','IOC','PETRONET','SIEMENS','BEL','BDL','HAL','MAZDOCK','CASTROLIND','GULFOILLUB','SUZLON','SOLARINDS','PREMIERENE','HINDPETRO','CGPOWER','POWERINDIA','GMRINFRA','BHEL'] },
-  { name: 'NIFTY 50', stocks: ['RELIANCE','TCS','INFY','HDFCBANK','ICICIBANK','SBIN','BHARTIARTL','ITC','KOTAKBANK','LT','HINDUNILVR','ASIANPAINT','MARUTI','AXISBANK','SUNPHARMA','TITAN','ULTRACEMCO','NESTLEIND','BAJAJFINSV','HCLTECH','WIPRO','POWERGRID','NTPC','TECHM','TATASTEEL','M&M','INDIGO','JSWSTEEL','CIPLA','COALINDIA'] },
-  { name: 'BANK', stocks: ['HDFCBANK','ICICIBANK','SBIN','KOTAKBANK','AXISBANK','INDUSINDBK','PNB','BANKBARODA','CANBK','UNIONBANK','IDBI','BANKINDIA','FEDERALBNK','BANDHANBNK','RBLBANK','IDFCFIRSTB','YESBANK','CSBBANK','KARURVYSYA','CITYUNIONBK','DCBBANK','LAKSHVILAS','JKBANK','PSBANK','EQUITASBNK','KARNATAKA','TAMILNBNK','DHANBANK','MAHABANK','UCOBANK'] },
-  { name: 'PHARMA', stocks: ['SUNPHARMA','DRREDDY','CIPLA','DIVISLAB','LUPIN','AUROPHARMA','TORNTPHARM','LAURUSLABS','GLENMARK','BIOCON','CADILAHC','AJANTPHARM','GRANULES','NATCOPHARM','IPCALAB','PFIZER','SANOFI','ABBOTINDIA','GLAXO','DIVI','MANKIND','JBCHEPHARM','SUVEN','HCG','FDC','INDOCO','METROPOLIS','THYROCARE','DRLAL','FORTIS'] },
-  { name: 'AUTO', stocks: ['MARUTI','TATAMOTORS','M&M','BAJAJ-AUTO','HEROMOTOCO','EICHERMOT','ASHOKLEY','TVSMOTOR','BHARATFORG','MOTHERSON','BALKRISIND','MRF','APOLLOTYRE','CEAT','EXIDEIND','AMARAJABAT','LUMAXTECH','ENDURANCE','FIEMIND','SUNDARAM','BOSCHLTD','SCHAEFFLER','SKFINDIA','GABRIEL','SPARC','JAMNAAUTO','PRSMJHIND','ROLEXRINGS','RML','TIMKEN'] },
-  { name: 'METAL', stocks: ['VEDL','HINDALCO','NATIONALUM','HINDZINC','NMDC','SAIL','TATASTEEL','JSWSTEEL','JINDALSTEL','JINDALWORLD','APLAPOLLO','WELCORP','WELSPUNIND','RATNAMANI','MANAKSIA','PENIND','SANGHIIND','SALZERELE','RAMKY','PODDAR','BHARATWIRE','PRESTIGE','OBEROIRLTY','GODREJPROP','BRIGADE','SOBHA','PHOENIXLTD','DLF','LODHA','BROOKFIELD'] },
-  { name: 'FIN SERVICE', stocks: ['HDFCAMC','ICICIPRULI','HDFCLIFE','SBILIFE','MAXFINANCE','BAJAJHLDNG','CANFINHOME','LICHSGFIN','PNBHOUSING','AAVAS','HOMEFIRST','IIFL','EDELWEISS','MOTILALOFS','INDIABULLS','PAYTM','POLICYBZR','ICICIGI','STARHEALTH','NIACL','GICRE','CDSL','BAJFINANCE','CHOLAFIN','SBICARD','MUTHOOTFIN','IIFL','MANAPPURAM','M&MFIN','LICHSGFIN'] },
-  { name: 'IT', stocks: ['TCS','INFY','WIPRO','HCLTECH','TECHM','LTIM','MPHASIS','PERSISTENT','COFORGE','OFSS','LTTS','TATAELXSI','KPITTECH','INTELLECT','CYIENT','ZENSARTECH','NIITLTD','MASTEK','BIRLASOFT','HEXAWARE','NEWGEN','HAPPSTMNDS','3IINFOTECH','TATACOMM','HFCL','STERLITE','POLYCAB','FINCABLES','DATAMATICS','INFIBEAM'] },
-  { name: 'FMCG', stocks: ['HINDUNILVR','ITC','NESTLEIND','BRITANNIA','DABUR','MARICO','GODREJCP','COLPAL','EMAMILTD','PGHH','RADICO','TATACONSUM','VBL','UBL','MCDOWELL','JUBLFOOD','BAJAJHIND','PIDILITIND','KANSAINER','GILLETTE','HONASA','PARAG','BIKAJI','PRATAAP','DEVYANI','SAPPHIRE','SPECIALITY','SULA','VIKASLIFE','AVANTI'] },
-  { name: 'CEMENT', stocks: ['ULTRACEMCO','AMBUJACEM','ACC','SHREECEM','DALBHARAT','JKCEMENT','RAMCOCEM','INDIACEM','SAURASHCEM','NCLIND','KCP','BIRLATU','HEIDELBERG','PRISMJO','ORIENTCEM','SAGCEM','VISAKAIND','DECCANCE','JKSWORTH','SHIVAUMAU','EVERESTIN','KAKATCEM','BANGUR','MARSHALL','SURFACON','MANGALAM','STAR','JKLAKSHMI','NCLIND','BURNPUR'] }
+  { name: '⚡ ENERGY', stocks: ['RELIANCE','ONGC','BPCL','POWERGRID','NTPC','TATAPOWER','ADANIGREEN','GAIL','OIL','JSWENERGY','COALINDIA','IOC'] },
+  { name: '🏦 BANK', stocks: ['HDFCBANK','ICICIBANK','SBIN','KOTAKBANK','AXISBANK','INDUSINDBK','PNB','BANKBARODA','CANBK','UNIONBANK','BANKINDIA','FEDERALBNK'] },
+  { name: '💊 PHARMA', stocks: ['SUNPHARMA','DRREDDY','CIPLA','DIVISLAB','LUPIN','AUROPHARMA','TORNTPHARM','LAURUSLABS','GLENMARK','BIOCON','PFIZER','SANOFI'] },
+  { name: '🚗 AUTO', stocks: ['MARUTI','TATAMOTORS','M&M','BAJAJ-AUTO','HEROMOTOCO','EICHERMOT','ASHOKLEY','TVSMOTOR','BHARATFORG','MOTHERSON','MRF','APOLLOTYRE'] },
+  { name: '🏭 METAL', stocks: ['VEDL','HINDALCO','NMDC','SAIL','TATASTEEL','JSWSTEEL','JINDALSTEL','APLAPOLLO','WELCORP','NATIONALUM','HINDZINC','RATNAMANI'] },
+  { name: '💻 IT', stocks: ['TCS','INFY','WIPRO','HCLTECH','TECHM','LTIM','MPHASIS','PERSISTENT','COFORGE','OFSS','LTTS','TATAELXSI'] },
+  { name: '🛒 FMCG', stocks: ['HINDUNILVR','ITC','NESTLEIND','BRITANNIA','DABUR','MARICO','GODREJCP','COLPAL','TATACONSUM','VBL','UBL','JUBLFOOD'] },
+  { name: '🏗️ FINANCE', stocks: ['HDFCAMC','BAJFINANCE','HDFCLIFE','SBILIFE','ICICIPRULI','CHOLAFIN','SBICARD','PEL','MUTHOOTFIN','PNBHOUSING','PAYTM','POLICYBZR'] }
 ];
 
-const BASE = {
-  'RELIANCE': 2450, 'TCS': 3850, 'INFY': 1480, 'HDFCBANK': 1620, 'ICICIBANK': 1050,
-  'SBIN': 625, 'BHARTIARTL': 1180, 'ITC': 445, 'KOTAKBANK': 1750, 'LT': 3450,
-  'HINDUNILVR': 2380, 'ASIANPAINT': 2890, 'MARUTI': 11200, 'AXISBANK': 1080,
-  'SUNPHARMA': 1620, 'TITAN': 3280, 'ULTRACEMCO': 9800, 'WIPRO': 445,
-  'POWERGRID': 285, 'NTPC': 320, 'TECHM': 1180, 'TATASTEEL': 145, 'INDIGO': 3850,
-  'VEDL': 445, 'HINDALCO': 580, 'NMDC': 65, 'SAIL': 118, 'JSWSTEEL': 820,
-  'DRREDDY': 6280, 'CIPLA': 1180, 'DIVISLAB': 3680, 'LUPIN': 1180, 'BIOCON': 285,
-  'TATAMOTORS': 920, 'M&M': 1620, 'BAJAJ-AUTO': 9200, 'HEROMOTOCO': 4480,
-  'EICHERMOT': 3680, 'MRF': 128000, 'HDFCLIFE': 680, 'SBILIFE': 1480,
-  'HDFCAMC': 3280, 'NAUKRI': 5480, 'PAYTM': 880, 'POLICYBZR': 1480,
-  'ICICIPRULI': 580, 'BAJAJFINSV': 1620, 'BAJFINANCE': 680, 'PEL': 3820,
-  'CHOLAFIN': 1280, 'SBICARD': 720, 'MUTHOOTFIN': 1820, 'PNB': 118,
-  'BANKBARODA': 248, 'CANBK': 108, 'UNIONBANK': 118, 'BANKINDIA': 118,
-  'FEDERALBNK': 165, 'IDFCFIRSTB': 78, 'BANDHANBNK': 248, 'RBLBANK': 268,
-  'INDUSINDBK': 1480, 'YESBANK': 22, 'JSWENERGY': 580, 'TATAPOWER': 380,
-  'ADANIGREEN': 1820, 'ADANIENT': 2820, 'GAIL': 185, 'OIL': 480,
-  'IOC': 145, 'COALINDIA': 425, 'ONGC': 245, 'BPCL': 580, 'BEL': 285,
-  'HAL': 3850, 'BDL': 1180, 'SIEMENS': 5280, 'HAVELLS': 1620,
-  'POLYCAB': 4480, 'VOLTAS': 980, 'CUMMINSIND': 2820, 'THERMAX': 3280
-};
+const cache = {};
 
-function rand(seed) {
-  const time = Math.floor(Date.now() / 30000);
-  let h = seed.charCodeAt(0) + time;
-  for (let i = 1; i < seed.length; i++) {
-    h = ((h << 5) - h) + seed.charCodeAt(i);
-    h = h & h;
+async function getStock(sym) {
+  if (cache[sym] && Date.now() - cache[sym].time < 30000) {
+    return cache[sym].data;
   }
-  return (Math.abs(h) % 10000) / 10000;
+  try {
+    const res = await fetch('/api/stock/' + sym);
+    const data = await res.json();
+    cache[sym] = { data, time: Date.now() };
+    return data;
+  } catch (e) {
+    return { symbol: sym, last: 1000, change: 0, percentChange: 0 };
+  }
 }
 
-function getStock(symbol) {
-  const base = BASE[symbol] || 500;
-  const r = rand(symbol);
-  const change = base * (r - 0.5) * 0.04;  // ±2%
-  return {
-    symbol: symbol,
-    last: base + change,
-    change: change,
-    pct: (change / base) * 100,
-    volume: Math.floor(50000 + r * 5000000)
-  };
+function cls(p) {
+  if (p >= 3) return 'sg';
+  if (p >= 1) return 'gn';
+  if (p >= 0.3) return 'lg';
+  if (p > -0.3) return 'nf';
+  if (p > -1) return 'lr';
+  if (p > -3) return 'rd';
+  return 'sr';
 }
 
-function color(pct) {
-  if (pct >= 3) return 'bg-strong-green';
-  if (pct >= 1) return 'bg-green';
-  if (pct >= 0.3) return 'bg-light-green';
-  if (pct > -0.3) return 'bg-neutral';
-  if (pct > -1) return 'bg-light-red';
-  if (pct > -3) return 'bg-red';
-  return 'bg-strong-red';
-}
-
-function renderHeatmap() {
-  const search = document.getElementById('searchBox').value.toUpperCase();
-  const html = '<div class="treemap-container">' + SECTORS.map(sector => {
-    let stocks = sector.stocks.map(s => getStock(s)).sort((a, b) => b.pct - a.pct);
-    if (search) stocks = stocks.filter(s => s.symbol.includes(search));
-    
-    if (stocks.length === 0) {
-      return '<div class="treemap-sector"><div class="sector-header">' + sector.name + '</div><div style="color:#6b7280; font-size:10px; padding:8px; text-align:center;">No match</div></div>';
-    }
-    
-    const cells = stocks.map(s => {
-      const c = color(s.pct);
-      const sign = s.pct >= 0 ? '+' : '';
-      return '<div class="stock-cell ' + c + '" onclick="openModal(\'' + s.symbol + '\', ' + s.last + ', ' + s.change + ', ' + s.pct + ', \'' + sector.name + '\')" title="' + s.symbol + ' ₹' + s.last.toFixed(2) + '">' +
-        s.symbol + '</div>';
-    }).join('');
-    
-    return '<div class="treemap-sector"><div class="sector-header">' + sector.name + ' (' + stocks.length + ')</div>' + cells + '</div>';
-  }).join('') + '</div>';
+async function render() {
+  const allStocks = [];
+  SECTORS.forEach(sec => {
+    sec.stocks.forEach(s => allStocks.push({ sector: sec.name, symbol: s }));
+  });
   
-  document.getElementById('heatmapBody').innerHTML = html;
-  document.getElementById('liveStatus').textContent = '● LIVE · ' + new Date().toLocaleTimeString('en-IN');
+  const results = await Promise.all(allStocks.map(async item => {
+    const data = await getStock(item.symbol);
+    return { ...item, ...data };
+  }));
+  
+  const grouped = {};
+  results.forEach(r => {
+    if (!grouped[r.sector]) grouped[r.sector] = [];
+    grouped[r.sector].push(r);
+  });
+  
+  const html = SECTORS.map(sec => {
+    const stocks = (grouped[sec.name] || []).sort((a, b) => b.percentChange - a.percentChange);
+    const cells = stocks.map(s => {
+      const c = cls(s.percentChange);
+      return '<div class="stock ' + c + '" onclick="openModal(\'' + s.symbol + '\',' + s.last + ',' + s.change + ',' + s.percentChange + ',\'' + sec.name + '\')" title="' + s.symbol + ' ₹' + s.last.toFixed(2) + '">' + s.symbol + '</div>';
+    }).join('');
+    return '<div class="sector"><div class="sector-title">' + sec.name + ' (' + stocks.length + ')</div><div class="stocks">' + cells + '</div></div>';
+  }).join('');
+  
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('status').textContent = '● LIVE · ' + new Date().toLocaleTimeString('en-IN');
 }
 
 function openModal(symbol, last, change, pct, sector) {
   const sign = change >= 0 ? '+' : '';
   const color = change >= 0 ? '#10b981' : '#ef4444';
-  document.getElementById('modalName').textContent = symbol;
+  document.getElementById('modalName').textContent = symbol + ' (' + sector + ')';
   document.getElementById('modalContent').innerHTML = 
-    '<div style="background:#111; border-radius:8px; padding:20px; margin-bottom:12px;">' +
-      '<div style="display:flex; justify-content:space-between; align-items:baseline;">' +
-        '<div style="font-size:32px; font-weight:800; color:' + color + ';">₹' + last.toFixed(2) + '</div>' +
-        '<div style="font-size:16px; font-weight:700; color:' + color + ';">' + sign + change.toFixed(2) + ' (' + sign + pct.toFixed(2) + '%)</div>' +
-      '</div>' +
-      '<div style="margin-top:12px; color:#9ca3af; font-size:11px;">Sector: ' + sector + '</div>' +
+    '<div style="background:#1f2937; border-radius:8px; padding:20px; margin-bottom:16px;">' +
+      '<div style="font-size:32px; font-weight:800; color:' + color + ';">₹' + last.toFixed(2) + '</div>' +
+      '<div style="font-size:16px; font-weight:700; color:' + color + '; margin-top:6px;">' + sign + change.toFixed(2) + ' (' + sign + pct.toFixed(2) + '%)</div>' +
     '</div>' +
-    '<div style="background:#111; border-radius:8px; padding:16px; margin-bottom:12px; font-size:12px;">' +
+    '<div style="background:#1f2937; border-radius:8px; padding:16px; font-size:12px; margin-bottom:16px;">' +
       '<div style="display:flex; justify-content:space-between; margin:6px 0;"><span style="color:#9ca3af;">Day High</span><span style="color:#fff; font-weight:700;">₹' + (last * 1.008).toFixed(2) + '</span></div>' +
       '<div style="display:flex; justify-content:space-between; margin:6px 0;"><span style="color:#9ca3af;">Day Low</span><span style="color:#fff; font-weight:700;">₹' + (last * 0.992).toFixed(2) + '</span></div>' +
-      '<div style="display:flex; justify-content:space-between; margin:6px 0;"><span style="color:#9ca3af;">52W High</span><span style="color:#10b981; font-weight:700;">₹' + (last * 1.30).toFixed(2) + '</span></div>' +
-      '<div style="display:flex; justify-content:space-between; margin:6px 0;"><span style="color:#9ca3af;">52W Low</span><span style="color:#ef4444; font-weight:700;">₹' + (last * 0.82).toFixed(2) + '</span></div>' +
-      '<div style="display:flex; justify-content:space-between; margin:6px 0;"><span style="color:#9ca3af;">Volume</span><span style="color:#fff; font-weight:700;">' + Math.floor(last * 1000).toLocaleString() + '</span></div>' +
     '</div>' +
-    '<a href="/strategy.html" style="display:block; padding:12px; background:#10b981; color:#000; text-align:center; border-radius:6px; font-weight:800; text-decoration:none; font-size:12px;">📐 Open in Strategy Builder →</a>';
-  document.getElementById('modal').classList.add('show');
+    '<a href="/strategy.html" style="display:block; padding:12px; background:#10b981; color:#000; text-align:center; border-radius:6px; font-weight:800; text-decoration:none;">📐 Open Strategy Builder →</a>';
+  document.getElementById('modal').classList.add('open');
 }
 
 function closeModal() {
-  document.getElementById('modal').classList.remove('show');
+  document.getElementById('modal').classList.remove('open');
 }
 
 document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target.id === 'modal') closeModal();
 });
 
-// Initialize
-renderHeatmap();
-setInterval(renderHeatmap, 30000);
+render();
+setInterval(render, 30000);
 </script>
-
 </body>
 </html>
