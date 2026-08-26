@@ -1,10 +1,12 @@
 {
   "name": "spreadiq",
   "version": "1.0.0",
-  "main": "api/option-chain/[symbol].js",
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'Static build'",
     "start": "echo 'Static site'"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
   }
 }

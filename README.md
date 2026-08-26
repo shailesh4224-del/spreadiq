@@ -2,16 +2,16 @@
 
 **Real-time NSE option chain analysis with live indices streaming**
 
-![Live Dashboard](https://img.shields.io/badge/Status-Live-green) ![API Status](https://img.shields.io/badge/API-NSE%20Free-blue) ![Updates](https://img.shields.io/badge/Refresh-5s-orange)
+![Live Dashboard](https://img.shields.io/badge/Status-Live-green) ![API Status](https://img.shields.io/badge/API-Yahoo%20Finance-blue) ![Updates](https://img.shields.io/badge/Refresh-30s-orange)
 
 ## 🚀 Features
 
-- ✅ **Live Option Chain Data** - Real-time calls, puts, OI, volume from NSE
+- ✅ **Live Option Chain Data** - Real-time calls, puts, OI, volume from Yahoo Finance
 - ✅ **Live Market Indices** - NIFTY, BANKNIFTY, FINNIFTY streaming prices
-- ✅ **5-Second Updates** - True live data, not delayed
+- ✅ **30-Second Updates** - Auto-refresh with Yahoo Finance data
 - ✅ **Strategy Calculators** - Butterfly, Iron Condor, Ratio Spreads, and more
 - ✅ **PCR Ratio & Max Pain** - Calculated in real-time
-- ✅ **Zero API Keys Needed** - Uses free NSE public APIs
+- ✅ **Zero API Keys Needed** - Uses free Yahoo Finance public APIs
 - ✅ **Smart Caching** - 5-second cache to optimize performance
 - ✅ **CORS Enabled** - Frontend-backend integration ready
 
@@ -127,11 +127,11 @@ https://spreadiq.vercel.app/public/dashboard.html
 
 | Metric | Value |
 |--------|-------|
-| Refresh Rate | 5 seconds |
+| Refresh Rate | 30 seconds |
 | Cache TTL | 5 seconds |
-| Updates/Min | 12 |
-| Data Freshness | ~3-5 seconds |
-| API Calls/Min | 36 (safe) |
+| Updates/Min | 2 |
+| Data Freshness | ~30 seconds |
+| API Calls/Min | 6 (safe) |
 | Dependencies | None (uses free APIs) |
 
 ## 🔧 Troubleshooting
@@ -165,8 +165,8 @@ The dashboard includes these live strategy calculators:
 
 ## 📈 Market Data Sources
 
-- **NSE API** - Official National Stock Exchange data (Free)
-- **Real-time** - Updates every 5 seconds
+- **Yahoo Finance API** - Free market data for NSE indices and options
+- **Real-time** - Updates every 30 seconds
 - **No authentication** - Public APIs
 - **No rate limits** - For personal use
 
