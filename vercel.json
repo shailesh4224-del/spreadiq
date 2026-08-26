@@ -4,5 +4,10 @@
     { "src": "api/indices.js", "use": "@vercel/node" },
     { "src": "api/option-chain/index.js", "use": "@vercel/node" },
     { "src": "api/stock/index.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/indices", "dest": "/api/indices.js" },
+    { "src": "/api/option-chain/(.*)", "dest": "/api/option-chain/index.js" },
+    { "src": "/api/stock/(.*)", "dest": "/api/stock/index.js" }
   ]
 }
