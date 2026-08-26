@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   * { font-family: 'Montserrat', sans-serif; }
-  body { background: #000; color: #fff; margin: 0; }
+  body { background: #000; color: #fff; margin: 0; overflow-x: hidden; }
   .gradient-text {
     background: linear-gradient(90deg, #00ff88, #00d4ff, #00ff88);
     background-size: 200% auto;
@@ -22,7 +22,7 @@
                 linear-gradient(135deg, #00ff88, #00d4ff) border-box;
     border: 1px solid transparent;
   }
-  .glow-green { box-shadow: 0 0 60px rgba(0, 255, 136, 0.15); }
+  .glow-green { box-shadow: 0 0 80px rgba(0, 255, 136, 0.12); }
   .pulse-dot { animation: pulse 2s infinite; }
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
@@ -39,15 +39,45 @@
     -webkit-text-fill-color: transparent;
   }
   .grid-bg {
-    background-image: 
-      linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background-image:
+      linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
   .hidden { display: none !important; }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: #000; }
   ::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 4px; }
+
+  .stat-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+  .stat-card:hover {
+    border-color: rgba(0, 255, 136, 0.3);
+    transform: translateY(-2px);
+  }
+  .feature-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.3s;
+  }
+  .feature-card:hover {
+    border-color: rgba(0, 255, 136, 0.2);
+    transform: translateY(-4px);
+  }
+  .market-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .market-card:hover {
+    border-color: rgba(0, 255, 136, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+  }
 </style>
 </head>
 <body class="overflow-x-hidden">
@@ -59,24 +89,23 @@
       <span class="text-xl font-extrabold tracking-tight">Spread<span class="brand-logo">IQ</span></span>
     </a>
     <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300">
-      <a href="/" class="hover:text-emerald-400 transition">Home</a>
+      <a href="/" class="text-emerald-400">Home</a>
       <a href="/dashboard.html" class="hover:text-emerald-400 transition">Dashboard</a>
       <a href="/strategy.html" class="hover:text-emerald-400 transition">Strategy Builder</a>
     </nav>
     <div class="flex items-center gap-3">
-      <a href="/dashboard.html" class="hidden md:inline-block px-4 py-2 text-sm hover:text-emerald-400 transition">Dashboard ↗</a>
+      <a href="/dashboard.html" class="hidden md:inline-block px-4 py-2 text-sm hover:text-emerald-400 transition text-zinc-300">Dashboard ↗</a>
       <a href="/strategy.html" class="px-5 py-2 bg-gradient-to-r from-emerald-400 to-cyan-400 text-black font-bold rounded-lg text-sm hover:opacity-90 transition">Get Started</a>
     </div>
   </div>
 </header>
 
-<!-- LIVE TICKER -->
 <div class="fixed top-[64px] w-full bg-zinc-950 border-y border-zinc-900 z-40 overflow-hidden">
   <div id="tickerBar" class="ticker-scroll gap-8 py-2.5 text-xs whitespace-nowrap font-medium px-6"></div>
 </div>
 
 <section id="home" class="relative pt-40 pb-20 grid-bg">
-  <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent pointer-events-none"></div>
   <div class="max-w-7xl mx-auto px-6 relative">
     <div class="text-center max-w-4xl mx-auto">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-400 text-xs font-bold mb-6">
@@ -87,27 +116,24 @@
         Real-Time Options<br/>
         <span class="gradient-text">Analytics Platform</span>
       </h1>
-      <p class="text-lg md:text-xl text-zinc-400 mb-3 max-w-2xl mx-auto">
+      <p class="text-lg md:text-xl text-zinc-400 mb-3 max-w-2xl mx-auto leading-relaxed">
         Professional butterfly spreads, ratio spreads, IV percentile tracking & strategy backtesting for Indian derivatives markets.
       </p>
       <p class="text-sm text-zinc-500 mb-10 font-medium">
         NIFTY · BANKNIFTY · SENSEX · GOLD · SILVER · CRUDE OIL
       </p>
-      <div class="flex flex-wrap justify-center gap-4 mb-6">
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
         <a href="/dashboard.html" class="px-8 py-4 bg-gradient-to-r from-emerald-400 to-cyan-400 text-black font-bold rounded-lg hover:opacity-90 transition shadow-lg shadow-emerald-500/30 text-lg">
           📊 Live Dashboard →
         </a>
         <a href="/strategy.html" class="px-8 py-4 bg-gradient-to-r from-cyan-400 to-emerald-400 text-black font-bold rounded-lg hover:opacity-90 transition shadow-lg shadow-cyan-500/30 text-lg">
           📐 Strategy Builder →
         </a>
-        <a href="#markets" class="px-8 py-4 border border-zinc-700 rounded-lg font-semibold hover:border-emerald-400 hover:text-emerald-400 transition">
-          Explore Markets
-        </a>
       </div>
       <p class="text-xs text-zinc-500">Free tier available · No credit card required</p>
     </div>
 
-    <div class="mt-16 glow-border rounded-2xl p-[1px] glow-green">
+    <div class="mt-20 glow-border rounded-2xl p-[1px] glow-green">
       <div class="bg-zinc-950 rounded-2xl p-6 md:p-8">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-zinc-900">
           <div class="flex gap-2">
@@ -122,22 +148,22 @@
           </div>
         </div>
         <div class="grid md:grid-cols-4 gap-4 mb-6">
-          <div class="bg-zinc-900 p-4 rounded-lg border border-zinc-800">
+          <div class="stat-card rounded-xl p-4">
             <div class="text-xs text-zinc-500 mb-1">NIFTY Spot</div>
             <div id="mockNiftySpot" class="text-2xl font-bold text-emerald-400">--</div>
             <div id="mockNiftyChange" class="text-xs text-emerald-400 mt-1">--</div>
           </div>
-          <div class="bg-zinc-900 p-4 rounded-lg border border-zinc-800">
+          <div class="stat-card rounded-xl p-4">
             <div class="text-xs text-zinc-500 mb-1">ATM Strike</div>
             <div id="mockATMStrike" class="text-2xl font-bold">--</div>
             <div id="mockATMIV" class="text-xs text-cyan-400 mt-1">IV: --</div>
           </div>
-          <div class="bg-zinc-900 p-4 rounded-lg border border-zinc-800">
+          <div class="stat-card rounded-xl p-4">
             <div class="text-xs text-zinc-500 mb-1">Butterfly 1:2:1</div>
             <div id="mockBFPL" class="text-2xl font-bold text-emerald-400">--</div>
             <div class="text-xs text-zinc-400 mt-1">Live calculation</div>
           </div>
-          <div class="bg-zinc-900 p-4 rounded-lg border border-zinc-800">
+          <div class="stat-card rounded-xl p-4">
             <div class="text-xs text-zinc-500 mb-1">IV Percentile</div>
             <div id="mockIVP" class="text-2xl font-bold text-yellow-400">--</div>
             <div class="text-xs text-zinc-400 mt-1">Vol regime</div>
@@ -171,14 +197,62 @@
     <div class="text-center max-w-2xl mx-auto mb-16">
       <span class="text-emerald-400 font-bold text-sm tracking-widest">FEATURES</span>
       <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4">Built for Serious Traders</h2>
+      <p class="text-zinc-400">Everything you need to analyze, strategize, and execute options trades with confidence.</p>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-zinc-950 border border-zinc-900 p-7 rounded-2xl"><div class="text-2xl mb-5">🦋</div><h3 class="text-lg font-bold mb-2">Butterfly Spreads</h3><p class="text-sm text-zinc-400">Real-time calculations with 1:2:1, 1:3:2, 1:4:3 ratios.</p></div>
-      <div class="bg-zinc-950 border border-zinc-900 p-7 rounded-2xl"><div class="text-2xl mb-5">📐</div><h3 class="text-lg font-bold mb-2">Ratio Spreads</h3><p class="text-sm text-zinc-400">Configurable multipliers with dynamic payoff visualization.</p></div>
-      <div class="bg-zinc-950 border border-zinc-900 p-7 rounded-2xl"><div class="text-2xl mb-5">📊</div><h3 class="text-lg font-bold mb-2">IV Percentile</h3><p class="text-sm text-zinc-400">Track implied volatility across strikes.</p></div>
-      <div class="bg-zinc-950 border border-zinc-900 p-7 rounded-2xl"><div class="text-2xl mb-5">⚡</div><h3 class="text-lg font-bold mb-2">Real-Time</h3><p class="text-sm text-zinc-400">Real-time tick data for live decisions.</p></div>
-      <div class="bg-zinc-950 border border-zinc-900 p-7 rounded-2xl"><div class="text-2xl mb-5">🔬</div><h3 class="text-lg font-bold mb-2">Backtesting</h3><p class="text-sm text-zinc-400">Replay strategies against historical data.</p></div>
-      <div class="bg-zinc-950 border border-zinc-900 p-7 rounded-2xl"><div class="text-2xl mb-5">🌐</div><h3 class="text-lg font-bold mb-2">Cloud Deployed</h3><p class="text-sm text-zinc-400">Access anywhere, works 24/7.</p></div>
+      <div class="feature-card p-7 rounded-2xl">
+        <div class="text-3xl mb-5">🦋</div>
+        <h3 class="text-lg font-bold mb-2">Butterfly Spreads</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">Real-time calculations with 1:2:1, 1:3:2, 1:4:3 ratios. Visual payoff diagrams and risk metrics.</p>
+      </div>
+      <div class="feature-card p-7 rounded-2xl">
+        <div class="text-3xl mb-5">📐</div>
+        <h3 class="text-lg font-bold mb-2">Ratio Spreads</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">Configurable multipliers with dynamic payoff visualization. Support for both calls and puts.</p>
+      </div>
+      <div class="feature-card p-7 rounded-2xl">
+        <div class="text-3xl mb-5">📊</div>
+        <h3 class="text-lg font-bold mb-2">IV Percentile</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">Track implied volatility across strikes. Identify overbought/oversold conditions.</p>
+      </div>
+      <div class="feature-card p-7 rounded-2xl">
+        <div class="text-3xl mb-5">⚡</div>
+        <h3 class="text-lg font-bold mb-2">Real-Time Data</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">Real-time tick data for live decisions. Auto-refresh every 5-30 seconds.</p>
+      </div>
+      <div class="feature-card p-7 rounded-2xl">
+        <div class="text-3xl mb-5">🔬</div>
+        <h3 class="text-lg font-bold mb-2">Strategy Backtesting</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">Replay strategies against historical data. Validate before you deploy.</p>
+      </div>
+      <div class="feature-card p-7 rounded-2xl">
+        <div class="text-3xl mb-5">🌐</div>
+        <h3 class="text-lg font-bold mb-2">Cloud Deployed</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed">Access anywhere, works 24/7. No downloads, no installations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stats" class="py-20 bg-zinc-950 border-y border-zinc-900">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black text-emerald-400 mb-2">50+</div>
+        <div class="text-sm text-zinc-500">Indices Tracked</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black text-cyan-400 mb-2">10K+</div>
+        <div class="text-sm text-zinc-500">Option Chains</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black text-yellow-400 mb-2">5s</div>
+        <div class="text-sm text-zinc-500">Refresh Rate</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl md:text-5xl font-black text-emerald-400 mb-2">Free</div>
+        <div class="text-sm text-zinc-500">Tier Available</div>
+      </div>
     </div>
   </div>
 </section>
@@ -196,8 +270,23 @@
 
 <footer class="bg-black border-t border-zinc-900 py-12">
   <div class="max-w-7xl mx-auto px-6">
-    <p class="text-sm text-zinc-400">SpreadIQ · Professional options analytics platform</p>
-    <p class="text-xs text-zinc-600 mt-2">© 2025 SpreadIQ. All rights reserved.</p>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-black font-black text-sm">S</div>
+          <span class="text-lg font-extrabold">Spread<span class="brand-logo">IQ</span></span>
+        </div>
+        <p class="text-sm text-zinc-400">Professional options analytics platform</p>
+      </div>
+      <div class="flex gap-6 text-sm text-zinc-500">
+        <a href="/" class="hover:text-emerald-400 transition">Home</a>
+        <a href="/dashboard.html" class="hover:text-emerald-400 transition">Dashboard</a>
+        <a href="/strategy.html" class="hover:text-emerald-400 transition">Strategy Builder</a>
+      </div>
+    </div>
+    <div class="mt-8 pt-8 border-t border-zinc-900 text-center">
+      <p class="text-xs text-zinc-600">© 2025 SpreadIQ. All rights reserved. Data provided for informational purposes only.</p>
+    </div>
   </div>
 </footer>
 
@@ -212,8 +301,6 @@
 </div>
 
 <script>
-  // ===== CLIENT-SIDE DATA (No API needed!) =====
-
   const MARKET_CONFIG = [
     { name: 'NIFTY 50',   base: 24500, vol: 0.008, prefix: '₹', icon: '📊', desc: 'NSE 50' },
     { name: 'NIFTY BANK', base: 52500, vol: 0.012, prefix: '₹', icon: '🏦', desc: 'Bank Index' },
@@ -223,9 +310,8 @@
     { name: 'CRUDE OIL',  base: 82,    vol: 0.015, prefix: '$', icon: '🛢️', desc: 'MCX' }
   ];
 
-  // Seed random based on time so data changes but stays consistent
   function getSeededRandom(seed) {
-    const time = new Date().getMinutes(); // changes every minute
+    const time = new Date().getMinutes();
     let hash = seed.charCodeAt(0) + time;
     for (let i = 1; i < seed.length; i++) {
       hash = ((hash << 5) - hash) + seed.charCodeAt(i);
@@ -253,12 +339,12 @@
     const grid = document.getElementById('marketsGrid');
     if (!grid) return;
     grid.innerHTML = MARKET_CONFIG.map(m =>
-      '<div onclick="openMarketDetail(\'' + m.name + '\')" class="bg-black border border-zinc-800 p-5 rounded-xl text-center hover:border-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition cursor-pointer" data-market="' + m.name + '">' +
-        '<div class="text-3xl mb-2">' + m.icon + '</div>' +
-        '<div class="font-bold">' + m.name + '</div>' +
-        '<div class="text-xs text-zinc-500 mt-1">' + m.desc + '</div>' +
-        '<div class="text-lg text-emerald-400 font-bold mt-3 market-price">--</div>' +
-        '<div class="text-xs text-zinc-500 font-semibold market-change">Loading...</div>' +
+      '<div onclick="openMarketDetail(\'' + m.name + '\')" class="market-card p-5 rounded-xl text-center" data-market="' + m.name + '">' +
+        '<div class="text-3xl mb-3">' + m.icon + '</div>' +
+        '<div class="font-bold text-sm mb-1">' + m.name + '</div>' +
+        '<div class="text-xs text-zinc-500 mb-3">' + m.desc + '</div>' +
+        '<div class="text-lg text-emerald-400 font-bold mt-2 market-price">--</div>' +
+        '<div class="text-xs text-zinc-500 font-semibold mt-1 market-change">Loading...</div>' +
       '</div>'
     ).join('');
   }
@@ -271,9 +357,9 @@
     const arrow = isUp ? '▲' : '▼';
     const sign = isUp ? '+' : '';
     cards.forEach(card => {
-      card.querySelector('.market-price').className = 'text-lg ' + color + ' font-bold mt-3 market-price';
+      card.querySelector('.market-price').className = 'text-lg ' + color + ' font-bold mt-2 market-price';
       card.querySelector('.market-price').textContent = prefix + last.toFixed(2);
-      card.querySelector('.market-change').className = 'text-xs ' + color + ' font-semibold market-change';
+      card.querySelector('.market-change').className = 'text-xs ' + color + ' font-semibold mt-1 market-change';
       card.querySelector('.market-change').textContent = arrow + ' ' + sign + Math.abs(pct).toFixed(2) + '%';
     });
   }
@@ -334,13 +420,13 @@
     try {
       const res = await fetch('/api/indices');
       const apiData = await res.json();
-      
+
       const prefixMap = { 'NIFTY 50': '₹', 'NIFTY BANK': '₹', 'SENSEX': '₹' };
       const liveMap = {};
       apiData.forEach(item => {
         liveMap[item.name] = { ...item, prefix: prefixMap[item.name] || '₹' };
       });
-      
+
       const merged = MARKET_CONFIG.map(m => {
         if (liveMap[m.name]) return liveMap[m.name];
         const random = getSeededRandom(m.name);
@@ -348,19 +434,19 @@
         return {
           name: m.name,
           last: m.base + change,
-          change,
+          change: change,
           percentChange: (change / m.base) * 100,
           prefix: m.prefix
         };
       });
-      
+
       const indices = merged;
       updateTicker(indices);
       indices.forEach(idx => updateMarketCard(idx.name, idx.last, idx.change, idx.percentChange, idx.prefix));
       const nifty = indices.find(i => i.name === 'NIFTY 50');
       if (nifty) updateMockup(nifty);
     } catch (e) {
-      loadLiveData();
+      setTimeout(loadLiveData, 3000);
     }
   }
 
@@ -386,9 +472,9 @@
 
     const apiSymbols = { 'NIFTY 50': 'NIFTY', 'NIFTY BANK': 'BANKNIFTY', 'SENSEX': 'SENSEX' };
     const apiSymbol = apiSymbols[symbol];
-    
+
     let spot, atm, chain, expiry;
-    
+
     if (apiSymbol) {
       try {
         const res = await fetch('/api/option-chain/' + apiSymbol);
@@ -401,7 +487,7 @@
         }
       } catch (e) {}
     }
-    
+
     if (!chain) {
       const config = MARKET_CONFIG.find(m => m.name === symbol) || { base: 24500, vol: 0.01 };
       const random = getSeededRandom(symbol);
@@ -413,14 +499,14 @@
       chain = data.chain;
       expiry = Date.now() + 7 * 86400000;
     }
-    
+
     const gap = (symbol === 'NIFTY BANK' || symbol === 'SENSEX') ? 100 : 50;
     const itmStrike = atm - gap;
     const otmStrike = atm + gap;
     const ce_itm = chain.find(o => o.strike === itmStrike && o.type === 'CE');
     const ce_atm = chain.find(o => o.strike === atm && o.type === 'CE');
     const ce_otm = chain.find(o => o.strike === otmStrike && o.type === 'CE');
-    
+
     let bfPL = '--', debit = 0, maxProfit = 0;
     if (ce_itm && ce_atm && ce_otm) {
       debit = ce_itm.ltp - (2 * ce_atm.ltp) + ce_otm.ltp;
@@ -462,7 +548,7 @@
     });
     html += '<div class="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800"><div class="p-3 bg-emerald-500/10 text-sm font-bold">📊 Option Chain' + (expiry ? ' · Expiry: ' + new Date(expiry).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : '') + '</div><div class="overflow-x-auto max-h-96"><table class="w-full text-xs"><thead class="bg-zinc-950 sticky top-0"><tr class="text-zinc-500"><th class="p-2 text-right">Call OI</th><th class="p-2 text-center">Call LTP</th><th class="p-2 text-center">STRIKE</th><th class="p-2 text-center">Put LTP</th><th class="p-2 text-right">Put OI</th></tr></thead><tbody>' + tableRows + '</tbody></table></div></div>';
     html += '<div class="mt-4 text-center"><a href="/dashboard.html" class="inline-block px-6 py-3 bg-emerald-500/20 border border-emerald-500/40 rounded-lg text-emerald-400 text-sm font-bold mr-2">📊 Dashboard →</a><a href="/strategy.html" class="inline-block px-6 py-3 bg-cyan-500/20 border border-cyan-500/40 rounded-lg text-cyan-400 text-sm font-bold">📐 Strategy →</a></div>';
-    
+
     setTimeout(() => {
       document.getElementById('detailBody').innerHTML = html;
     }, 200);
@@ -472,13 +558,13 @@
     document.getElementById('detailModal').classList.add('hidden');
   }
 
-  // Initialize
+  document.getElementById('detailModal').addEventListener('click', function(e) {
+    if (e.target.id === 'detailModal') closeDetail();
+  });
+
   renderMarketCards();
   loadLiveData();
   setInterval(loadLiveData, 30000);
 </script>
-
 </body>
 </html>
-< ! - -   c a c h e   p u r g e   - - >  
- 
