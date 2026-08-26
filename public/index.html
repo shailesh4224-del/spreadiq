@@ -330,19 +330,38 @@
     document.getElementById('liveTime').textContent = 'LIVE · ' + new Date().toLocaleTimeString('en-IN');
   }
 
-  function loadLiveData() {
-    // ✅ Generate data directly in browser — no API needed!
-    const indices = generateMarketData();
-    
-    // Update ticker
-    updateTicker(indices);
-    
-    // Update market cards
-    indices.forEach(idx => updateMarketCard(idx.name, idx.last, idx.change, idx.percentChange, idx.prefix));
-    
-    // Update mockup with NIFTY data
-    const nifty = indices.find(i => i.name === 'NIFTY 50');
-    if (nifty) updateMockup(nifty);
+  async function loadLiveData() {
+    try {
+      const res = await fetch('/api/indices');
+      const apiData = await res.json();
+      
+      const prefixMap = { 'NIFTY 50': '₹', 'NIFTY BANK': '₹', 'SENSEX': '₹' };
+      const liveMap = {};
+      apiData.forEach(item => {
+        liveMap[item.name] = { ...item, prefix: prefixMap[item.name] || '₹' };
+      });
+      
+      const merged = MARKET_CONFIG.map(m => {
+        if (liveMap[m.name]) return liveMap[m.name];
+        const random = getSeededRandom(m.name);
+        const change = m.base * (random - 0.5) * 2 * m.vol;
+        return {
+          name: m.name,
+          last: m.base + change,
+          change,
+          percentChange: (change / m.base) * 100,
+          prefix: m.prefix
+        };
+      });
+      
+      const indices = merged;
+      updateTicker(indices);
+      indices.forEach(idx => updateMarketCard(idx.name, idx.last, idx.change, idx.percentChange, idx.prefix));
+      const nifty = indices.find(i => i.name === 'NIFTY 50');
+      if (nifty) updateMockup(nifty);
+    } catch (e) {
+      loadLiveData();
+    }
   }
 
   function generateOptionChain(symbol, spot, gap) {
@@ -359,25 +378,48 @@
     return { spot, atmStrike, chain };
   }
 
-  function openMarketDetail(symbol) {
+  async function openMarketDetail(symbol) {
     const modal = document.getElementById('detailModal');
     document.getElementById('detailTitle').textContent = symbol + ' — Live Analytics';
     document.getElementById('detailBody').innerHTML = '<div class="text-center py-12 text-zinc-400">Loading...</div>';
     modal.classList.remove('hidden');
 
-    // Generate data client-side
-    const config = MARKET_CONFIG.find(m => m.name === symbol) || { base: 24500, vol: 0.01 };
-    const random = getSeededRandom(symbol);
-    const spot = config.base + config.base * (random - 0.5) * 2 * config.vol;
-    const gap = (symbol === 'NIFTY BANK' || symbol === 'SENSEX') ? 100 : 50;
-    const data = generateOptionChain(symbol, spot, gap);
+    const apiSymbols = { 'NIFTY 50': 'NIFTY', 'NIFTY BANK': 'BANKNIFTY', 'SENSEX': 'SENSEX' };
+    const apiSymbol = apiSymbols[symbol];
     
-    const atm = data.atmStrike;
+    let spot, atm, chain, expiry;
+    
+    if (apiSymbol) {
+      try {
+        const res = await fetch('/api/option-chain/' + apiSymbol);
+        const data = await res.json();
+        if (data.chain && data.chain.length > 0) {
+          spot = data.spot;
+          atm = data.atmStrike;
+          chain = data.chain;
+          expiry = data.expiry;
+        }
+      } catch (e) {}
+    }
+    
+    if (!chain) {
+      const config = MARKET_CONFIG.find(m => m.name === symbol) || { base: 24500, vol: 0.01 };
+      const random = getSeededRandom(symbol);
+      spot = config.base + config.base * (random - 0.5) * 2 * config.vol;
+      const gap = (symbol === 'NIFTY BANK' || symbol === 'SENSEX') ? 100 : 50;
+      const data = generateOptionChain(symbol, spot, gap);
+      spot = data.spot;
+      atm = data.atmStrike;
+      chain = data.chain;
+      expiry = Date.now() + 7 * 86400000;
+    }
+    
+    const gap = (symbol === 'NIFTY BANK' || symbol === 'SENSEX') ? 100 : 50;
     const itmStrike = atm - gap;
     const otmStrike = atm + gap;
-    const ce_itm = data.chain.find(o => o.strike === itmStrike && o.type === 'CE');
-    const ce_atm = data.chain.find(o => o.strike === atm && o.type === 'CE');
-    const ce_otm = data.chain.find(o => o.strike === otmStrike && o.type === 'CE');
+    const ce_itm = chain.find(o => o.strike === itmStrike && o.type === 'CE');
+    const ce_atm = chain.find(o => o.strike === atm && o.type === 'CE');
+    const ce_otm = chain.find(o => o.strike === otmStrike && o.type === 'CE');
     
     let bfPL = '--', debit = 0, maxProfit = 0;
     if (ce_itm && ce_atm && ce_otm) {
@@ -387,7 +429,7 @@
     }
 
     let callOI = 0, putOI = 0;
-    data.chain.forEach(o => {
+    chain.forEach(o => {
       if (o.type === 'CE') callOI += o.oi || 0;
       else putOI += o.oi || 0;
     });
@@ -402,7 +444,7 @@
 
     let tableRows = '';
     const strikeMap = {};
-    data.chain.forEach(o => {
+    chain.forEach(o => {
       if (!strikeMap[o.strike]) strikeMap[o.strike] = { CE: null, PE: null };
       strikeMap[o.strike][o.type] = o;
     });
@@ -418,7 +460,7 @@
         '<td class="p-2 text-right text-rose-400">' + (pe ? Math.ceil(pe.oi / 1000) + 'K' : '--') + '</td>' +
         '</tr>';
     });
-    html += '<div class="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800"><div class="p-3 bg-emerald-500/10 text-sm font-bold">📊 Option Chain</div><div class="overflow-x-auto max-h-96"><table class="w-full text-xs"><thead class="bg-zinc-950 sticky top-0"><tr class="text-zinc-500"><th class="p-2 text-right">Call OI</th><th class="p-2 text-center">Call LTP</th><th class="p-2 text-center">STRIKE</th><th class="p-2 text-center">Put LTP</th><th class="p-2 text-right">Put OI</th></tr></thead><tbody>' + tableRows + '</tbody></table></div></div>';
+    html += '<div class="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800"><div class="p-3 bg-emerald-500/10 text-sm font-bold">📊 Option Chain' + (expiry ? ' · Expiry: ' + new Date(expiry).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : '') + '</div><div class="overflow-x-auto max-h-96"><table class="w-full text-xs"><thead class="bg-zinc-950 sticky top-0"><tr class="text-zinc-500"><th class="p-2 text-right">Call OI</th><th class="p-2 text-center">Call LTP</th><th class="p-2 text-center">STRIKE</th><th class="p-2 text-center">Put LTP</th><th class="p-2 text-right">Put OI</th></tr></thead><tbody>' + tableRows + '</tbody></table></div></div>';
     html += '<div class="mt-4 text-center"><a href="/dashboard.html" class="inline-block px-6 py-3 bg-emerald-500/20 border border-emerald-500/40 rounded-lg text-emerald-400 text-sm font-bold mr-2">📊 Dashboard →</a><a href="/strategy.html" class="inline-block px-6 py-3 bg-cyan-500/20 border border-cyan-500/40 rounded-lg text-cyan-400 text-sm font-bold">📐 Strategy →</a></div>';
     
     setTimeout(() => {
