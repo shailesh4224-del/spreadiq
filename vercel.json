@@ -8,6 +8,7 @@
   "routes": [
     { "src": "/api/indices", "dest": "/api/indices.js" },
     { "src": "/api/option-chain/(.*)", "dest": "/api/option-chain/index.js" },
-    { "src": "/api/stock/(.*)", "dest": "/api/stock/index.js" }
+    { "src": "/api/stock/(.*)", "dest": "/api/stock/index.js" },
+    { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }
