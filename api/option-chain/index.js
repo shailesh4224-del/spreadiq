@@ -53,17 +53,21 @@ export default async function handler(req, res) {
   const chain = [];
   for (let i = -25; i <= 25; i++) {
     const strike = atmStrike + (i * gap);
-    const ic = Math.max(0, spot - strike);
-    const ip = Math.max(0, strike - spot);
-    const tv = spot * 0.008 * Math.exp(-Math.abs(i) * 0.15);
-    chain.push({ strike, type: 'CE', ltp: Math.max(0.5, ic + tv), iv: 14, oi: 0 });
-    chain.push({ strike, type: 'PE', ltp: Math.max(0.5, ip + tv), iv: 14, oi: 0 });
+    const dist = Math.abs(i);
+    const intrinsicC = Math.max(0, spot - strike);
+    const intrinsicP = Math.max(0, strike - spot);
+    const tv = spot * 0.008 * Math.exp(-dist * 0.15);
+    const baseLTP = Math.max(0.5, (i <= 0 ? intrinsicC : intrinsicP) + tv);
+    const iv = 12 + dist * 0.6 + (Math.sin(i * 0.8) * 1.5);
+    const oi = Math.max(0, Math.round(500000 * Math.exp(-dist * 0.12) * (0.8 + Math.random() * 0.4)));
+    chain.push({ strike, type: 'CE', ltp: Math.round(baseLTP * 100) / 100, iv: Math.round(iv * 10) / 10, oi });
+    chain.push({ strike, type: 'PE', ltp: Math.round(baseLTP * 100) / 100, iv: Math.round(iv * 10) / 10, oi });
   }
   return res.json({ 
     spot, 
     atmStrike, 
     chain, 
     expiry: Date.now() + 7 * 86400000, 
-    source: 'synthetic' 
+    source: 'demo' 
   });
 }

@@ -40,10 +40,10 @@
       <a href="/dashboard.html" class="text-emerald-400">Dashboard</a>
       <a href="/strategy.html" class="hover:text-emerald-400 transition">Strategy Builder</a>
     </nav>
-    <div class="flex items-center gap-2">
-      <span class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
-        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full pulse"></span>
-        <span class="text-emerald-400 text-xs font-bold">LIVE</span>
+    <div class="flex items-center gap-3">
+      <span id="dataBadge" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-500/10 border border-zinc-500/30">
+        <span class="w-1.5 h-1.5 bg-zinc-400 rounded-full"></span>
+        <span class="text-zinc-400 text-xs font-bold">LOADING</span>
       </span>
       <span id="clock" class="text-xs text-zinc-500 font-mono"></span>
     </div>
@@ -168,7 +168,17 @@ async function loadChain() {
       
       document.getElementById('spotPrice').textContent = '₹' + spot.toFixed(2);
       document.getElementById('atmStrike').textContent = atm;
-      document.getElementById('dataSource').textContent = data.source === 'synthetic' ? 'Synthetic (API unavailable)' : 'Live';
+      const isDemo = data.source === 'demo' || data.source === 'synthetic';
+      document.getElementById('dataSource').textContent = isDemo ? 'Demo data (simulated)' : 'Live';
+      
+      const badge = document.getElementById('dataBadge');
+      if (isDemo) {
+        badge.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/30';
+        badge.innerHTML = '<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full pulse"></span><span class="text-yellow-400 text-xs font-bold">DEMO</span>';
+      } else {
+        badge.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30';
+        badge.innerHTML = '<span class="w-1.5 h-1.5 bg-emerald-400 rounded-full pulse"></span><span class="text-emerald-400 text-xs font-bold">LIVE</span>';
+      }
       
       const ceOi = data.chain.filter(o => o.type === 'CE').reduce((s, o) => s + (o.oi || 0), 0);
       const peOi = data.chain.filter(o => o.type === 'PE').reduce((s, o) => s + (o.oi || 0), 0);
